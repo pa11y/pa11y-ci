@@ -1,4 +1,11 @@
 #!/usr/bin/env node
+
+//
+// This is the entry-point for the command line test
+// runner. This uses the function defined in the
+// `lib/pa11y-ci.js` file and passes in command line
+// options.
+//
 'use strict';
 
 const cheerio = require('cheerio');
@@ -9,6 +16,7 @@ const path = require('path');
 const pkg = require('../package.json');
 const program = require('commander');
 
+// Here we're using Commander to specify the CLI options
 program
 	.version(pkg.version)
 	.usage('[options]')
@@ -22,20 +30,26 @@ program
 	)
 	.parse(process.argv);
 
+// Start the promise chain to actually run everything
 Promise.resolve()
 	.then(() => {
+		// Load config based on the `--config` flag
 		return loadConfig(program.config);
 	})
 	.then(config => {
+		// Load a sitemap based on the `--sitemap` flag
 		if (program.sitemap) {
 			return loadSitemapIntoConfig(program.sitemap, config);
 		}
 		return config;
 	})
 	.then(config => {
+		// Actually run Pa11y CI
 		return pa11yCi(config.urls, config.defaults);
 	})
 	.then(report => {
+		// Decide on an exit code based on whether
+		// everything passes
 		if (report.passes < report.total) {
 			process.exit(2);
 		} else {
@@ -43,10 +57,17 @@ Promise.resolve()
 		}
 	})
 	.catch(error => {
+		// Handle any errors
 		console.error(error.message);
 		process.exit(1);
 	});
 
+// This function loads the JSON or JavaScript config
+// file specified by the user. It checks for config
+// files in the following order:
+//   - no extension (JSON)
+//   - js extension (JavaScript)
+//   - json extension (JSON)
 function loadConfig(configPath) {
 	return new Promise((resolve, reject) => {
 		configPath = resolveConfigPath(configPath);
@@ -64,7 +85,10 @@ function loadConfig(configPath) {
 	});
 }
 
+// Resolve the config path, and make sure it's
+// relative to the current working directory
 function resolveConfigPath(configPath) {
+	// Specify a default
 	configPath = configPath || '.pa11yci';
 	if (configPath[0] !== '/') {
 		configPath = path.join(process.cwd(), configPath);
@@ -72,24 +96,30 @@ function resolveConfigPath(configPath) {
 	return configPath;
 }
 
+// Load the config file using the exact path that
+// was passed in
 function loadLocalConfigUnmodified(configPath) {
 	try {
 		return JSON.parse(fs.readFileSync(configPath, 'utf-8'));
 	} catch (error) {}
 }
 
+// Load the config file but adding a .js extension
 function loadLocalConfigWithJs(configPath) {
 	try {
 		return require(`${configPath}.js`);
 	} catch (error) {}
 }
 
+// Load the config file but adding a .json extension
 function loadLocalConfigWithJson(configPath) {
 	try {
 		return require(`${configPath}.json`);
 	} catch (error) {}
 }
 
+// Tidy up and default the configurations found in
+// the file the user specified.
 function defaultConfig(config) {
 	config.urls = config.urls || [];
 	config.defaults = config.defaults || {};
@@ -97,6 +127,8 @@ function defaultConfig(config) {
 	return config;
 }
 
+// Load a sitemap from a remote URL, parse out the
+// URLs, and add them to an existing config object
 function loadSitemapIntoConfig(sitemapUrl, config) {
 	return Promise.resolve()
 		.then(() => {
