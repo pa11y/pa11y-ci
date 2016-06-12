@@ -8,6 +8,7 @@ This is a new project based around Pa11y, named Pa11y CI. Pa11y CI will be a com
 ---
 
 
+[![NPM version][shield-npm]][info-npm]
 [![Node.js version support][shield-node]][info-node]
 [![Build status][shield-build]][info-build]
 [![Dependencies][shield-dependencies]][info-dependencies]
@@ -144,8 +145,10 @@ Copyright &copy; 2016, Team Pa11y.
 [info-dependencies]: https://gemnasium.com/pa11y/ci
 [info-license]: LICENSE
 [info-node]: package.json
+[info-npm]: https://www.npmjs.com/package/pa11y-ci
 [info-build]: https://travis-ci.org/pa11y/ci
 [shield-dependencies]: https://img.shields.io/gemnasium/pa11y/ci.svg
 [shield-license]: https://img.shields.io/badge/license-LGPL%203.0-blue.svg
 [shield-node]: https://img.shields.io/badge/node.js%20support-4–6-brightgreen.svg
+[shield-npm]: https://img.shields.io/npm/v/pa11y-ci.svg
 [shield-build]: https://img.shields.io/travis/pa11y/ci/master.svg
