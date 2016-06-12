@@ -37,6 +37,7 @@ Options:
   -V, --version        output the version number
   -c, --config <path>  the path to a JSON or JavaScript config file
   -s, --sitemap <url>  the path to a sitemap
+  -j, --json           Output results as JSON
 ```
 
 ### Configuration

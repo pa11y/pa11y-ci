@@ -28,6 +28,10 @@ program
 		'-s, --sitemap <url>',
 		'the path to a sitemap'
 	)
+	.option(
+		'-j, --json',
+		'Output results as JSON'
+	)
 	.parse(process.argv);
 
 // Start the promise chain to actually run everything
@@ -48,6 +52,17 @@ Promise.resolve()
 		return pa11yCi(config.urls, config.defaults);
 	})
 	.then(report => {
+		// Output JSON if asked for it
+		if (program.json) {
+			console.log(JSON.stringify(report, (key, value) => {
+				if (value instanceof Error) {
+					return {
+						message: value.message
+					};
+				}
+				return value;
+			}));
+		}
 		// Decide on an exit code based on whether
 		// everything passes
 		if (report.passes < report.total) {
@@ -125,6 +140,9 @@ function defaultConfig(config) {
 	config.defaults = config.defaults || {};
 	config.defaults.log = config.defaults.log || console;
 	config.defaults.wrapWidth = process.stdout.columns;
+	if (program.json) {
+		delete config.defaults.log;
+	}
 	return config;
 }
 
