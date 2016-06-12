@@ -1,5 +1,5 @@
 
-# Pa11y CI ![proposal stage][status-badge]
+# Pa11y CI ![beta stage][status-badge]
 
 This is a new project based around Pa11y, named Pa11y CI. Pa11y CI will be a command-line tool which runs Pa11y against multiple URLs. It will be heavily geared towards easily running in CI environments against new versions of websites, but will also be runnable in local development.
 
@@ -138,7 +138,7 @@ Copyright &copy; 2016, Team Pa11y.
 [issues]: https://github.com/pa11y/ci/issues
 [node.js]: https://nodejs.org/
 [pa11y configurations]: https://github.com/pa11y/pa11y#configuration
-[status-badge]: https://img.shields.io/badge/status-architecture-orange.svg
+[status-badge]: https://img.shields.io/badge/status-beta-yellowgreen.svg
 [twitter]: https://twitter.com/pa11yorg
 
 [info-dependencies]: https://gemnasium.com/pa11y/ci
