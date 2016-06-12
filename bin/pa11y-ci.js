@@ -124,6 +124,7 @@ function defaultConfig(config) {
 	config.urls = config.urls || [];
 	config.defaults = config.defaults || {};
 	config.defaults.log = config.defaults.log || console;
+	config.defaults.wrapWidth = process.stdout.columns;
 	return config;
 }
 

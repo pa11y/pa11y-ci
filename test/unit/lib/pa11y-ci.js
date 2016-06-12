@@ -59,6 +59,10 @@ describe('lib/pa11y-ci', () => {
 			assert.isFunction(defaults.log.info);
 		});
 
+		it('has a `wrapWidth` property', () => {
+			assert.strictEqual(defaults.wrapWidth, 80);
+		});
+
 	});
 
 	describe('pa11yCi(urls, options)', () => {
@@ -83,11 +87,15 @@ describe('lib/pa11y-ci', () => {
 			pa11yResults = [
 				{
 					type: 'error',
-					message: 'Pa11y Result Error'
+					message: 'Pa11y Result Error',
+					selector: '',
+					context: ''
 				},
 				{
 					type: 'warning',
-					message: 'Pa11y Result Warning'
+					message: 'Pa11y Result Warning',
+					selector: '',
+					context: ''
 				}
 			];
 
@@ -149,9 +157,9 @@ describe('lib/pa11y-ci', () => {
 			});
 
 			it('logs the number of errors for each URL, or if they fail to run', () => {
-				assert.calledWithMatch(log.info, /foo-url .* 0 errors/i);
-				assert.calledWithMatch(log.error, /bar-url .* 1 errors/i);
-				assert.calledWithMatch(log.error, /baz-url .* failed to run/i);
+				assert.calledWithMatch(log.info, /foo-url.*0 errors/i);
+				assert.calledWithMatch(log.error, /bar-url.*1 errors/i);
+				assert.calledWithMatch(log.error, /baz-url.*failed to run/i);
 			});
 
 			it('logs the pass/fail ratio', () => {
@@ -223,9 +231,9 @@ describe('lib/pa11y-ci', () => {
 				});
 
 				it('logs zero errors for each URL', () => {
-					assert.calledWithMatch(log.info, /foo-url .* 0 errors/i);
-					assert.calledWithMatch(log.info, /bar-url .* 0 errors/i);
-					assert.calledWithMatch(log.info, /baz-url .* 0 errors/i);
+					assert.calledWithMatch(log.info, /foo-url.*0 errors/i);
+					assert.calledWithMatch(log.info, /bar-url.*0 errors/i);
+					assert.calledWithMatch(log.info, /baz-url.*0 errors/i);
 				});
 
 				it('logs the pass/fail ratio', () => {
@@ -276,7 +284,7 @@ describe('lib/pa11y-ci', () => {
 				});
 
 				it('correctly logs the number of errors for the URL', () => {
-					assert.calledWithMatch(log.info, /qux-url .* 0 errors/i);
+					assert.calledWithMatch(log.info, /qux-url.*0 errors/i);
 				});
 
 				describe('resolved object', () => {
