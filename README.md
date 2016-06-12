@@ -79,6 +79,10 @@ You can specify a default set of [pa11y configurations] that should be used for 
 }
 ```
 
+Pa11y CI has a few of its own configurations which you can set as well:
+
+  - `concurrency`: The number of tests that should be run in parallel. Defaults to `2`.
+
 ### URL configuration
 
 Each URL in your config file can be an object and specify [pa11y configurations] which override the defaults too. You do this by using an object instead of a string, and providing the URL as a `url` property on that object. This can be useful if you know that a certain URL takes a while to load, for example:
