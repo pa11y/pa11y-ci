@@ -101,7 +101,7 @@ describe('lib/pa11y-ci', () => {
 				]
 			};
 
-			pa11y.mockTestRunner.run.withArgs('foo-url').yieldsAsync(null, { messages: [] });
+			pa11y.mockTestRunner.run.withArgs('foo-url').yieldsAsync(null, {messages: []});
 			pa11y.mockTestRunner.run.withArgs('bar-url').yieldsAsync(null, pa11yResults);
 			pa11y.mockTestRunner.run.withArgs('baz-url').yieldsAsync(pa11yError);
 
@@ -217,9 +217,9 @@ describe('lib/pa11y-ci', () => {
 				log.info.reset();
 
 				pa11y.mockTestRunner.run.reset();
-				pa11y.mockTestRunner.run.withArgs('foo-url').yieldsAsync(null, { messages: [] });
-				pa11y.mockTestRunner.run.withArgs('bar-url').yieldsAsync(null, { messages: [] });
-				pa11y.mockTestRunner.run.withArgs('baz-url').yieldsAsync(null, { messages: [] });
+				pa11y.mockTestRunner.run.withArgs('foo-url').yieldsAsync(null, {messages: []});
+				pa11y.mockTestRunner.run.withArgs('bar-url').yieldsAsync(null, {messages: []});
+				pa11y.mockTestRunner.run.withArgs('baz-url').yieldsAsync(null, {messages: []});
 
 				returnedPromise = pa11yCi(userUrls, userOptions);
 			});
@@ -265,7 +265,7 @@ describe('lib/pa11y-ci', () => {
 				];
 
 				pa11y.mockTestRunner.run.reset();
-				pa11y.mockTestRunner.run.withArgs(userUrls[0]).yieldsAsync(null, { messages: [] });
+				pa11y.mockTestRunner.run.withArgs(userUrls[0]).yieldsAsync(null, {messages: []});
 
 				returnedPromise = pa11yCi(userUrls, userOptions);
 			});

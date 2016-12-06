@@ -66,7 +66,9 @@ Promise.resolve()
 	})
 	.then(config => {
 		// Add invalid document title based on the `--invalid-doc-title` flag
-		if (program.invalidDocTitle) config.defaults.invalidDocTitle = program.invalidDocTitle;
+		if (program.invalidDocTitle) {
+			config.defaults.invalidDocTitle = program.invalidDocTitle;
+		}
 
 		// Actually run Pa11y CI
 		return pa11yCi(config.urls, config.defaults);
