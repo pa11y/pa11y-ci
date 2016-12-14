@@ -45,10 +45,6 @@ program
 		'permit this number of errors, warnings, or notices, otherwise fail with exit code 2',
 		'0'
 	)
-	.option(
-		'-v, --verify-page <string>',
-		'HTML to verify is included in the page'
-	)
 	.parse(process.argv);
 
 // Start the promise chain to actually run everything
@@ -65,10 +61,6 @@ Promise.resolve()
 		return config;
 	})
 	.then(config => {
-		if (program.verifyPage) {
-			config.defaults.verifyPage = program.verifyPage;
-		}
-
 		// Actually run Pa11y CI
 		return pa11yCi(config.urls, config.defaults);
 	})
