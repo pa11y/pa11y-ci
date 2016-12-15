@@ -150,7 +150,7 @@ make test-integration    # Run the integration tests
 
 ## Licence
 
-Licensed under the [Lesser General Public License (LGPL-3.0)](LICENSE).
+Licensed under the [Lesser General Public License (LGPL-3.0)](LICENSE).<br>
 Copyright &copy; 2016, Team Pa11y.
 
 
