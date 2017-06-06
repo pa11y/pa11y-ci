@@ -49,6 +49,10 @@ program
 		'permit this number of errors, warnings, or notices, otherwise fail with exit code 2',
 		'0'
 	)
+	.option(
+		'-D, --invalid-doc-title <string>',
+		'Fail if test is conducted on incorrect subject, i.e. an error page, e.g. "Application Error"'
+	)
 	.parse(process.argv);
 
 // Start the promise chain to actually run everything
@@ -65,6 +69,11 @@ Promise.resolve()
 		return config;
 	})
 	.then(config => {
+		// Add invalid document title based on the `--invalid-doc-title` flag
+		if (program.invalidDocTitle) {
+			config.defaults.invalidDocTitle = program.invalidDocTitle;
+		}
+
 		// Actually run Pa11y CI
 		return pa11yCi(config.urls, config.defaults);
 	})
