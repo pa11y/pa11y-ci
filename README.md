@@ -180,6 +180,7 @@ Copyright &copy; 2016–2017, Team Pa11y
 [node.js]: https://nodejs.org/
 [pa11y]: https://github.com/pa11y/pa11y
 [pa11y configurations]: https://github.com/pa11y/pa11y#configuration
+[sidekick-proposal]: https://github.com/pa11y/sidekick/blob/master/PROPOSAL.md
 [survey]: https://goo.gl/forms/AiMDJR2IuaqX4iD03
 [twitter]: https://twitter.com/pa11yorg
 
