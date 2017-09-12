@@ -15,7 +15,13 @@ CI runs accessibility tests against multiple URLs and reports on any issues. Thi
 
 ## Latest news from Pa11y
 
-💭 We'd like to find out how you use Pa11y and what you think about it. Please [fill in our survey][survey] to let us know your thoughts!
+We're pleased to announce the Pa11y 5.0 beta is now available! We're switching from PhantomJS to Headless Chrome, as well as many other changes. See the [migration guide][migration-5] for further details. 
+
+If you'd like to try out the Pa11y 5.0 beta you can do so with
+
+> npm install -g pa11y@beta
+
+Feedback is greatly appreciated 😊
 
 ✨ 🔜 ✨ The Pa11y team is very excited to announce plans for the successor to Pa11y Dashboard and Pa11y Webservice, codename "Sidekick". Help us define the features that you want to see by visiting the [proposal][sidekick-proposal]. ✨  
 
@@ -185,6 +191,7 @@ Copyright &copy; 2016–2017, Team Pa11y
 
 
 [issues]: https://github.com/pa11y/ci/issues
+[migration-5]: https://github.com/pa11y/pa11y/blob/5.x/MIGRATION.md#migrating-from-40-to-50
 [node.js]: https://nodejs.org/
 [pa11y]: https://github.com/pa11y/pa11y
 [pa11y configurations]: https://github.com/pa11y/pa11y#configuration
