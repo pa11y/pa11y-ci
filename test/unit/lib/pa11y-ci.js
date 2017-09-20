@@ -212,9 +212,9 @@ describe('lib/pa11y-ci', () => {
 				log.info = sinon.spy();
 
 				pa11y.reset();
-				pa11y.withArgs('foo-url').resolves({issues:[]});
-				pa11y.withArgs('bar-url').resolves({issues:[]});
-				pa11y.withArgs('baz-url').resolves({issues:[]});
+				pa11y.withArgs('foo-url').resolves({issues: []});
+				pa11y.withArgs('bar-url').resolves({issues: []});
+				pa11y.withArgs('baz-url').resolves({issues: []});
 
 				returnedPromise = pa11yCi(userUrls, userOptions);
 			});
@@ -262,7 +262,7 @@ describe('lib/pa11y-ci', () => {
 				];
 
 				pa11y.reset();
-				pa11y.withArgs('qux-url', userUrls[0]).resolves({issues:[]});
+				pa11y.withArgs('qux-url', userUrls[0]).resolves({issues: []});
 
 				returnedPromise = pa11yCi(userUrls, userOptions);
 			});
