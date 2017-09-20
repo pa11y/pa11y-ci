@@ -255,12 +255,14 @@ describe('lib/pa11y-ci', () => {
 				userUrls = [
 					{
 						url: 'qux-url',
-						bar: 'baz'
+						bar: 'baz',
+						concurrency: 4,
+						wrapWidth: 80
 					}
 				];
 
 				pa11y.reset();
-				pa11y.withArgs(userUrls[0]).resolves({issues:[]});
+				pa11y.withArgs('qux-url', userUrls[0]).resolves({issues:[]});
 
 				returnedPromise = pa11yCi(userUrls, userOptions);
 			});
@@ -277,7 +279,7 @@ describe('lib/pa11y-ci', () => {
 
 				it('Runs the Pa11y test runner on each of the URLs with configurations', () => {
 					assert.callCount(pa11y, 1);
-					assert.calledWith(pa11y, userUrls[0]);
+					assert.calledWith(pa11y, 'qux-url', userUrls[0]);
 				});
 
 				it('correctly logs the number of errors for the URL', () => {
