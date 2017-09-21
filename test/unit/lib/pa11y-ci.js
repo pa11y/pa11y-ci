@@ -91,12 +91,6 @@ describe('lib/pa11y-ci', () => {
 						message: 'Pa11y Result Error',
 						selector: '',
 						context: ''
-					},
-					{
-						type: 'warning',
-						message: 'Pa11y Result Warning',
-						selector: '',
-						context: ''
 					}
 				]
 			};
