@@ -116,7 +116,7 @@ Each URL in your config file can be an object and specify [pa11y configurations]
         {
             "url": "http://pa11y.org/contributing",
             "timeout": 50000,
-            "screenCapture": `${__dirname}/my-screen-capture.png`
+            "screenCapture": "myDir/my-screen-capture.png"
         }
     ]
 }
@@ -183,7 +183,7 @@ We also maintain a [migration guide](MIGRATION.md) to help you migrate.
 
 | :grey_question: | Major Version | Last Minor Release | Node.js Versions | Support End Date |
 | :-------------- | :------------ | :----------------- | :--------------- | :--------------- |
-| :heart:         | 5             | N/A                | 8+               | N/A              |
+| :heart:         | 2             | N/A                | 8+               | N/A              |
 | :hourglass:     | 1             | 1.3                | 4+               | 2018-04-18       |
 
 If you're opening issues related to these, please mention the version that the issue relates to.
