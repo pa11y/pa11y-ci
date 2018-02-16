@@ -34,7 +34,7 @@ CI runs accessibility tests against multiple URLs and reports on any issues. Thi
 
 ## Requirements
 
-This command line tool requires [Node.js] 4+. You can install through npm:
+This command line tool requires [Node.js] 8+. You can install through npm:
 
 ```sh
 npm install -g pa11y-ci
@@ -106,7 +106,7 @@ Pa11y CI has a few of its own configurations which you can set as well:
 
 ### URL configuration
 
-Each URL in your config file can be an object and specify [pa11y configurations] which override the defaults too. You do this by using an object instead of a string, and providing the URL as a `url` property on that object. This can be useful if, for example, you know that a certain URL takes a while to load or you want to verify the presence of a specific piece of HTML:
+Each URL in your config file can be an object and specify [pa11y configurations] which override the defaults too. You do this by using an object instead of a string, and providing the URL as a `url` property on that object. This can be useful if, for example, you know that a certain URL takes a while to load or you want to check what the page looked like when the tests were run:
 
 ```json
 {
@@ -118,7 +118,7 @@ Each URL in your config file can be an object and specify [pa11y configurations]
         {
             "url": "http://pa11y.org/contributing",
             "timeout": 50000,
-            "verifyPage": "<title>Contributing to Pa11y</title>"
+            "screenCapture": `${__dirname}/my-screen-capture.png`
         }
     ]
 }
@@ -196,6 +196,6 @@ Copyright &copy; 2016–2017, Team Pa11y
 [info-build]: https://travis-ci.org/pa11y/pa11y-ci
 [shield-dependencies]: https://img.shields.io/gemnasium/pa11y/pa11y-ci.svg
 [shield-license]: https://img.shields.io/badge/license-LGPL%203.0-blue.svg
-[shield-node]: https://img.shields.io/badge/node.js%20support-4–6-brightgreen.svg
+[shield-node]: https://img.shields.io/badge/node.js%20support-8-brightgreen.svg
 [shield-npm]: https://img.shields.io/npm/v/pa11y-ci.svg
 [shield-build]: https://img.shields.io/travis/pa11y/pa11y-ci/master.svg
