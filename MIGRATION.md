@@ -1,10 +1,8 @@
-Migration Guide
-===============
+# Migration Guide
 
 Major versions of Pa11y CI can bring API or compatibility changes. This is a guide to help you make the switch when that happens.
 
-Migrating From 1.0 To 2.0
--------------------------
+## Migrating From 1.0 To 2.0
 
 ### Node.js Support
 

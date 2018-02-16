@@ -1,6 +1,5 @@
 
-Pa11y CI
-========
+# Pa11y CI
 
 Pa11y CI is a CI-centric accessibility test runner, built using [Pa11y].
 
@@ -14,8 +13,7 @@ CI runs accessibility tests against multiple URLs and reports on any issues. Thi
 
 ---
 
-Table Of Contents
------------------
+## Table Of Contents
 
 - [Requirements](#requirements)
 - [Usage](#usage)
@@ -28,8 +26,7 @@ Table Of Contents
 - [License](#license)
 
 
-Requirements
-------------
+## Requirements
 
 This command line tool requires [Node.js] 8+. You can install through npm:
 
@@ -38,8 +35,7 @@ npm install -g pa11y-ci
 ```
 
 
-Usage
------
+## Usage
 
 Pa11y CI can be used by running it as a command line tool, `pa11y-ci`:
 
@@ -143,15 +139,14 @@ The above would ensure that you run Pa11y CI against local URLs instead of the l
 If there are items in the sitemap that you'd like to exclude from the testing (for example PDFs) you can do so using the `--sitemap-exclude` flag.
 
 
-Tutorials and articles
-----------------------
+## Tutorials and articles
+
 Here are some useful articles written by Pa11y users and contributors:
 
 - [Automated accessibility testing with Travis and Pa11y CI](http://cruft.io/posts/automated-accessibility-testing-node-travis-ci-pa11y/)
 
 
-Contributing
-------------
+## Contributing
 
 There are many ways to contribute to Pa11y CI, we cover these in the [contributing guide](CONTRIBUTING.md) for this repo.
 
@@ -174,8 +169,7 @@ make test-integration    # Run the integration tests
 ```
 
 
-Support and Migration
----------------------
+## Support and Migration
 
 Pa11y CI major versions are normally supported for 6 months after their last minor release. This means that patch-level changes will be added and bugs will be fixed. The table below outlines the end-of-support dates for major versions, and the last minor release for that version.
 
@@ -189,12 +183,10 @@ We also maintain a [migration guide](MIGRATION.md) to help you migrate.
 If you're opening issues related to these, please mention the version that the issue relates to.
 
 
-Licence
--------
+## Licence
 
 Licensed under the [Lesser General Public License (LGPL-3.0)](LICENSE).<br/>
 Copyright &copy; 2016–2017, Team Pa11y
-
 
 
 [issues]: https://github.com/pa11y/pa11y-ci/issues
