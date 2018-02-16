@@ -1,5 +1,6 @@
 
-# Pa11y CI
+Pa11y CI
+========
 
 Pa11y CI is a CI-centric accessibility test runner, built using [Pa11y].
 
@@ -13,13 +14,8 @@ CI runs accessibility tests against multiple URLs and reports on any issues. Thi
 
 ---
 
-## Latest news from Pa11y
-
-✨ 🔜 ✨ The Pa11y team is very excited to announce plans for the successor to Pa11y Dashboard and Pa11y Webservice, codename "Sidekick". Help us define the features that you want to see by visiting the [proposal][sidekick-proposal]. ✨
-
----
-
-## Table Of Contents
+Table Of Contents
+-----------------
 
 - [Requirements](#requirements)
 - [Usage](#usage)
@@ -32,7 +28,8 @@ CI runs accessibility tests against multiple URLs and reports on any issues. Thi
 - [License](#license)
 
 
-## Requirements
+Requirements
+------------
 
 This command line tool requires [Node.js] 8+. You can install through npm:
 
@@ -41,7 +38,8 @@ npm install -g pa11y-ci
 ```
 
 
-## Usage
+Usage
+-----
 
 Pa11y CI can be used by running it as a command line tool, `pa11y-ci`:
 
@@ -145,14 +143,15 @@ The above would ensure that you run Pa11y CI against local URLs instead of the l
 If there are items in the sitemap that you'd like to exclude from the testing (for example PDFs) you can do so using the `--sitemap-exclude` flag.
 
 
-## Tutorials and articles
-
+Tutorials and articles
+----------------------
 Here are some useful articles written by Pa11y users and contributors:
 
 - [Automated accessibility testing with Travis and Pa11y CI](http://cruft.io/posts/automated-accessibility-testing-node-travis-ci-pa11y/)
 
 
-## Contributing
+Contributing
+------------
 
 There are many ways to contribute to Pa11y CI, we cover these in the [contributing guide](CONTRIBUTING.md) for this repo.
 
@@ -175,7 +174,23 @@ make test-integration    # Run the integration tests
 ```
 
 
-## Licence
+Support and Migration
+---------------------
+
+Pa11y CI major versions are normally supported for 6 months after their last minor release. This means that patch-level changes will be added and bugs will be fixed. The table below outlines the end-of-support dates for major versions, and the last minor release for that version.
+
+We also maintain a [migration guide](MIGRATION.md) to help you migrate.
+
+| :grey_question: | Major Version | Last Minor Release | Node.js Versions | Support End Date |
+| :-------------- | :------------ | :----------------- | :--------------- | :--------------- |
+| :heart:         | 5             | N/A                | 8+               | N/A              |
+| :hourglass:     | 1             | 1.3                | 4+               | 2018-04-18       |
+
+If you're opening issues related to these, please mention the version that the issue relates to.
+
+
+Licence
+-------
 
 Licensed under the [Lesser General Public License (LGPL-3.0)](LICENSE).<br/>
 Copyright &copy; 2016–2017, Team Pa11y
