@@ -24,9 +24,11 @@
     "commander": "^2.9.0",
     "globby": "^6.1.0",
     "lodash": "^4.17.4",
+    "lodash.isequal": "^4.5.0",
     "node-fetch": "^1.7.0",
     "pa11y": "^5.0.0",
     "protocolify": "^2.0.0",
+    "puppeteer": "^1.0.0",
     "wordwrap": "^1.0.0"
   },
   "devDependencies": {
