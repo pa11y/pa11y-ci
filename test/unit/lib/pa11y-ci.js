@@ -152,17 +152,17 @@ describe('lib/pa11y-ci', () => {
 
 			it('logs the number of errors for each URL, or if they fail to run', () => {
 				assert.calledWithMatch(log.info, /foo-url.*0 errors/i);
-				assert.calledWithMatch(log.error, /bar-url.*1 errors/i);
+				assert.calledWithMatch(log.error, /bar-url.*1 error/i);
 				assert.calledWithMatch(log.error, /baz-url.*failed to run/i);
 			});
 
 			it('logs the pass/fail ratio', () => {
-				assert.calledWithMatch(log.error, /1\/3 urls passed/i);
+				assert.calledWithMatch(log.error, /1\/3 URL passed/i);
 			});
 
 			it('logs the errors for each URL that has some', () => {
-				assert.neverCalledWithMatch(log.error, /errors in foo-url/i);
-				assert.calledWithMatch(log.error, /errors in bar-url/i);
+				assert.neverCalledWithMatch(log.error, /error in foo-url/i);
+				assert.calledWithMatch(log.error, /error in bar-url/i);
 				assert.calledWithMatch(log.error, /pa11y error/i);
 				assert.calledWithMatch(log.error, /pa11y result error/i);
 				assert.neverCalledWithMatch(log.error, /pa11y result warning/i);
@@ -291,7 +291,7 @@ describe('lib/pa11y-ci', () => {
 				});
 
 				it('correctly logs the number of errors for the URL', () => {
-					assert.calledWithMatch(log.info, /qux-url.*1 errors/i);
+					assert.calledWithMatch(log.info, /qux-url.*1 error/i);
 				});
 
 				describe('resolved object', () => {
