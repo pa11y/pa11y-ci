@@ -17,7 +17,10 @@ const globby = require('globby');
 const protocolify = require('protocolify');
 const pkg = require('../package.json');
 const program = require('commander');
+const updateNotifier = require('update-notifier');
 
+// Check for CLI update every day
+updateNotifier({pkg}).notify({defer: true});
 
 // Here we're using Commander to specify the CLI options
 program
