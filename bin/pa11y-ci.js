@@ -231,6 +231,16 @@ function loadSitemapIntoConfig(program, config) {
 				if (sitemapFind) {
 					url = url.replace(sitemapFind, sitemapReplace);
 				}
+
+				// If default screenCapture is set, the screen captured per url in sitemap.
+				// The filename should be like /abs/path/to/filename.png, the "filename" is replaced.
+				if (config.defaults.screenCapture) {
+					url = {
+						"url": url, 
+						"screenCapture": config.defaults.screenCapture.replace('filename', url.replace(/\//g, ''))
+					}
+				}
+
 				config.urls.push(url);
 			});
 
