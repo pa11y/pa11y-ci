@@ -197,7 +197,7 @@ function defaultConfig(config) {
 
 // Generate a file name string from url
 function getFileNameFromUrl(url) {
-    return url.trim("/").split("/").join("-").replace(".", "").replace(":", "");
+    return url.trim('/').split('/').join('-').replace('.', '').replace(':', '');
 }
 
 // Load a sitemap from a remote URL, parse out the
