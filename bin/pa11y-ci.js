@@ -195,6 +195,11 @@ function defaultConfig(config) {
 	return config;
 }
 
+// Generate a file name string from url
+function getFileNameFromUrl(url) {
+    return url.trim("/").split("/").join("-").replace(".", "").replace(":", "");
+}
+
 // Load a sitemap from a remote URL, parse out the
 // URLs, and add them to an existing config object
 function loadSitemapIntoConfig(program, config) {
@@ -237,7 +242,7 @@ function loadSitemapIntoConfig(program, config) {
 				if (config.defaults.screenCapture) {
 					url = {
 						url: url,
-						screenCapture: config.defaults.screenCapture.replace('filename', url.replace(/\//g, ''))
+						screenCapture: config.defaults.screenCapture.replace('filename', getFileNameFromUrl(url))
 					};
 				}
 
