@@ -236,9 +236,9 @@ function loadSitemapIntoConfig(program, config) {
 				// The filename should be like /abs/path/to/filename.png, the "filename" is replaced.
 				if (config.defaults.screenCapture) {
 					url = {
-						"url": url, 
-						"screenCapture": config.defaults.screenCapture.replace('filename', url.replace(/\//g, ''))
-					}
+						url: url, 
+						screenCapture: config.defaults.screenCapture.replace('filename', url.replace(/\//g, ''))
+					};
 				}
 
 				config.urls.push(url);
