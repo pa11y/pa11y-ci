@@ -17,7 +17,8 @@ const globby = require('globby');
 const protocolify = require('protocolify');
 const pkg = require('../package.json');
 const program = require('commander');
-
+const fname = require('filename');
+const filenamify = require('filenamify');
 
 // Here we're using Commander to specify the CLI options
 program
@@ -196,12 +197,40 @@ function defaultConfig(config) {
 	if (program.json) {
 		delete config.defaults.log;
 	}
+
+	// If default screenCapture is given, It should be added to urls also
+	config = updateConfigUrlsScreenCapture(config);
+
+	return config;
+}
+
+// Update the config.urls array by using config.default.screenCapture
+function updateConfigUrlsScreenCapture(config) {
+	let urls = []
+	if (config.defaults.screenCapture) {
+		for (let key in config.urls) {
+	  		if (typeof config.urls[key] === 'string') {
+	  			urls.push({
+	  				url: config.urls[key],
+	  				screenCapture: config.defaults.screenCapture.replace('filename', getFileNameFromUrl(config.urls[key]))
+	  			});
+	  		} else {
+	  			if (config.urls[key].hasOwnProperty('screenCapture') === false) {
+		  			config.urls[key].screenCapture = config.defaults.screenCapture.replace('filename', getFileNameFromUrl(config.urls[key]));
+	  			}
+
+	  			urls.push(config.urls[key]);
+	  		}
+		}
+
+		config.urls = urls;
+	}
 	return config;
 }
 
 // Generate a file name string from url
 function getFileNameFromUrl(url) {
-	return url.trim('/').split('/').join('-').replace('.', '').replace(':', '');
+	return filenamify(url, {replacement: '_'});
 }
 
 // Load a sitemap from a remote URL, parse out the

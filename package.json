@@ -27,7 +27,8 @@
     "node-fetch": "^1.7.0",
     "pa11y": "^5.0.3",
     "protocolify": "^2.0.0",
-    "wordwrap": "^1.0.0"
+    "wordwrap": "^1.0.0",
+    "filenamify": "^4.0.0"
   },
   "devDependencies": {
     "eslint": "^3.19.0",
