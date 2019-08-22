@@ -205,7 +205,7 @@ function defaultConfig(config) {
 
 // Update the config.urls array by using config.default.screenCapture
 function updateConfigUrlsScreenCapture(config) {
-	const urls = []
+	const urls = [];
 	if (config.defaults.screenCapture) {
 		for (const key in config.urls) {
 			if (typeof config.urls[key] === 'string') {
@@ -214,7 +214,8 @@ function updateConfigUrlsScreenCapture(config) {
 					screenCapture: config.defaults.screenCapture.replace('filename', getFileNameFromUrl(config.urls[key]))
 				});
 			} else {
-				if (config.urls[key].hasOwnProperty('screenCapture') === false) {
+				
+				if (Object.prototype.hasOwnProperty.call(config.urls[key], "screenCapture") === false) {
 					config.urls[key].screenCapture = config.defaults.screenCapture.replace('filename', getFileNameFromUrl(config.urls[key]));
 				}
 
