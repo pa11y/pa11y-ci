@@ -214,8 +214,7 @@ function updateConfigUrlsScreenCapture(config) {
 					screenCapture: config.defaults.screenCapture.replace('filename', getFileNameFromUrl(config.urls[key]))
 				});
 			} else {
-				
-				if (Object.prototype.hasOwnProperty.call(config.urls[key], "screenCapture") === false) {
+				if (Object.prototype.hasOwnProperty.call(config.urls[key], 'screenCapture') === false) {
 					config.urls[key].screenCapture = config.defaults.screenCapture.replace('filename', getFileNameFromUrl(config.urls[key]));
 				}
 
