@@ -17,7 +17,6 @@ const globby = require('globby');
 const protocolify = require('protocolify');
 const pkg = require('../package.json');
 const program = require('commander');
-const fname = require('filename');
 const filenamify = require('filenamify');
 
 // Here we're using Commander to specify the CLI options
@@ -206,21 +205,21 @@ function defaultConfig(config) {
 
 // Update the config.urls array by using config.default.screenCapture
 function updateConfigUrlsScreenCapture(config) {
-	let urls = []
+	const urls = []
 	if (config.defaults.screenCapture) {
-		for (let key in config.urls) {
-	  		if (typeof config.urls[key] === 'string') {
-	  			urls.push({
-	  				url: config.urls[key],
-	  				screenCapture: config.defaults.screenCapture.replace('filename', getFileNameFromUrl(config.urls[key]))
-	  			});
-	  		} else {
-	  			if (config.urls[key].hasOwnProperty('screenCapture') === false) {
-		  			config.urls[key].screenCapture = config.defaults.screenCapture.replace('filename', getFileNameFromUrl(config.urls[key]));
-	  			}
+		for (const key in config.urls) {
+			if (typeof config.urls[key] === 'string') {
+				urls.push({
+					url: config.urls[key],
+					screenCapture: config.defaults.screenCapture.replace('filename', getFileNameFromUrl(config.urls[key]))
+				});
+			} else {
+				if (config.urls[key].hasOwnProperty('screenCapture') === false) {
+					config.urls[key].screenCapture = config.defaults.screenCapture.replace('filename', getFileNameFromUrl(config.urls[key]));
+				}
 
-	  			urls.push(config.urls[key]);
-	  		}
+				urls.push(config.urls[key]);
+			}
 		}
 
 		config.urls = urls;
