@@ -78,7 +78,7 @@ You can specify a default set of [pa11y configurations] that should be used for 
 
 ```json
 {
-    "defaults": {
+    "default": {
         "timeout": 1000,
         "page": {
             "viewport": {
