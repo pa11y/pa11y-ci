@@ -105,7 +105,7 @@ Each URL in your config file can be an object and specify [pa11y configurations]
 
 ```json
 {
-    "defaults": {
+    "default": {
         "timeout": 1000
     },
     "urls": [
