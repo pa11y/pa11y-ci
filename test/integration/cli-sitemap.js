@@ -87,3 +87,22 @@ describe('pa11y-ci (with a sitemap and sitemap-exclude)', () => {
 	});
 
 });
+
+describe('pa11y-ci (with a sitemap being sitemapindex)', () => {
+
+	before(() => {
+		return global.cliCall([
+			'--sitemap',
+			'http://localhost:8090/sitemapindex.xml',
+			'--config',
+			'empty'
+		]);
+	});
+
+	it('loads the expected sitemap', () => {
+		assert.include(global.lastResult.output, 'http://localhost:8090/passing-1');
+		assert.include(global.lastResult.output, 'http://localhost:8090/failing-1');
+		assert.include(global.lastResult.output, 'http://localhost:8090/excluded');
+	});
+
+});
