@@ -131,8 +131,8 @@ function loadConfig(configPath) {
 		}
 
 		// Allow loaded configs to return a promise
-		Promise.resolve(config).then(config => {
-			resolve(defaultConfig(config || {}));
+		Promise.resolve(config).then(loadedConfig => {
+			resolve(defaultConfig(loadedConfig || {}));
 		});
 	});
 }
@@ -201,32 +201,26 @@ function defaultConfig(config) {
 
 // Load a sitemap from a remote URL, parse out the
 // URLs, and add them to an existing config object
-function loadSitemapIntoConfig(program, config) {
-	const sitemapUrl = program.sitemap;
+function loadSitemapIntoConfig(programWithSitemap, initialConfig) {
+	const sitemapUrl = programWithSitemap.sitemap;
 	const sitemapFind = (
-		program.sitemapFind ?
-		new RegExp(program.sitemapFind, 'gi') :
+		programWithSitemap.sitemapFind ?
+		new RegExp(programWithSitemap.sitemapFind, 'gi') :
 		null
 	);
-	const sitemapReplace = program.sitemapReplace || '';
+	const sitemapReplace = programWithSitemap.sitemapReplace || '';
 	const sitemapExclude = (
-		program.sitemapExclude ?
-		new RegExp(program.sitemapExclude, 'gi') :
+		programWithSitemap.sitemapExclude ?
+		new RegExp(programWithSitemap.sitemapExclude, 'gi') :
 		null
 	);
 
-	function getUrlsFromSitemap(sitemapUrl, config) {
+	function getUrlsFromSitemap(aSitemapUrl, config) {
 		return Promise.resolve()
-		.then(() => {
-			return fetch(sitemapUrl);
-		})
-		.then(response => {
-			return response.text();
-		})
+		.then(() => fetch(aSitemapUrl))
+		.then(response => response.text())
 		.then(body => {
-			const $ = cheerio.load(body, {
-				xmlMode: true
-			});
+			const $ = cheerio.load(body, {xmlMode: true});
 
 			const isSitemapIndex = $('sitemapindex').length > 0;
 			if (isSitemapIndex) {
@@ -252,11 +246,11 @@ function loadSitemapIntoConfig(program, config) {
 		})
 		.catch(error => {
 			if (error.stack && error.stack.includes('node-fetch')) {
-				throw new Error(`The sitemap "${sitemapUrl}" could not be loaded`);
+				throw new Error(`The sitemap "${aSitemapUrl}" could not be loaded`);
 			}
-			throw new Error(`The sitemap "${sitemapUrl}" could not be parsed`);
+			throw new Error(`The sitemap "${aSitemapUrl}" could not be parsed`);
 		});
 	}
 
-	return getUrlsFromSitemap(sitemapUrl, config);
+	return getUrlsFromSitemap(sitemapUrl, initialConfig);
 }
