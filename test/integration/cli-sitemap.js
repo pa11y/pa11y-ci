@@ -99,10 +99,11 @@ describe('pa11y-ci (with a sitemap being sitemapindex)', () => {
 		]);
 	});
 
-	it('loads the expected sitemap', () => {
+	it('loads the expected urls from multiple sitemaps', () => {
 		assert.include(global.lastResult.output, 'http://localhost:8090/passing-1');
 		assert.include(global.lastResult.output, 'http://localhost:8090/failing-1');
 		assert.include(global.lastResult.output, 'http://localhost:8090/excluded');
+		assert.include(global.lastResult.output, 'http://localhost:8090/passing-2');
 	});
 
 });
