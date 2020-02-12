@@ -17,7 +17,7 @@ const globby = require('globby');
 const protocolify = require('protocolify');
 const pkg = require('../package.json');
 const program = require('commander');
-
+const filenamify = require('filenamify');
 
 // Here we're using Commander to specify the CLI options
 program
@@ -196,7 +196,40 @@ function defaultConfig(config) {
 	if (program.json) {
 		delete config.defaults.log;
 	}
+
+	// If default screenCapture is given, It should be added to urls also
+	config = updateConfigUrlsScreenCapture(config);
+
 	return config;
+}
+
+// Update the config.urls array by using config.default.screenCapture
+function updateConfigUrlsScreenCapture(config) {
+	const urls = [];
+	if (config.defaults.screenCapture) {
+		for (const key in config.urls) {
+			if (typeof config.urls[key] === 'string') {
+				urls.push({
+					url: config.urls[key],
+					screenCapture: config.defaults.screenCapture.replace('filename', getFileNameFromUrl(config.urls[key]))
+				});
+			} else {
+				if (Object.prototype.hasOwnProperty.call(config.urls[key], 'screenCapture') === false) {
+					config.urls[key].screenCapture = config.defaults.screenCapture.replace('filename', getFileNameFromUrl(config.urls[key]));
+				}
+
+				urls.push(config.urls[key]);
+			}
+		}
+
+		config.urls = urls;
+	}
+	return config;
+}
+
+// Generate a file name string from url
+function getFileNameFromUrl(url) {
+	return filenamify(url, {replacement: '_'});
 }
 
 // Load a sitemap from a remote URL, parse out the
@@ -245,6 +278,16 @@ function loadSitemapIntoConfig(program, config) {
 				if (sitemapFind) {
 					url = url.replace(sitemapFind, sitemapReplace);
 				}
+
+				// If default screenCapture is set, the screen captured per url in sitemap.
+				// The filename should be like /abs/path/to/filename.png, the "filename" is replaced.
+				if (config.defaults.screenCapture) {
+					url = {
+						url: url,
+						screenCapture: config.defaults.screenCapture.replace('filename', getFileNameFromUrl(url))
+					};
+				}
+
 				config.urls.push(url);
 			});
 
