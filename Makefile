@@ -1,4 +1,3 @@
-# include Makefile.node
 # Reusable Makefile
 # ------------------------------------------------------------------------
 # This section of the Makefile should not be modified, it includes
