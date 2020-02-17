@@ -263,11 +263,6 @@ describe('lib/pa11y-ci', () => {
 			};
 
 			mockBrowser = await puppeteer.launch();
-			mockBrowser.close = sinon.spy();
-			mockBrowser.closeIncognito = sinon.spy();
-			mockBrowser.createIncognitoBrowserContext = sinon.spy(() => {
-				return {close: mockBrowser.closeIncognito};
-			});
 
 			userUrls = [
 				{
@@ -351,11 +346,6 @@ describe('lib/pa11y-ci', () => {
 			};
 
 			mockBrowser = await puppeteer.launch();
-			mockBrowser.close = sinon.spy();
-			mockBrowser.closeIncognito = sinon.spy();
-			mockBrowser.createIncognitoBrowserContext = sinon.spy(() => {
-				return {close: mockBrowser.closeIncognito};
-			});
 
 			userUrls = [
 				{
@@ -391,7 +381,14 @@ describe('lib/pa11y-ci', () => {
 			});
 
 			it('closes each incognito browser context created during test runner execution', () => {
-				assert.callCount(mockBrowser.closeIncognito, 2);
+				assert.callCount(
+					mockBrowser.createIncognitoBrowserContext,
+					2
+				);
+				assert.callCount(
+					mockBrowser.createIncognitoBrowserContext.close,
+					2
+				);
 			});
 
 			it('closes the browser context after the test runner completes', () => {
