@@ -74,17 +74,15 @@ Pa11y will be run against each of the URLs in the `urls` array and the paths spe
 
 ### Default configuration
 
-You can specify a default set of [pa11y configurations] that should be used for each test run. These should be added to a `default` object in your config. For example:
+You can specify a default set of [pa11y configurations] that should be used for each test run. These should be added to a `defaults` object in your config. For example:
 
 ```json
 {
     "defaults": {
         "timeout": 1000,
-        "page": {
-            "viewport": {
-                "width": 320,
-                "height": 480
-            }
+        "viewport": {
+            "width": 320,
+            "height": 480
         }
     },
     "urls": [
