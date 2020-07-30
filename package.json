@@ -33,7 +33,7 @@
   "devDependencies": {
     "@rowanmanning/make": "^2.1.0",
     "eslint": "^3.19.0",
-    "mocha": "^8.0.1",
+    "mocha": "^7.2.0",
     "mockery": "^2.0.0",
     "nyc": "^15.1.0",
     "pa11y-lint-config": "^1.2.0",
