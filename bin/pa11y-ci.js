@@ -142,7 +142,7 @@ function loadConfig(configPath) {
 function resolveConfigPath(configPath) {
 	// Specify a default
 	configPath = configPath || '.pa11yci';
-	if (configPath[0] !== '/') {
+	if (!path.isAbsolute(configPath)) {
 		configPath = path.join(process.cwd(), configPath);
 	}
 	if (/\.js(on)?$/.test(configPath)) {
