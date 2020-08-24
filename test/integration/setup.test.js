@@ -4,6 +4,7 @@
 const path = require('path');
 const spawn = require('child_process').spawn;
 const startWebsite = require('./mock/website');
+const stripAnsi = require('strip-ansi');
 
 before(done => {
 	startWebsite(8090, (error, server) => {
@@ -40,6 +41,9 @@ function cliCall(cliArguments) {
 		});
 		child.on('close', code => {
 			result.code = code;
+			result.output = stripAnsi(result.output);
+			result.stdout = stripAnsi(result.stdout);
+			result.stderr = stripAnsi(result.stderr);
 			global.lastResult = result;
 			resolve(result);
 		});
