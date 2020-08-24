@@ -60,10 +60,6 @@ describe('lib/pa11y-ci', () => {
 			assert.isFunction(defaults.log.info);
 		});
 
-		it('has a `wrapWidth` property', () => {
-			assert.strictEqual(defaults.wrapWidth, 80);
-		});
-
 		it('has a `useIncognitoBrowserContext` property', () => {
 			assert.strictEqual(defaults.useIncognitoBrowserContext, false);
 		});
@@ -161,9 +157,9 @@ describe('lib/pa11y-ci', () => {
 				assert.calledWithMatch(log.error, /1\/3 urls passed/i);
 			});
 
-			it('logs the errors for each URL that has some', () => {
-				assert.neverCalledWithMatch(log.error, /errors in foo-url/i);
-				assert.calledWithMatch(log.error, /errors in bar-url/i);
+			it('logs the results for each URL that has errors', () => {
+				assert.neverCalledWithMatch(log.error, /Results for URL: foo-url/i);
+				assert.calledWithMatch(log.error, /Results for URL: bar-url/i);
 				assert.calledWithMatch(log.error, /pa11y error/i);
 				assert.calledWithMatch(log.error, /pa11y result error/i);
 				assert.neverCalledWithMatch(log.error, /pa11y result warning/i);
