@@ -21,7 +21,7 @@ describe('pa11y-ci (with a single erroring URL)', () => {
 	});
 
 	it('outputs error information', () => {
-		assert.include(global.lastResult.output, 'Errors in http://notahost:8090/erroring-1');
+		assert.include(global.lastResult.output, 'Results for URL: http://notahost:8090/erroring-1');
 		assert.include(global.lastResult.output, 'net::ERR_NAME_NOT_RESOLVED');
 	});
 
@@ -50,9 +50,9 @@ describe('pa11y-ci (with multiple erroring URLs)', () => {
 	});
 
 	it('outputs error information', () => {
-		assert.include(global.lastResult.output, 'Errors in http://notahost:8090/erroring-1');
+		assert.include(global.lastResult.output, 'Results for URL: http://notahost:8090/erroring-1');
 		assert.include(global.lastResult.output, 'net::ERR_NAME_NOT_RESOLVED');
-		assert.include(global.lastResult.output, 'Errors in http://localhost:8090/timeout');
+		assert.include(global.lastResult.output, 'Results for URL: http://localhost:8090/timeout');
 		assert.include(global.lastResult.output, 'timed out');
 	});
 
