@@ -51,6 +51,9 @@ commander
 		'-T, --threshold <number>',
 		'permit this number of errors, warnings, or notices, otherwise fail with exit code 2',
 		'0'
+	).option(
+		'--reporter <string>',
+		'list of reporters. Can be a npm module or a path to a local file.',
 	)
 	.parse(process.argv);
 
@@ -74,6 +77,8 @@ Promise.resolve()
 		return config;
 	})
 	.then(config => {
+		// Override config reporters with CLI argument
+		config.defaults.reporters = [commander.reporter];
 		// Actually run Pa11y CI
 		return pa11yCi(urls.concat(config.urls || []), config.defaults);
 	})
