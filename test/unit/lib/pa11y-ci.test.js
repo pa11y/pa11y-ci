@@ -397,4 +397,79 @@ describe('lib/pa11y-ci', () => {
 		});
 	});
 
+	describe('reporters', () => {
+		let pa11yResults;
+		let returnedPromise;
+		let userUrls;
+		let userOptions;
+		let reporter;
+		let report;
+
+		beforeEach(done => {
+			reporter = require('../mock/reporter.mock')();
+			mockery.registerMock('my-pa11y-reporter', reporter);
+
+			userUrls = [
+				'foo-url',
+				'bar-url',
+				'baz-url'
+			];
+			userOptions = {
+				concurrency: 4,
+				log,
+				reporters: ['my-pa11y-reporter']
+			};
+
+			pa11yResults = {
+				issues: [
+					{
+						type: 'error',
+						message: 'Pa11y Result Error',
+						selector: '',
+						context: null
+					}
+				]
+			};
+
+			pa11y.withArgs('foo-url').resolves({issues: []});
+			pa11y.withArgs('bar-url').resolves(pa11yResults);
+			pa11y.withArgs('baz-url').resolves({issues: []});
+
+			returnedPromise = pa11yCi(userUrls, userOptions);
+
+			returnedPromise.then(value => {
+				report = value;
+				done();
+			}).catch(done);
+		});
+
+
+		it('calls the beforeAll method once', () => {
+			assert.calledWith(reporter.beforeAll, userUrls);
+			assert.callCount(reporter.beforeAll, 1);
+		});
+		it('calls the afterAll method once', () => {
+			assert.calledWith(reporter.afterAll, userUrls);
+			assert.callCount(reporter.afterAll, 1);
+		});
+
+		it('calls the begin method for each URL', () => {
+			userUrls.forEach((url, i) => {
+				reporter.begin.getCall(i).calledWith(url);
+			});
+			assert.callCount(reporter.begin, userUrls.length);
+		});
+
+		it('calls the results method for each URL', () => {
+			userUrls.forEach((url, i) => {
+				const spyCall = reporter.results.getCall(i);
+				assert.deepEqual(spyCall.args[0].issues, report.results[url]);
+				assert.isObject(spyCall.args[1]);
+				assert.equal(spyCall.args[2], url);
+				assert.equal(spyCall.args[3], userUrls);
+			});
+			assert.callCount(reporter.results, userUrls.length);
+		});
+
+	});
 });

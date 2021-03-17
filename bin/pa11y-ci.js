@@ -52,8 +52,8 @@ commander
 		'permit this number of errors, warnings, or notices, otherwise fail with exit code 2',
 		'0'
 	).option(
-		'--reporter <string>',
-		'list of reporters. Can be a npm module or a path to a local file.',
+		'--reporter <reporter>',
+		'the reporter to use. Can be a npm module or a path to a local file.',
 	)
 	.parse(process.argv);
 
