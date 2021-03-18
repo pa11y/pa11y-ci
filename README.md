@@ -53,6 +53,7 @@ Options:
   -x, --sitemap-exclude <pattern>  a pattern to find in sitemaps and exclude any url that matches
   -j, --json                       Output results as JSON
   -T, --threshold <number>         permit this number of errors, warnings, or notices, otherwise fail with exit code 2
+  --reporter <reporter>            The reporter to use. Can be a npm module or a path to a local file.
 ```
 
 ### Configuration
@@ -137,6 +138,96 @@ The above would ensure that you run Pa11y CI against local URLs instead of the l
 
 If there are items in the sitemap that you'd like to exclude from the testing (for example PDFs) you can do so using the `--sitemap-exclude` flag.
 
+## Reporters
+
+Pa11y CI supports Pa11y compatible reporters. You can use the `--reporter` option to define a single reporter. The option value can be:
+- the path of a locally installed npm module (ie: `pa11y-reporter-html`)
+- the path to a local node module relative to the current working directory (ie: `./reporters/my-reporter.js`)
+- an absolute path to a node module (ie: `/root/user/me/reporters/my-reporter.js`)
+
+Example:
+
+```
+npm install pa11y-reporter-html --save
+pa11y-ci --reporter=pa11y-reporter-html http://pa11y.org/
+```
+
+**Note**: When using reporters that output to stdout, all pa11y-ci execution logs will be redirected to stderr. This allows you to
+use output redirection without issues:
+
+```
+pa11y-ci --reporter=pa11y-reporter-html http://pa11y.org/ > my-report.html
+```
+
+### Use Multiple reporters
+
+You can use multiple reporters by setting them on the `defaults.reporters` array in your config.
+
+```json
+{
+    "defaults": {
+        "reporters": [
+            "pa11y-reporter-html",
+            "./my-local-reporter.js"
+        ]
+    },
+    "urls": [
+        "http://pa11y.org/",
+        {
+            "url": "http://pa11y.org/contributing",
+            "timeout": 50000,
+            "screenCapture": "myDir/my-screen-capture.png"
+        }
+    ]
+}
+```
+
+### Write a custom reporter
+
+Pa11y CI reporters use the same interface as [pa11y reporters] with some additions:
+
+- A `beforeAll(urls)` and `afterAll(urls)` optional methods called respectively at the beginning of a test run and after every URL has been checked. `urls` is the URLs array defined in your config.
+- The `results()` method is called with the following arguments:
+  - `results`: the results of a test run
+  - `config`: the current [URL configuration object](#url-configuration)
+  - `url`: the current URL string
+  - `urls`: the URLs array defined in your config
+
+**Note**: to prevent a reporter from logging to stdout, ensure its methods return a falsy value or a Promise resolving to a falsy value.
+
+Here is an example of a custom reporter logging to a file
+
+```js
+let report;
+const fs = require('fs');
+
+// initialize an empty report
+function beforeAll() {
+  report = {
+    results: {},
+    violations: 0,
+  };
+}
+
+// add test results to the report
+function results(results, config, url) {
+  report.results[url] = results;
+  report.violations += results.issues.length;
+}
+
+// write to a file
+function afterAll() {
+  fs.writeFileSync('./report.json', JSON.stringify(report), 'utf8');
+  // or Node 10+ you can use:
+  // return fs.promises.writeFile('./report.json', JSON.stringify(report), 'utf8');`
+}
+
+module.exports = {
+    beforeAll,
+    results,
+    afterAll,
+}
+```
 
 ## Tutorials and articles
 
@@ -192,6 +283,7 @@ Copyright &copy; 2016–2017, Team Pa11y
 [node.js]: https://nodejs.org/
 [pa11y]: https://github.com/pa11y/pa11y
 [pa11y configurations]: https://github.com/pa11y/pa11y#configuration
+[pa11y reporters]: https://github.com/pa11y/pa11y#reporters
 [sidekick-proposal]: https://github.com/pa11y/sidekick/blob/master/PROPOSAL.md
 [twitter]: https://twitter.com/pa11yorg
 
