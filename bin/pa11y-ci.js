@@ -78,7 +78,9 @@ Promise.resolve()
 	})
 	.then(config => {
 		// Override config reporters with CLI argument
-		config.defaults.reporters = [commander.reporter];
+		if (commander.reporter) {
+			config.defaults.reporters = [commander.reporter];
+		}
 		// Actually run Pa11y CI
 		return pa11yCi(urls.concat(config.urls || []), config.defaults);
 	})
