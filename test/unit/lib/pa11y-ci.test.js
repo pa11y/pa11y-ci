@@ -445,17 +445,17 @@ describe('lib/pa11y-ci', () => {
 
 
 		it('calls the beforeAll method once', () => {
-			assert.calledWith(reporter.beforeAll, userUrls);
+			assert.calledWithMatch(reporter.beforeAll, userUrls, sinon.match.map, sinon.match.object);
 			assert.callCount(reporter.beforeAll, 1);
 		});
 		it('calls the afterAll method once', () => {
-			assert.calledWith(reporter.afterAll, userUrls);
+			assert.calledWithMatch(reporter.afterAll, userUrls, sinon.match.map, sinon.match.object);
 			assert.callCount(reporter.afterAll, 1);
 		});
 
 		it('calls the begin method for each URL', () => {
 			userUrls.forEach((url, i) => {
-				reporter.begin.getCall(i).calledWith(url);
+				reporter.begin.getCall(i).calledWith(url, sinon.match.map);
 			});
 			assert.callCount(reporter.begin, userUrls.length);
 		});
@@ -463,10 +463,16 @@ describe('lib/pa11y-ci', () => {
 		it('calls the results method for each URL', () => {
 			userUrls.forEach((url, i) => {
 				const spyCall = reporter.results.getCall(i);
-				assert.deepEqual(spyCall.args[0].issues, report.results[url]);
-				assert.isObject(spyCall.args[1]);
-				assert.equal(spyCall.args[2], url);
-				assert.equal(spyCall.args[3], userUrls);
+				assert.calledWithMatch(
+					spyCall,
+					sinon.match({issues: report.results[url]}),
+					sinon.match.map,
+					sinon.match({
+						config: sinon.match.object,
+						urls: userUrls,
+						url
+					})
+				);
 			});
 			assert.callCount(reporter.results, userUrls.length);
 		});

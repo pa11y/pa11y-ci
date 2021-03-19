@@ -3,8 +3,8 @@
 const sinon = require('sinon');
 
 module.exports = () => ({
-	beforeAll: sinon.spy(),
-	begin: sinon.spy(),
-	results: sinon.spy(),
-	afterAll: sinon.spy()
+	beforeAll: sinon.stub(),
+	begin: sinon.stub(),
+	results: sinon.stub(),
+	afterAll: sinon.stub()
 });

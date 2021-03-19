@@ -21,9 +21,13 @@ CI runs accessibility tests against multiple URLs and reports on any issues. Thi
   - [Default configuration](#default-configuration)
   - [URL configuration](#url-configuration)
   - [Sitemaps](#sitemaps)
+  - [Reporters](#reporters)
+    - [Use Multiple reporters](#use-multiple-reporters)
+    - [Write a custom reporter](#write-a-custom-reporter)
 - [Tutorials and articles](#tutorials-and-articles)
 - [Contributing](#contributing)
 - [License](#license)
+
 
 
 ## Requirements
@@ -186,40 +190,43 @@ You can use multiple reporters by setting them on the `defaults.reporters` array
 
 Pa11y CI reporters use the same interface as [pa11y reporters] with some additions:
 
-- A `beforeAll(urls)` and `afterAll(urls)` optional methods called respectively at the beginning of a test run and after every URL has been checked. `urls` is the URLs array defined in your config.
-- The `results()` method is called with the following arguments:
-  - `results`: the results of a test run
-  - `config`: the current [URL configuration object](#url-configuration)
-  - `url`: the current URL string
+- Every reporter method receives an additional `report` argument. This object is an instance of a [JavaScript Map](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Map) that can be used to initialize and collect data across each tested URL.
+- You can define a `beforeAll(urls, report)` and `afterAll(urls, report)` optional methods called respectively at the beginning and at the very end of the process with the following arguments:
   - `urls`: the URLs array defined in your config
+  - `report`: the report object
+- The `results()` method receives a third `option` argument with the following properties:
+    - `config`: the current [URL configuration object](#url-configuration)
+    - `url`: the current URL under test
+    - `urls`: the URLs array defined in your config
 
 **Note**: to prevent a reporter from logging to stdout, ensure its methods return a falsy value or a Promise resolving to a falsy value.
 
 Here is an example of a custom reporter logging to a file
 
 ```js
-let report;
 const fs = require('fs');
 
-// initialize an empty report
-function beforeAll() {
-  report = {
-    results: {},
-    violations: 0,
-  };
+// initialize an empty report data
+// "report" is a JavaScript Map instance 
+function beforeAll(_, report) {
+    report.set('data', {
+        results: {},
+      violations: 0,
+    });
 }
 
 // add test results to the report
-function results(results, config, url) {
-  report.results[url] = results;
-  report.violations += results.issues.length;
+function results(results, report, { url }) {
+    const data = report.get('data');
+    data.results[url] = results;
+    data.violations += results.issues.length;
 }
 
 // write to a file
-function afterAll() {
-  fs.writeFileSync('./report.json', JSON.stringify(report), 'utf8');
-  // or Node 10+ you can use:
-  // return fs.promises.writeFile('./report.json', JSON.stringify(report), 'utf8');`
+function afterAll(_, report) {
+    fs.writeFileSync('./report.json', JSON.stringify(report.get('data')), 'utf8');
+    // or Node 10+ you can use:
+    // return fs.promises.writeFile('./report.json', JSON.stringify(report.get('data')), 'utf8');`
 }
 
 module.exports = {
