@@ -23,11 +23,11 @@ describe('pa11y-ci (with erroring, failing, and passing URLs)', () => {
 	});
 
 	it('outputs error information', () => {
-		assert.include(global.lastResult.output, 'Errors in http://notahost:8090/erroring-1');
+		assert.include(global.lastResult.output, 'Results for URL: http://notahost:8090/erroring-1');
 		assert.include(global.lastResult.output, 'net::ERR_NAME_NOT_RESOLVED');
-		assert.include(global.lastResult.output, 'Errors in http://localhost:8090/failing-1');
+		assert.include(global.lastResult.output, 'Results for URL: http://localhost:8090/failing-1');
 		assert.include(global.lastResult.output, 'html element should have a lang');
-		assert.notInclude(global.lastResult.output, 'Errors in http://notahost:8090/passing-1');
+		assert.notInclude(global.lastResult.output, 'Results for URL: http://notahost:8090/passing-1');
 	});
 
 	it('outputs a total failing notice', () => {

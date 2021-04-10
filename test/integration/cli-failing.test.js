@@ -21,7 +21,7 @@ describe('pa11y-ci (with a single failing URL)', () => {
 	});
 
 	it('outputs error information', () => {
-		assert.include(global.lastResult.output, 'Errors in http://localhost:8090/failing-1');
+		assert.include(global.lastResult.output, 'Results for URL: http://localhost:8090/failing-1');
 		assert.include(global.lastResult.output, 'html element should have a lang');
 	});
 
@@ -50,9 +50,9 @@ describe('pa11y-ci (with multiple failing URLs)', () => {
 	});
 
 	it('outputs error information', () => {
-		assert.include(global.lastResult.output, 'Errors in http://localhost:8090/failing-1');
+		assert.include(global.lastResult.output, 'Results for URL: http://localhost:8090/failing-1');
 		assert.include(global.lastResult.output, 'html element should have a lang');
-		assert.include(global.lastResult.output, 'Errors in http://localhost:8090/failing-2');
+		assert.include(global.lastResult.output, 'Results for URL: http://localhost:8090/failing-2');
 		assert.include(global.lastResult.output, 'title element in the head');
 	});
 
