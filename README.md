@@ -166,7 +166,7 @@ You can use multiple reporters by setting them on the `defaults.reporters` array
 {
     "defaults": {
         "reporters": [
-            "pa11y-ci/reporters/cli", // <-- this is the default reporter
+            "pa11y-ci/lib/reporters/cli", // <-- this is the default reporter
             "pa11y-reporter-html",
             "./my-local-reporter.js"
         ]
