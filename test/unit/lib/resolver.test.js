@@ -4,81 +4,72 @@
 const assert = require('proclaim');
 const mockery = require('mockery');
 const sinon = require('sinon');
-const path = require('path');
 
 describe('lib/helpers/resolver', () => {
 	describe('resolveReporters', () => {
+		const mock = {};
+		let config;
+		let stubReporter;
 
-		before(() => {
-			sinon.stub(console, 'log');
+		beforeEach(() => {
+			config = {reporters: ['my-reporter']};
+			stubReporter = sinon.stub().returns(mock);
+			mockery.registerMock('my-reporter', stubReporter);
 		});
 
-		after(() => {
-			console.log.restore();
+		it('returns an empty array for non-array and empty array argument', () => {
+			const resolveReporters = require('../../../lib/helpers/resolver');
+
+			assert.deepEqual(resolveReporters({reporters: []}), []);
+			assert.deepEqual(resolveReporters({reporters: ''}), []);
 		});
 
 		it('omits non-string values', () => {
 			const resolveReporters = require('../../../lib/helpers/resolver');
-			const reporters = resolveReporters([false, null, undefined]);
+			const reporters = resolveReporters({reporters: [false, null, undefined]});
 			assert.equal(reporters.length, 0);
 		});
-		it('resolves npm modules', async () => {
+		it('calls loadReporter', () => {
+			const loadStub = sinon.stub();
+			mockery.registerMock('./loader', loadStub);
 			const resolveReporters = require('../../../lib/helpers/resolver');
-			const mock = {results: sinon.spy()};
-			mockery.registerMock('my-reporter', mock);
-			const reporters = resolveReporters('my-reporter');
+			const mock1 = {mock1: true};
+			const mock2 = {mock2: true};
+			loadStub.onCall(0).returns(mock1);
+			loadStub.onCall(1).returns(mock2);
 
-			await reporters[0].results();
-			assert.calledOnce(mock.results);
+			const reporters = resolveReporters({reporters: ['my-reporter1', 'my-reporter2']});
+
+			assert.equal(reporters[0], mock1);
+			assert.equal(reporters[1], mock2);
+			assert.calledWith(loadStub.getCall(0), 'my-reporter1');
+			assert.calledWith(loadStub.getCall(1), 'my-reporter2');
+
 		});
 
-		it('resolves local modules', async () => {
-			const mock = {results: sinon.spy()};
-			mockery.registerMock('fs', {
-				existsSync: () => true
-			});
+		it('accepts reporters as factory functions', () => {
 			const resolveReporters = require('../../../lib/helpers/resolver');
-
-			mockery.registerMock(path.join(process.cwd(), '/my-reporter.js'), mock);
-			const reporters = resolveReporters('my-reporter.js');
-
-			await reporters[0].results();
-			assert.calledOnce(mock.results);
+			const reporters = resolveReporters(config);
+			assert.called(stubReporter);
+			assert.deepEqual(reporters, [mock]);
 		});
 
-		it('returns undefined if local modules is not resolved', () => {
+		it('factory functions get called with reporter options and config', () => {
+			const reporterOptions = {myOption: true};
+			config.reporters = [
+				['my-reporter', reporterOptions]
+			];
+
 			const resolveReporters = require('../../../lib/helpers/resolver');
-
-			const reporters = resolveReporters('my-reporter.js');
-
-			assert.equal(reporters.length, 0);
+			resolveReporters(config);
+			assert.calledWith(stubReporter, reporterOptions, config);
 		});
 
-		it('calls buildReporter on the original reporter', () => {
-			const mock = {results: sinon.spy()};
-			const buildStub = sinon.stub().returns(mock);
-			mockery.registerMock('my-reporter', mock);
-			mockery.registerMock('./reporter', buildStub);
+		it('reporter options default to an empty object', () => {
 			const resolveReporters = require('../../../lib/helpers/resolver');
-
-			const reporters = resolveReporters('my-reporter');
-			assert.calledWith(buildStub, mock);
-			assert.strictEqual(reporters[0].results, mock.results);
+			resolveReporters(config);
+			assert.calledWith(stubReporter, {}, config);
 		});
-
-		it('rewrites results method to allow multiple arguments', async () => {
-			const mock = {results: sinon.stub().returns(true)};
-			mockery.registerMock('my-reporter', mock);
-			const resolveReporters = require('../../../lib/helpers/resolver');
-
-			const reporters = resolveReporters('my-reporter');
-
-			await reporters[0].results(1, 2, 3);
-
-			assert.calledWith(mock.results, 1, 2, 3);
-			assert.calledWith(console.log, true);
-		});
-
 
 	});
 });
