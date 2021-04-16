@@ -144,7 +144,7 @@ If there are items in the sitemap that you'd like to exclude from the testing (f
 
 ## Reporters
 
-Pa11y CI supports Pa11y compatible reporters. You can use the `--reporter` option to define a single reporter. The option value can be:
+Pa11y CI integrates by default a CLI reporter that outputs pa11y results to the console. You can use the `--reporter` option to define a single reporter. The option value can be:
 - the path of a locally installed npm module (ie: `pa11y-reporter-html`)
 - the path to a local node module relative to the current working directory (ie: `./reporters/my-reporter.js`)
 - an absolute path to a node module (ie: `/root/user/me/reporters/my-reporter.js`)
@@ -156,12 +156,7 @@ npm install pa11y-reporter-html --save
 pa11y-ci --reporter=pa11y-reporter-html http://pa11y.org/
 ```
 
-**Note**: When using reporters that output to stdout, all pa11y-ci execution logs will be redirected to stderr. This allows you to
-use output redirection without issues:
-
-```
-pa11y-ci --reporter=pa11y-reporter-html http://pa11y.org/ > my-report.html
-```
+**Note**: If custom reporter(s) are specified, the default CLI reporter will be overridden.
 
 ### Use Multiple reporters
 
@@ -171,6 +166,7 @@ You can use multiple reporters by setting them on the `defaults.reporters` array
 {
     "defaults": {
         "reporters": [
+            "pa11y-ci/reporters/cli", // <-- this is the default reporter
             "pa11y-reporter-html",
             "./my-local-reporter.js"
         ]
@@ -186,53 +182,123 @@ You can use multiple reporters by setting them on the `defaults.reporters` array
 }
 ```
 
+### Reporter options
+
+Custom reporters can be configured, when supported, by settings the reporter as an array with its options as the second item:
+
+```json
+{
+    "defaults": {
+        "reporters": [
+            "pa11y-reporter-html",
+            ["./my-local-reporter.js", { "option1": true }] // <-- note that this is an array
+        ]
+    },
+    "urls": [
+        "http://pa11y.org/",
+        {
+            "url": "http://pa11y.org/contributing",
+            "timeout": 50000,
+            "screenCapture": "myDir/my-screen-capture.png"
+        }
+    ]
+}
+```
+
 ### Write a custom reporter
 
-Pa11y CI reporters use the same interface as [pa11y reporters] with some additions:
+Pa11y CI reporters use an interface similar to [pa11y reporters] and support the following optional methods:
 
-- Every reporter method receives an additional `report` argument. This object is an instance of a [JavaScript Map](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Map) that can be used to initialize and collect data across each tested URL.
-- You can define a `beforeAll(urls, report)` and `afterAll(urls, report)` optional methods called respectively at the beginning and at the very end of the process with the following arguments:
-  - `urls`: the URLs array defined in your config
-  - `report`: the report object
-- The `results()` method receives a third `option` argument with the following properties:
+- `beforeAll(urls)`: called at the beginning of the process. `urls` is the URLs array defined in your config
+- `afterAll(report)` called at the very end of the process with the following arguments:
+  - `report`: pa11y-ci report object
+  - `config`: pa11y-ci configuration object
+- `begin(url)`: called before processing each URL. `url` is the URL being processed
+-  `results(results, config)` called after pa11y test run with the following arguments:
+    - `results`: pa11y results object [URL configuration object](#url-configuration)
     - `config`: the current [URL configuration object](#url-configuration)
-    - `url`: the current URL under test
-    - `urls`: the URLs array defined in your config
+- `error(error, url, config)`: called when a test run fails with the following arguments:
+    - `error`: pa11y error message
+    - `url`: the URL being processed
+    - `config`: the current [URL configuration object](#url-configuration)
 
-**Note**: to prevent a reporter from logging to stdout, ensure its methods return a falsy value or a Promise resolving to a falsy value.
-
-Here is an example of a custom reporter logging to a file
+Here is an example of a custom reporter writing pa11y-ci report and errors to files:
 
 ```js
 const fs = require('fs');
+const { createHash } = require('crypto');
 
-// initialize an empty report data
-// "report" is a JavaScript Map instance 
-function beforeAll(_, report) {
-    report.set('data', {
+// create a unique filename from URL
+function fileName(url: any, prefix = '') {
+    const hash = createHash('md5').update(url).digest('hex');
+    return `${prefix}${hash}.json`;
+}
+
+exports.afterAll = function (report) {
+    return fs.promises.writeFile('report.json', JSON.stringify(report), 'utf8');
+}
+// write error details to an individual log for each URL
+exports.error = function (error, url) {
+    const data = JSON.stringify({url, error});
+    return fs.promises.writeFile(fileName(url, 'error-'), data, 'utf8');
+}
+```
+
+#### Configurable reporters
+
+A configurable reporter is a special kind of pa11y-ci reporter exporting a single factory function as its default export.
+
+When initialized, the function receives the user configured options (if any) and pa11y-ci configuration object as argument.
+
+For example, here is a reporter writing all results to a single configurable file:
+
+```js
+// ./my-reporter.js 
+
+const fs = require('fs');
+
+module.exports = function (options) {
+    // initialize an empty report data
+    const customReport = {
         results: {},
-      violations: 0,
-    });
-}
+        errors: [],
+        violations: 0,
+    }
 
-// add test results to the report
-function results(results, report, { url }) {
-    const data = report.get('data');
-    data.results[url] = results;
-    data.violations += results.issues.length;
-}
+    const fileName = options.fileName
 
-// write to a file
-function afterAll(_, report) {
-    fs.writeFileSync('./report.json', JSON.stringify(report.get('data')), 'utf8');
-    // or Node 10+ you can use:
-    // return fs.promises.writeFile('./report.json', JSON.stringify(report.get('data')), 'utf8');`
-}
+    return {
+        // add test results to the report
+        results(results) {
+            customReport.results[results.pageUrl] = results;
+            customReport.violations += results.issues.length;
+        },
 
-module.exports = {
-    beforeAll,
-    results,
-    afterAll,
+        // also store errors
+        error(error, url) {
+            customReport.errors.push({ error, url });
+        },
+
+        // write to a file
+        afterAll() {
+            const data = JSON.stringify(customReport);
+            return fs.promises.writeFile(fileName, data, 'utf8');
+        }
+    }
+};
+```
+
+```json
+// configuration file
+{
+    "defaults": {
+        "reporters": [
+            ["./my-reporter.js", { "fileName": "./my-report.json" }]
+        ]
+    },
+    "urls": [
+        ...
+    ]
 }
 ```
 
