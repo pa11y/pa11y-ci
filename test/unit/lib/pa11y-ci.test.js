@@ -67,6 +67,11 @@ describe('lib/pa11y-ci', () => {
 		it('has a `useIncognitoBrowserContext` property', () => {
 			assert.strictEqual(defaults.useIncognitoBrowserContext, false);
 		});
+
+		it('has a cli reporter', () => {
+			assert.isArray(defaults.reporters);
+			assert.match(defaults.reporters[0], /reporters\/cli\.js$/);
+		});
 	});
 
 	describe('pa11yCi(urls, options)', () => {
@@ -89,6 +94,7 @@ describe('lib/pa11y-ci', () => {
 
 			pa11yError = new Error('Pa11y Error');
 			pa11yResults = {
+				pageUrl: 'bar-url',
 				issues: [
 					{
 						type: 'error',
@@ -99,7 +105,8 @@ describe('lib/pa11y-ci', () => {
 				]
 			};
 
-			pa11y.withArgs('foo-url').resolves({issues: []});
+			pa11y.withArgs('foo-url').resolves({pageUrl: 'foo-url',
+				issues: []});
 			pa11y.withArgs('bar-url').resolves(pa11yResults);
 			pa11y.withArgs('baz-url').rejects(pa11yError);
 
@@ -126,8 +133,10 @@ describe('lib/pa11y-ci', () => {
 				assert.strictEqual(defaults.firstCall.args[2], pa11yCi.defaults);
 			});
 
-			it('deletes the `log` option', () => {
-				assert.isUndefined(defaults.firstCall.returnValue.log);
+			it('deletes the `log` and `reporters` option', () => {
+				const firstCallOptions = pa11y.getCall(0).args[1];
+				assert.doesNotInclude(firstCallOptions, 'log');
+				assert.doesNotInclude(firstCallOptions, 'reporters');
 			});
 
 			it('creates an Async.js queue with the expected concurrency', () => {
@@ -209,10 +218,15 @@ describe('lib/pa11y-ci', () => {
 				log.error = sinon.spy();
 				log.info = sinon.spy();
 
+				function fakeResolve(pageUrl) {
+					return Promise.resolve({pageUrl,
+						issues: []});
+				}
+
 				pa11y.reset();
-				pa11y.withArgs('foo-url').resolves({issues: []});
-				pa11y.withArgs('bar-url').resolves({issues: []});
-				pa11y.withArgs('baz-url').resolves({issues: []});
+				pa11y.withArgs('foo-url').callsFake(fakeResolve);
+				pa11y.withArgs('bar-url').callsFake(fakeResolve);
+				pa11y.withArgs('baz-url').callsFake(fakeResolve);
 
 				returnedPromise = pa11yCi(userUrls, userOptions);
 			});
@@ -277,14 +291,16 @@ describe('lib/pa11y-ci', () => {
 			];
 
 			pa11y.reset();
-			pa11y.withArgs('qux-url', userUrls[0]).resolves({issues: [
-				{
-					type: 'error',
-					message: 'Pa11y Result Error',
-					selector: '',
-					context: null
-				}
-			]});
+			pa11y.withArgs('qux-url', userUrls[0]).resolves({
+				pageUrl: 'qux-url',
+				issues: [
+					{
+						type: 'error',
+						message: 'Pa11y Result Error',
+						selector: '',
+						context: null
+					}
+				]});
 
 			returnedPromise = pa11yCi(userUrls, userOptions);
 		});
@@ -421,6 +437,7 @@ describe('lib/pa11y-ci', () => {
 			};
 
 			pa11yResults = {
+				pageUrl: 'bar-url',
 				issues: [
 					{
 						type: 'error',
@@ -431,9 +448,11 @@ describe('lib/pa11y-ci', () => {
 				]
 			};
 
-			pa11y.withArgs('foo-url').resolves({issues: []});
+			pa11y.withArgs('foo-url').resolves({pageUrl: 'foo-url',
+				issues: []});
 			pa11y.withArgs('bar-url').resolves(pa11yResults);
-			pa11y.withArgs('baz-url').resolves({issues: []});
+			pa11y.withArgs('baz-url').resolves({pageUrl: 'baz-url',
+				issues: []});
 
 			returnedPromise = pa11yCi(userUrls, userOptions);
 
@@ -445,17 +464,17 @@ describe('lib/pa11y-ci', () => {
 
 
 		it('calls the beforeAll method once', () => {
-			assert.calledWithMatch(reporter.beforeAll, userUrls, sinon.match.map, sinon.match.object);
+			assert.calledWithMatch(reporter.beforeAll, userUrls);
 			assert.callCount(reporter.beforeAll, 1);
 		});
 		it('calls the afterAll method once', () => {
-			assert.calledWithMatch(reporter.afterAll, userUrls, sinon.match.map, sinon.match.object);
+			assert.calledWithMatch(reporter.afterAll, report, sinon.match.object);
 			assert.callCount(reporter.afterAll, 1);
 		});
 
 		it('calls the begin method for each URL', () => {
 			userUrls.forEach((url, i) => {
-				reporter.begin.getCall(i).calledWith(url, sinon.match.map);
+				reporter.begin.getCall(i).calledWith(url);
 			});
 			assert.callCount(reporter.begin, userUrls.length);
 		});
@@ -465,13 +484,9 @@ describe('lib/pa11y-ci', () => {
 				const spyCall = reporter.results.getCall(i);
 				assert.calledWithMatch(
 					spyCall,
-					sinon.match({issues: report.results[url]}),
-					sinon.match.map,
-					sinon.match({
-						config: sinon.match.object,
-						urls: userUrls,
-						url
-					})
+					sinon.match({pageUrl: url,
+						issues: report.results[url]}),
+					sinon.match.object
 				);
 			});
 			assert.callCount(reporter.results, userUrls.length);
