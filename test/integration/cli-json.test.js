@@ -22,7 +22,7 @@ describe('pa11y-ci (with the `--json` flag set)', () => {
 			results: {
 				'./foo/erroring.html': [
 					{
-						message: `net::ERR_FILE_NOT_FOUND at file://${__dirname}/foo/erroring.html`
+						message: `net::ERR_FILE_NOT_FOUND at file://${__dirname}/mock/config/foo/erroring.html`
 					}
 				],
 				'http://localhost:8090/failing-1': [
