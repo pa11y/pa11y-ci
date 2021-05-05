@@ -57,7 +57,7 @@ Options:
   -x, --sitemap-exclude <pattern>  a pattern to find in sitemaps and exclude any url that matches
   -j, --json                       Output results as JSON
   -T, --threshold <number>         permit this number of errors, warnings, or notices, otherwise fail with exit code 2
-  --reporter <reporter>            The reporter to use. Can be a npm module or a path to a local file.
+  --reporter <reporter>            The reporter to use. Can be "cli", "json", an npm module, or a path to a local file.
 ```
 
 ### Configuration
@@ -144,7 +144,8 @@ If there are items in the sitemap that you'd like to exclude from the testing (f
 
 ## Reporters
 
-Pa11y CI integrates by default a CLI reporter that outputs pa11y results to the console. You can use the `--reporter` option to define a single reporter. The option value can be:
+Pa11y CI includes both a CLI reporter that outputs pa11y results to the console and a JSON reporter that outputs JSON-formatted results (to the console or a file). If no reporter is specified, the CLI reporter is selected by default.  You can use the `--reporter` option to define a single reporter. The option value can be:
+- `cli` for the included CLI reporter or `json` for the included JSON reporter
 - the path of a locally installed npm module (ie: `pa11y-reporter-html`)
 - the path to a local node module relative to the current working directory (ie: `./reporters/my-reporter.js`)
 - an absolute path to a node module (ie: `/root/user/me/reporters/my-reporter.js`)
@@ -160,13 +161,13 @@ pa11y-ci --reporter=pa11y-reporter-html http://pa11y.org/
 
 ### Use Multiple reporters
 
-You can use multiple reporters by setting them on the `defaults.reporters` array in your config.
+You can use multiple reporters by setting them on the `defaults.reporters` array in your config.  The shorthand `cli` and `json` can be included to select the included reporters.
 
 ```json
 {
     "defaults": {
         "reporters": [
-            "pa11y-ci/lib/reporters/cli", // <-- this is the default reporter
+            "cli", // <-- this is the default reporter
             "pa11y-reporter-html",
             "./my-local-reporter.js"
         ]
@@ -184,7 +185,7 @@ You can use multiple reporters by setting them on the `defaults.reporters` array
 
 ### Reporter options
 
-Custom reporters can be configured, when supported, by settings the reporter as an array with its options as the second item:
+Reporters can be configured, when supported, by settings the reporter as an array with its options as the second item:
 
 ```json
 {
@@ -201,6 +202,23 @@ Custom reporters can be configured, when supported, by settings the reporter as 
             "timeout": 50000,
             "screenCapture": "myDir/my-screen-capture.png"
         }
+    ]
+}
+```
+
+The included CLI reporter does not support any options.
+
+The included JSON reporter outputs the results to the console by default.  It can also accept a `fileName` with a relative or absolute file name where the JSON results will be written.
+
+```json
+{
+    "defaults": {
+        "reporters": [
+            ["json", { "fileName": "./results.json" }] // <-- note that this is an array
+        ]
+    },
+    "urls": [
+        "http://pa11y.org/"
     ]
 }
 ```

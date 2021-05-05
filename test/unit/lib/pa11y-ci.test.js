@@ -70,7 +70,7 @@ describe('lib/pa11y-ci', () => {
 
 		it('has a cli reporter', () => {
 			assert.isArray(defaults.reporters);
-			assert.match(defaults.reporters[0], /reporters\/cli\.js$/);
+			assert.match(defaults.reporters[0], 'cli');
 		});
 	});
 
