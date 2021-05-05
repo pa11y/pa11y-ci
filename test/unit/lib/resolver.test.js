@@ -29,6 +29,7 @@ describe('lib/helpers/resolver', () => {
 			const reporters = resolveReporters({reporters: [false, null, undefined]});
 			assert.equal(reporters.length, 0);
 		});
+
 		it('calls loadReporter', () => {
 			const loadStub = sinon.stub();
 			mockery.registerMock('./loader', loadStub);
@@ -44,7 +45,21 @@ describe('lib/helpers/resolver', () => {
 			assert.equal(reporters[1], mock2);
 			assert.calledWith(loadStub.getCall(0), 'my-reporter1');
 			assert.calledWith(loadStub.getCall(1), 'my-reporter2');
+		});
 
+		it('resolves included reporters with shorthand notation', () => {
+			const includedReporters = ['cli', 'json'];
+			const reporterPath = '../../../lib/reporters';
+			const includedReportersResolved = [require.resolve(`${reporterPath}/cli.js`),
+				require.resolve(`${reporterPath}/json.js`)];
+			const loaderStub = sinon.stub();
+			mockery.registerMock('./loader', loaderStub);
+			const resolveReporters = require('../../../lib/helpers/resolver');
+
+			resolveReporters({reporters: includedReporters});
+
+			assert.calledWith(loaderStub.getCall(0), includedReportersResolved[0]);
+			assert.calledWith(loaderStub.getCall(1), includedReportersResolved[1]);
 		});
 
 		it('accepts reporters as factory functions', () => {
@@ -70,6 +85,5 @@ describe('lib/helpers/resolver', () => {
 			resolveReporters(config);
 			assert.calledWith(stubReporter, {}, config);
 		});
-
 	});
 });
