@@ -5,7 +5,7 @@ const fs = require('fs');
 const assert = require('proclaim');
 const sinon = require('sinon');
 const jsonReporter = require('../../../../lib/reporters/json');
-const {testResults, testResultsOutput} = require('./json-test-data');
+const {testResults, testResultsOutput} = require('../../mock/json-test-data');
 
 // eslint-disable-next-line max-statements
 describe('reporters/json', () => {
