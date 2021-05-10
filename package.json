@@ -1,6 +1,6 @@
 {
   "name": "pa11y-ci",
-  "version": "2.4.0",
+  "version": "2.4.1",
   "description": "Pa11y CI is a CI-centric accessibility test runner, built using Pa11y",
   "keywords": [],
   "author": "Team Pa11y",
@@ -25,9 +25,9 @@
     "globby": "~6.1.0",
     "lodash": "~4.17.20",
     "node-fetch": "~2.6.0",
-    "pa11y": "~5.3.0",
+    "pa11y": "~5.3.1",
     "protocolify": "~3.0.0",
-    "puppeteer": "~1.20.0",
+    "puppeteer": "~1.19.0",
     "wordwrap": "~1.0.0"
   },
   "devDependencies": {
