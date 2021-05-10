@@ -493,4 +493,47 @@ describe('lib/pa11y-ci', () => {
 		});
 
 	});
+
+	describe('multiple reporters', () => {
+		let userUrls;
+		let userOptions;
+		let optionReporter;
+		let reporter;
+
+		beforeEach(async () => {
+			reporter = require('../mock/reporter.mock')();
+			optionReporter = require('../mock/reporter-options.mock');
+			mockery.registerMock('my-reporter', reporter);
+			mockery.registerMock('option-reporter', optionReporter);
+
+			userUrls = [
+				'foo-url'
+			];
+			userOptions = {
+				concurrency: 4,
+				log,
+				reporters: ['my-reporter', ['option-reporter', {fileName: '/__TEST__.json'}], 'option-reporter']
+			};
+
+			pa11y.withArgs('foo-url').resolves({pageUrl: 'foo-url',
+				issues: []});
+
+			await pa11yCi(userUrls, userOptions);
+		});
+
+		it('calls reporters results methods', () => {
+			assert.calledOnce(reporter.results);
+			assert.callCount(optionReporter.$$resultsStub, 2);
+		});
+
+		it('calls option-reporter results with the correct options', () => {
+			// First time: custom option
+			const firstCall = optionReporter.$$resultsStub.getCall(0);
+			assert.calledWith(firstCall, 'foo-url', '/__TEST__.json');
+
+			// First time: default option
+			const secondCall = optionReporter.$$resultsStub.getCall(1);
+			assert.calledWith(secondCall, 'foo-url', '');
+		});
+	});
 });
