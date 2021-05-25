@@ -208,7 +208,7 @@ Reporters can be configured, when supported, by settings the reporter as an arra
 
 The included CLI reporter does not support any options.
 
-The included JSON reporter outputs the results to the console by default.  It can also accept a `fileName` with a relative or absolute file name where the JSON results will be written.
+The included JSON reporter outputs the results to the console by default.  It can also accept a `fileName` with a relative or absolute file name where the JSON results will be written. Relative file name will be resolved from the current working directory.
 
 ```json
 {
