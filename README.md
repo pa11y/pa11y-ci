@@ -24,9 +24,11 @@ CI runs accessibility tests against multiple URLs and reports on any issues. Thi
   - [Reporters](#reporters)
     - [Use Multiple reporters](#use-multiple-reporters)
     - [Write a custom reporter](#write-a-custom-reporter)
+  - [Docker](#docker)
 - [Tutorials and articles](#tutorials-and-articles)
 - [Contributing](#contributing)
-- [License](#license)
+- [Support and Migration](#support-and-migration)
+- [Licence](#licence)
 
 
 
@@ -318,6 +320,38 @@ module.exports = function (options) {
         ...
     ]
 }
+```
+
+### Docker
+
+If you want to run `pa11y-ci` in a Docker container then you can use the [`buildkite/puppeteer`](https://github.com/buildkite/docker-puppeteer) image as this installs Chrome and all the required libs to run headless chrome on Linux.
+
+You will need a `config.json` that sets the `--no-sandbox` Chromium launch arguments:
+```json
+{
+    "defaults": {
+        "chromeLaunchConfig": {
+            "args": [
+                "--no-sandbox"
+            ]
+        }
+    },
+    "urls": [
+        "http://pa11y.org/",
+        "http://pa11y.org/contributing"
+    ]
+}
+```
+
+And then a Dockerfile that installs `pa11y-ci` and adds the `config.json`
+
+```Dockerfile
+FROM buildkite/puppeteer:v1.15.0
+
+RUN npm install --global --unsafe-perm pa11y-ci
+ADD config.json /usr/config.json
+
+ENTRYPOINT ["pa11y-ci", "-c", "/usr/config.json"]
 ```
 
 ## Tutorials and articles
