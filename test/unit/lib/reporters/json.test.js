@@ -2,6 +2,7 @@
 'use strict';
 
 const fs = require('fs');
+const path = require('path');
 const assert = require('proclaim');
 const sinon = require('sinon');
 const jsonReporter = require('../../../../lib/reporters/json');
@@ -67,7 +68,7 @@ describe('reporters/json', () => {
 		// The serialized JSON string is written to file,
 		// so parse JSON for object deep comparison.
 		const fileContents = JSON.parse(writeFileStub.getCall(0).args[1]);
-		assert.equal(fileName, fileNameOptions.fileName);
+		assert.equal(fileName, path.resolve(process.cwd(), fileNameOptions.fileName));
 		assert.deepEqual(fileContents, testResultsOutput);
 	});
 
