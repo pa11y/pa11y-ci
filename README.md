@@ -185,6 +185,8 @@ You can use multiple reporters by setting them on the `defaults.reporters` array
 }
 ```
 
+**Note**: If the CLI `--reporter` option is specified, it will override any reporters specified in the config file.
+
 ### Reporter options
 
 Reporters can be configured, when supported, by settings the reporter as an array with its options as the second item:
