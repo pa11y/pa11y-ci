@@ -48,7 +48,7 @@ describe('pa11y-ci (with json built-in reporter and configuration)', () => {
 
 	after(() => {
 		if (fs.existsSync(reportFile)) {
-			fs.rmSync(reportFile);
+			fs.unlinkSync(reportFile);
 		}
 	});
 
@@ -79,7 +79,7 @@ describe('pa11y-ci (with custom json reporter configuration)', () => {
 
 	after(() => {
 		if (fs.existsSync(reportFile)) {
-			fs.rmSync(reportFile);
+			fs.unlinkSync(reportFile);
 		}
 	});
 
@@ -111,10 +111,10 @@ describe('pa11y-ci (with multiple reporters)', () => {
 
 	after(() => {
 		if (fs.existsSync(customReportFile)) {
-			fs.rmSync(customReportFile);
+			fs.unlinkSync(customReportFile);
 		}
 		if (fs.existsSync(defaultReportFile)) {
-			fs.rmSync(defaultReportFile);
+			fs.unlinkSync(defaultReportFile);
 		}
 	});
 
