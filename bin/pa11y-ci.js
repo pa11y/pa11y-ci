@@ -53,7 +53,7 @@ commander
 		'0'
 	).option(
 		'--reporter <reporter>',
-		'the reporter to use. Can be a npm module or a path to a local file.',
+		'the reporter to use. Can be a npm module or a path to a local file.'
 	)
 	.parse(process.argv);
 
