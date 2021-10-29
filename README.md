@@ -71,8 +71,8 @@ You can use the `--config` command line argument to specify a different file, wh
 ```json
 {
     "urls": [
-        "http://pa11y.org/",
-        "http://pa11y.org/contributing"
+        "https://pa11y.org/",
+        "https://pa11y.org/contributing"
     ]
 }
 ```
@@ -93,8 +93,8 @@ You can specify a default set of [pa11y configurations] that should be used for 
         }
     },
     "urls": [
-        "http://pa11y.org/",
-        "http://pa11y.org/contributing"
+        "https://pa11y.org/",
+        "https://pa11y.org/contributing"
     ]
 }
 ```
@@ -114,9 +114,9 @@ Each URL in your config file can be an object and specify [pa11y configurations]
         "timeout": 1000
     },
     "urls": [
-        "http://pa11y.org/",
+        "https://pa11y.org/",
         {
-            "url": "http://pa11y.org/contributing",
+            "url": "https://pa11y.org/contributing",
             "timeout": 50000,
             "screenCapture": "myDir/my-screen-capture.png"
         }
@@ -129,7 +129,7 @@ Each URL in your config file can be an object and specify [pa11y configurations]
 If you don't wish to specify your URLs in a config file, you can use an XML sitemap that's published somewhere online. This is done with the `--sitemap` option:
 
 ```sh
-pa11y-ci --sitemap http://pa11y.org/sitemap.xml
+pa11y-ci --sitemap https://pa11y.org/sitemap.xml
 ```
 
 This takes the text content of each `<loc>` in the XML and runs Pa11y against that URL. This can also be combined with a config file, but URLs in the sitemap will override any found in your JSON config.
@@ -137,7 +137,7 @@ This takes the text content of each `<loc>` in the XML and runs Pa11y against th
 If you'd like to perform a find/replace operation on each URL in a sitemap, e.g. if your sitemap points to your production URLs rather than local ones, then you can use the following flags:
 
 ```sh
-pa11y-ci --sitemap http://pa11y.org/sitemap.xml --sitemap-find pa11y.org --sitemap-replace localhost
+pa11y-ci --sitemap https://pa11y.org/sitemap.xml --sitemap-find pa11y.org --sitemap-replace localhost
 ```
 
 The above would ensure that you run Pa11y CI against local URLs instead of the live site.
@@ -156,7 +156,7 @@ Example:
 
 ```
 npm install pa11y-reporter-html --save
-pa11y-ci --reporter=pa11y-reporter-html http://pa11y.org/
+pa11y-ci --reporter=pa11y-reporter-html https://pa11y.org/
 ```
 
 **Note**: If custom reporter(s) are specified, the default CLI reporter will be overridden.
@@ -175,9 +175,9 @@ You can use multiple reporters by setting them on the `defaults.reporters` array
         ]
     },
     "urls": [
-        "http://pa11y.org/",
+        "https://pa11y.org/",
         {
-            "url": "http://pa11y.org/contributing",
+            "url": "https://pa11y.org/contributing",
             "timeout": 50000,
             "screenCapture": "myDir/my-screen-capture.png"
         }
@@ -200,9 +200,9 @@ Reporters can be configured, when supported, by settings the reporter as an arra
         ]
     },
     "urls": [
-        "http://pa11y.org/",
+        "https://pa11y.org/",
         {
-            "url": "http://pa11y.org/contributing",
+            "url": "https://pa11y.org/contributing",
             "timeout": 50000,
             "screenCapture": "myDir/my-screen-capture.png"
         }
@@ -222,7 +222,7 @@ The included JSON reporter outputs the results to the console by default.  It ca
         ]
     },
     "urls": [
-        "http://pa11y.org/"
+        "https://pa11y.org/"
     ]
 }
 ```
@@ -275,7 +275,7 @@ When initialized, the function receives the user configured options (if any) and
 For example, here is a reporter writing all results to a single configurable file:
 
 ```js
-// ./my-reporter.js 
+// ./my-reporter.js
 
 const fs = require('fs');
 
@@ -339,8 +339,8 @@ You will need a `config.json` that sets the `--no-sandbox` Chromium launch argum
         }
     },
     "urls": [
-        "http://pa11y.org/",
-        "http://pa11y.org/contributing"
+        "https://pa11y.org/",
+        "https://pa11y.org/contributing"
     ]
 }
 ```
@@ -360,7 +360,7 @@ ENTRYPOINT ["pa11y-ci", "-c", "/usr/config.json"]
 
 Here are some useful articles written by Pa11y users and contributors:
 
-- [Automated accessibility testing with Travis and Pa11y CI](http://andrewmee.com/posts/automated-accessibility-testing-node-travis-ci-pa11y/)
+- [Automated accessibility testing with Travis and Pa11y CI](https://andrewmee.com/posts/automated-accessibility-testing-node-travis-ci-pa11y/)
 
 
 ## Contributing
