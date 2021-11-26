@@ -1,4 +1,3 @@
-
 # Pa11y CI
 
 Pa11y CI is an accessibility test runner built using [Pa11y] focused on running on Continuous Integration environments.
@@ -15,22 +14,23 @@ Pa11y CI runs accessibility tests against multiple URLs and reports on any issue
 
 ## Table Of Contents
 
-- [Requirements](#requirements)
-- [Usage](#usage)
-  - [Configuration](#configuration)
-  - [Default configuration](#default-configuration)
-  - [URL configuration](#url-configuration)
-  - [Sitemaps](#sitemaps)
-  - [Reporters](#reporters)
-    - [Use Multiple reporters](#use-multiple-reporters)
-    - [Write a custom reporter](#write-a-custom-reporter)
-  - [Docker](#docker)
-- [Tutorials and articles](#tutorials-and-articles)
-- [Contributing](#contributing)
-- [Support and Migration](#support-and-migration)
-- [Licence](#licence)
-
-
+* [Table Of Contents](#table-of-contents)
+* [Requirements](#requirements)
+* [Usage](#usage)
+  * [Configuration](#configuration)
+  * [Default configuration](#default-configuration)
+  * [URL configuration](#url-configuration)
+  * [Sitemaps](#sitemaps)
+* [Reporters](#reporters)
+  * [Use Multiple reporters](#use-multiple-reporters)
+  * [Reporter options](#reporter-options)
+  * [Write a custom reporter](#write-a-custom-reporter)
+    * [Configurable reporters](#configurable-reporters)
+  * [Docker](#docker)
+* [Tutorials and articles](#tutorials-and-articles)
+* [Contributing](#contributing)
+* [Support and Migration](#support-and-migration)
+* [Licence](#licence)
 
 ## Requirements
 
@@ -40,12 +40,11 @@ This command line tool requires [Node.js] 8+. You can install through npm:
 npm install -g pa11y-ci
 ```
 
-
 ## Usage
 
 Pa11y CI can be used by running it as a command line tool, `pa11y-ci`:
 
-```
+```sh
 Usage: pa11y-ci [options] [<paths>]
 
 Options:
@@ -101,8 +100,8 @@ You can specify a default set of [pa11y configurations] that should be used for 
 
 Pa11y CI has a few of its own configurations which you can set as well:
 
-  - `concurrency`: The number of tests that should be run in parallel. Defaults to `1`.
-  - `useIncognitoBrowserContext`: Run test with an isolated incognito browser context, stops cookies being shared and modified between tests. Defaults to `true`.
+* `concurrency`: The number of tests that should be run in parallel. Defaults to `1`.
+* `useIncognitoBrowserContext`: Run test with an isolated incognito browser context, stops cookies being shared and modified between tests. Defaults to `true`.
 
 ### URL configuration
 
@@ -147,14 +146,15 @@ If there are items in the sitemap that you'd like to exclude from the testing (f
 ## Reporters
 
 Pa11y CI includes both a CLI reporter that outputs pa11y results to the console and a JSON reporter that outputs JSON-formatted results (to the console or a file). If no reporter is specified, the CLI reporter is selected by default.  You can use the `--reporter` option to define a single reporter. The option value can be:
-- `cli` for the included CLI reporter or `json` for the included JSON reporter
-- the path of a locally installed npm module (ie: `pa11y-reporter-html`)
-- the path to a local node module relative to the current working directory (ie: `./reporters/my-reporter.js`)
-- an absolute path to a node module (ie: `/root/user/me/reporters/my-reporter.js`)
+
+* `cli` for the included CLI reporter or `json` for the included JSON reporter
+* the path of a locally installed npm module (ie: `pa11y-reporter-html`)
+* the path to a local node module relative to the current working directory (ie: `./reporters/my-reporter.js`)
+* an absolute path to a node module (ie: `/root/user/me/reporters/my-reporter.js`)
 
 Example:
 
-```
+```sh
 npm install pa11y-reporter-html --save
 pa11y-ci --reporter=pa11y-reporter-html https://pa11y.org/
 ```
@@ -231,18 +231,18 @@ The included JSON reporter outputs the results to the console by default.  It ca
 
 Pa11y CI reporters use an interface similar to [pa11y reporters] and support the following optional methods:
 
-- `beforeAll(urls)`: called at the beginning of the process. `urls` is the URLs array defined in your config
-- `afterAll(report)` called at the very end of the process with the following arguments:
-  - `report`: pa11y-ci report object
-  - `config`: pa11y-ci configuration object
-- `begin(url)`: called before processing each URL. `url` is the URL being processed
--  `results(results, config)` called after pa11y test run with the following arguments:
-    - `results`: pa11y results object [URL configuration object](#url-configuration)
-    - `config`: the current [URL configuration object](#url-configuration)
-- `error(error, url, config)`: called when a test run fails with the following arguments:
-    - `error`: pa11y error message
-    - `url`: the URL being processed
-    - `config`: the current [URL configuration object](#url-configuration)
+* `beforeAll(urls)`: called at the beginning of the process. `urls` is the URLs array defined in your config
+* `afterAll(report)` called at the very end of the process with the following arguments:
+  * `report`: pa11y-ci report object
+  * `config`: pa11y-ci configuration object
+* `begin(url)`: called before processing each URL. `url` is the URL being processed
+* `results(results, config)` called after pa11y test run with the following arguments:
+  * `results`: pa11y results object [URL configuration object](#url-configuration)
+  * `config`: the current [URL configuration object](#url-configuration)
+* `error(error, url, config)`: called when a test run fails with the following arguments:
+  * `error`: pa11y error message
+  * `url`: the URL being processed
+  * `config`: the current [URL configuration object](#url-configuration)
 
 Here is an example of a custom reporter writing pa11y-ci report and errors to files:
 
@@ -329,6 +329,7 @@ module.exports = function (options) {
 If you want to run `pa11y-ci` in a Docker container then you can use the [`buildkite/puppeteer`](https://github.com/buildkite/docker-puppeteer) image as this installs Chrome and all the required libs to run headless chrome on Linux.
 
 You will need a `config.json` that sets the `--no-sandbox` Chromium launch arguments:
+
 ```json
 {
     "defaults": {
@@ -360,8 +361,7 @@ ENTRYPOINT ["pa11y-ci", "-c", "/usr/config.json"]
 
 Here are some useful articles written by Pa11y users and contributors:
 
-- [Automated accessibility testing with Travis and Pa11y CI](https://andrewmee.com/posts/automated-accessibility-testing-node-travis-ci-pa11y/)
-
+* [Automated accessibility testing with Travis and Pa11y CI](https://andrewmee.com/posts/automated-accessibility-testing-node-travis-ci-pa11y/)
 
 ## Contributing
 
@@ -386,7 +386,6 @@ npm run coverage            # Run the unit tests with coverage
 npm run test-integration    # Run the integration tests
 ```
 
-
 ## Support and Migration
 
 Pa11y CI major versions are normally supported for 6 months after their last minor release. This means that patch-level changes will be added and bugs will be fixed. The table below outlines the end-of-support dates for major versions, and the last minor release for that version.
@@ -395,17 +394,16 @@ We also maintain a [migration guide](MIGRATION.md) to help you migrate.
 
 | :grey_question: | Major Version | Last Minor Release | Node.js Versions | Support End Date |
 | :-------------- | :------------ | :----------------- | :--------------- | :--------------- |
-| :heart:         | 2             | N/A                | 8+               | N/A              |
-| :hourglass:     | 1             | 1.3                | 4+               | 2018-04-18       |
+| :heart:         | 3             | N/A                | 12+              | N/A              |
+| :hourglass:     | 2             | 2.4.2              | 8+               | 2022-05-26       |
+| :skull:         | 1             | 1.3                | 4+               | 2018-04-18       |
 
 If you're opening issues related to these, please mention the version that the issue relates to.
-
 
 ## Licence
 
 Licensed under the [Lesser General Public License (LGPL-3.0)](LICENSE).<br/>
-Copyright &copy; 2016–2017, Team Pa11y
-
+Copyright &copy; 2016–2021, Team Pa11y
 
 [issues]: https://github.com/pa11y/pa11y-ci/issues
 [node.js]: https://nodejs.org/
