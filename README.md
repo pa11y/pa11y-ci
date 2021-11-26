@@ -12,9 +12,9 @@ Pa11y CI runs accessibility tests against multiple URLs and reports on any issue
 
 ---
 
-## Table Of Contents
+## Table of contents
 
-* [Table Of Contents](#table-of-contents)
+* [Table of contents](#table-of-contents)
 * [Requirements](#requirements)
 * [Usage](#usage)
   * [Configuration](#configuration)
@@ -34,7 +34,7 @@ Pa11y CI runs accessibility tests against multiple URLs and reports on any issue
 
 ## Requirements
 
-This command line tool requires [Node.js] 8+. You can install through npm:
+This command line tool requires [Node.js] 12+. You can install through npm:
 
 ```sh
 npm install -g pa11y-ci
