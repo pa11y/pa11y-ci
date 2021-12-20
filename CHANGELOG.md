@@ -1,5 +1,9 @@
 # Changelog
 
+# 3.0.1 (2021-12-20)
+
+* missing await for async function (thanks @aarongoldenthal)
+
 ## 3.0.0 (2021-11-26)
 
 * Add support for reporters that work similar to the pa11y ones (thanks @dwightjack, @aarongoldenthal).
