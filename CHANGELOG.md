@@ -1,5 +1,31 @@
 # Changelog
 
+# 3.0.1 (2021-12-20)
+
+* missing await for async function (thanks @aarongoldenthal)
+
+## 3.0.0 (2021-11-26)
+
+* Add support for reporters that work similar to the pa11y ones (thanks @dwightjack, @aarongoldenthal).
+* Update pa11y to version 6.
+* Drop support for versions of Node.js older than 12.
+* Default concurrency is now 1 instead of 2.
+* Default browser context for each page is now Incognito.
+* Documentation cleanup.
+
+See the [migration guide](https://github.com/pa11y/pa11y-ci/blob/master/MIGRATION.md#migrating-from-20-to-30) for details.
+
+## 2.4.2 (2021-06-28)
+
+* If Chrome crashes during startup, pa11y-ci will now retry to launch Chrome once before bailing out instead of giving up straight away
+* Add Docker examples to documentation
+* Reduce size of npm package (thanks @mfranzke)
+
+## 2.4.1 (2021-04-25)
+
+* Upgrades pa11y to the latest 5.3.1 version
+* Fix a bug related to having to download puppeteer twice since pa11y 5.3.1 was release (#131)
+
 ## 2.4.0 (2020-08-18)
 
 * Adds support for parsing sitemapindex (Thanks @42tte)
