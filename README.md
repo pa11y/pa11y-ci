@@ -8,7 +8,7 @@ Pa11y CI runs accessibility tests against multiple URLs and reports on any issue
 [![Node.js version support][shield-node]][info-node]
 [![Build status][shield-build]][info-build]
 [![Dependencies][shield-dependencies]][info-dependencies]
-[![LGPL-3.0 licensed][shield-license]][info-license]
+[![LGPL-3.0-only licensed][shield-license]][info-license]
 
 ---
 
@@ -402,7 +402,7 @@ If you're opening issues related to these, please mention the version that the i
 
 ## Licence
 
-Licensed under the [Lesser General Public License (LGPL-3.0)](LICENSE).<br/>
+Licensed under the [Lesser General Public License (LGPL-3.0-only)](LICENSE).<br/>
 Copyright &copy; 2016–2021, Team Pa11y
 
 [issues]: https://github.com/pa11y/pa11y-ci/issues
@@ -419,7 +419,7 @@ Copyright &copy; 2016–2021, Team Pa11y
 [info-npm]: https://www.npmjs.com/package/pa11y-ci
 [info-build]: https://travis-ci.org/pa11y/pa11y-ci
 [shield-dependencies]: https://img.shields.io/gemnasium/pa11y/pa11y-ci.svg
-[shield-license]: https://img.shields.io/badge/license-LGPL%203.0-blue.svg
+[shield-license]: https://img.shields.io/badge/license-LGPL--3.0--only-blue.svg
 [shield-node]: https://img.shields.io/badge/node.js%20support-8-brightgreen.svg
 [shield-npm]: https://img.shields.io/npm/v/pa11y-ci.svg
 [shield-build]: https://img.shields.io/travis/pa11y/pa11y-ci/master.svg
