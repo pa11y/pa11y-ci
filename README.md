@@ -151,25 +151,36 @@ If there are items in the sitemap that you'd like to exclude from testing (for e
 
 ## Reporters
 
-Pa11y CI includes both a CLI reporter that outputs pa11y results to the console and a JSON reporter that outputs JSON-formatted results (to the console or a file). If no reporter is specified, the CLI reporter is selected by default.  You can use the `--reporter` option to define a single reporter. The option value can be:
+### Built-in reporters
 
-* `cli` for the included CLI reporter or `json` for the included JSON reporter
-* the path of a locally installed npm module (ie: `pa11y-reporter-html`)
-* the path to a local node module relative to the current working directory (ie: `./reporters/my-reporter.js`)
-* an absolute path to a node module (ie: `/root/user/me/reporters/my-reporter.js`)
+Pa11y CI has two reporters built-in:
 
-Example:
+* `cli`, a command line interface reporter that outputs pa11y results to the console.
+* `json`, a JSON reporter that outputs JSON-formatted results (to the console or a file).
+
+If no reporter is specified, the `cli` reporter is selected by default.
+
+### Selecting a reporter
+
+Use the `--reporter` option to define a single reporter. Set `--reporter` to:
+
+* `cli` or `json` to use one of the two reporters bundled with Pa11y CI
+* the path of a locally installed npm module (e.g.: `pa11y-reporter-html`)
+* the path to a local node module relative to the current working directory (e.g.: `./reporters/my-reporter.js`)
+* an absolute path to a node module (e.g.: `/root/user/me/reporters/my-reporter.js`)
+
+Example of adding an npm module as a reporter:
 
 ```sh
 npm install pa11y-reporter-html --save
 pa11y-ci --reporter=pa11y-reporter-html https://pa11y.org/
 ```
 
-**Note**: If custom reporter(s) are specified, the default CLI reporter will be overridden.
+**Note**: Specifying a reporter will override the default reporter (`cli`).
 
 ### Use multiple reporters
 
-You can use multiple reporters by setting them in the `defaults.reporters` array in your config.  You can use the shorthand `cli` and `json` to select the `cli` and `json` reporters, which are bundled with Pa11y CI.
+Use multiple reporters by setting them in the `defaults.reporters` array in your config.  To specify the reporters bundled with Pa11y CI, you can use the shorthand `cli` and `json`.
 
 ```json
 {
@@ -191,11 +202,11 @@ You can use multiple reporters by setting them in the `defaults.reporters` array
 }
 ```
 
-**Note**: Specifying the CLI `--reporter` option will override any reporters specified in the config file.
+**Note**: Specifying the `--reporter` option on the command line will override any reporters specified in the config file.
 
 ### Reporter options
 
-Reporters can be configured, when supported, by settings the reporter as an array with its options as the second item:
+To configure a reporter, set it as an array and include the options as the second item:
 
 ```json
 {
@@ -216,9 +227,9 @@ Reporters can be configured, when supported, by settings the reporter as an arra
 }
 ```
 
-The included CLI reporter does not support any options.
+The `cli` reporter has no options.
 
-The included JSON reporter outputs the results to the console by default.  It can also accept a `fileName` with a relative or absolute file name where the JSON results will be written. Relative file name will be resolved from the current working directory.
+The `json` reporter outputs results to the console by default.  As an option, it accepts a `fileName` with a relative or absolute file name to which the JSON results will be written. Relative file nams are resolved from the current working directory.
 
 ```json
 {
