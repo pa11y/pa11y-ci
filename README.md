@@ -151,9 +151,9 @@ If there are items in the sitemap that you'd like to exclude from testing (for e
 
 ## Reporters
 
-### Built-in reporters
+### Bundled reporters
 
-Pa11y CI has two reporters built-in:
+Pa11y CI includes two reporters as standard:
 
 * `cli`, a command line interface reporter that outputs pa11y results to the console.
 * `json`, a JSON reporter that outputs JSON-formatted results (to the console or a file).
@@ -229,7 +229,7 @@ To configure a reporter, set it as an array and include the options as the secon
 
 The `cli` reporter has no options.
 
-The `json` reporter outputs results to the console by default.  As an option, it accepts a `fileName` with a relative or absolute file name to which the JSON results will be written. Relative file nams are resolved from the current working directory.
+The `json` reporter outputs results to the console by default.  As an option, it accepts a `fileName` with a relative or absolute file name to which the JSON results will be written. Relative file names are resolved from the current working directory.
 
 ```json
 {
