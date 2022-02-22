@@ -145,7 +145,7 @@ If you'd like to perform a find/replace operation on each URL in a sitemap-- for
 pa11y-ci --sitemap https://pa11y.org/sitemap.xml --sitemap-find pa11y.org --sitemap-replace localhost
 ```
 
-The above code ensurse that you run Pa11y CI against local URLs instead of the live site.
+The above code ensures that you run Pa11y CI against local URLs instead of the live site.
 
 If there are items in the sitemap that you'd like to exclude from testing (for example, PDFs), you can use the `--sitemap-exclude` flag.
 
