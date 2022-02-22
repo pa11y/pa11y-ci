@@ -165,15 +165,15 @@ If no reporter is specified, the `cli` reporter is selected by default.
 Use the `--reporter` option to define a single reporter. Set `--reporter` to:
 
 * `cli` or `json` to use one of the two reporters bundled with Pa11y CI
-* the path of a locally installed npm module (e.g.: `pa11y-reporter-html`)
+* the path of a locally installed npm module (e.g.: `pa11y-ci-reporter-html`)
 * the path to a local node module relative to the current working directory (e.g.: `./reporters/my-reporter.js`)
 * an absolute path to a node module (e.g.: `/root/user/me/reporters/my-reporter.js`)
 
 Example of adding an npm module as a reporter:
 
 ```sh
-npm install pa11y-reporter-html --save
-pa11y-ci --reporter=pa11y-reporter-html https://pa11y.org/
+npm install pa11y-ci-reporter-html --save
+pa11y-ci --reporter=pa11y-ci-reporter-html https://pa11y.org/
 ```
 
 **Note**: Specifying a reporter will override the default reporter (`cli`).
@@ -187,7 +187,7 @@ Use multiple reporters by setting them in the `defaults.reporters` array in your
     "defaults": {
         "reporters": [
             "cli", // <-- this is the default reporter
-            "pa11y-reporter-html",
+            "pa11y-ci-reporter-html",
             "./my-local-reporter.js"
         ]
     },
@@ -212,7 +212,7 @@ To configure a reporter, set it as an array and include the options as the secon
 {
     "defaults": {
         "reporters": [
-            "pa11y-reporter-html",
+            "pa11y-ci-reporter-html",
             ["./my-local-reporter.js", { "option1": true }] // <-- note that this is an array
         ]
     },
