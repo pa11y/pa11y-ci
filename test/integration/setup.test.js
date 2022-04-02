@@ -15,9 +15,9 @@ before(done => {
 	});
 });
 
-function cliCall(cliArguments) {
+function cliCall(cliArguments = []) {
 
-	const command = path.resolve(__dirname, '../../bin/pa11y-ci.js');
+	const binFile = path.resolve(__dirname, '../../bin/pa11y-ci.js');
 	const result = {
 		output: '',
 		stdout: '',
@@ -26,7 +26,7 @@ function cliCall(cliArguments) {
 	};
 
 	return new Promise(resolve => {
-		const child = spawn(command, cliArguments || [], {
+		const child = spawn('node', [binFile, ...cliArguments], {
 			cwd: path.join(__dirname, 'mock/config'),
 			env: process.env
 		});

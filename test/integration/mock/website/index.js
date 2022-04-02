@@ -2,6 +2,7 @@
 
 const fs = require('fs');
 const http = require('http');
+const path = require('path');
 const parseUrl = require('url').parse;
 
 module.exports = startWebsite;
@@ -11,13 +12,13 @@ function startWebsite(port, done) {
 	const server = http.createServer((request, response) => {
 
 		const urlPath = parseUrl(request.url).pathname;
-		const viewPath = `${__dirname}/html${urlPath}.html`;
+		const viewPath = path.join(__dirname, 'html', `${urlPath}.html`);
 
 		if (urlPath.includes('.xml')) {
 			response.writeHead(200, {
 				'Content-Type': 'text/xml'
 			});
-			return response.end(fs.readFileSync(`${__dirname}/${urlPath}`, 'utf-8'));
+			return response.end(fs.readFileSync(path.join(__dirname, urlPath), 'utf-8'));
 		}
 
 		try {
