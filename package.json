@@ -25,7 +25,7 @@
     "kleur": "~4.1.4",
     "lodash": "~4.17.21",
     "node-fetch": "~2.6.1",
-    "pa11y": "~6.1.0",
+    "pa11y": "^6.1.0",
     "protocolify": "~3.0.0",
     "puppeteer": "~9.1.1",
     "wordwrap": "~1.0.0"
