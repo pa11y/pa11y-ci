@@ -223,7 +223,7 @@ function loadSitemapIntoConfig(program, initialConfig) {
 
 	function getUrlsFromSitemap(sitemapUrl, config) {
 		return Promise.resolve()
-			.then(() => fetch(sitemapUrl))
+			.then(() => fetch(sitemapUrl, {headers: config.defaults.headers || {}}))
 			.then(response => response.text())
 			.then(body => {
 				const $ = cheerio.load(body, {xmlMode: true});
