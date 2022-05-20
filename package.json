@@ -18,7 +18,7 @@
     "node": ">=12"
   },
   "dependencies": {
-    "async": "~2.6.3",
+    "async": "~2.6.4",
     "cheerio": "~1.0.0-rc.10",
     "commander": "~6.2.1",
     "globby": "~6.1.0",
