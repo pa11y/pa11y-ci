@@ -55,6 +55,10 @@ commander
 		'--reporter <reporter>',
 		'the reporter to use. Can be a npm module or a path to a local file.'
 	)
+	.option(
+		'-d, --debug',
+		'output debug messages.'
+	)
 	.parse(process.argv);
 
 // Parse the args into valid paths using glob and protocolify
