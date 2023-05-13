@@ -17,7 +17,7 @@ const globby = require('globby');
 const protocolify = require('protocolify');
 const pkg = require('../package.json');
 const commander = require('commander');
-
+const csvReporter = require('../lib/reporters/csv');
 
 // Here we're using Commander to specify the CLI options
 commander
@@ -46,6 +46,10 @@ commander
 	.option(
 		'-j, --json',
 		'Output results as JSON'
+	)
+	.option(
+		'--csv',
+		'Output results as CSV'
 	)
 	.option(
 		'-T, --threshold <number>',
@@ -95,6 +99,11 @@ Promise.resolve()
 				}
 				return value;
 			}));
+		}
+		// Output CSV if asked for it
+		if (commander.csv) {
+			const reporter = csvReporter();
+			reporter(report);
 		}
 		// Decide on an exit code based on whether
 		// errors are below threshold or everything passes
