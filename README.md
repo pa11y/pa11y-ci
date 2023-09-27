@@ -233,8 +233,8 @@ Pa11y CI reporters use an interface similar to [pa11y reporters] and support the
 
 * `beforeAll(urls)`: called at the beginning of the process. `urls` is the URLs array defined in your config
 * `afterAll(report)` called at the very end of the process with the following arguments:
-  * `report`: pa11y-ci report object
-  * `config`: pa11y-ci configuration object
+  * `report`: report object
+  * `config`: configuration object
 * `begin(url)`: called before processing each URL. `url` is the URL being processed
 * `results(results, config)` called after pa11y test run with the following arguments:
   * `results`: pa11y results object [URL configuration object](#url-configuration)
@@ -244,7 +244,7 @@ Pa11y CI reporters use an interface similar to [pa11y reporters] and support the
   * `url`: the URL being processed
   * `config`: the current [URL configuration object](#url-configuration)
 
-Here is an example of a custom reporter writing pa11y-ci report and errors to files:
+Here is an example of a custom reporter producing a single report file and a collection of error files:
 
 ```js
 const fs = require('fs');
@@ -268,9 +268,9 @@ exports.error = function (error, url) {
 
 #### Configurable reporters
 
-A configurable reporter is a special kind of pa11y-ci reporter exporting a single factory function as its default export.
+A configurable reporter is a special kind of Pa11y CI reporter exporting a single factory function as its default export.
 
-When initialized, the function receives the user configured options (if any) and pa11y-ci configuration object as argument.
+When initialized, the function receives the user configured options (if any) and `pa11y-ci` configuration object as argument.
 
 For example, here is a reporter writing all results to a single configurable file:
 
@@ -326,7 +326,7 @@ module.exports = function (options) {
 
 ### Docker
 
-If you want to run `pa11y-ci` in a Docker container then you can use the [`buildkite/puppeteer`](https://github.com/buildkite/docker-puppeteer) image as this installs Chrome and all the required libs to run headless chrome on Linux.
+If you want to run Pa11y CI in a Docker container then you can use the [`buildkite/puppeteer`](https://github.com/buildkite/docker-puppeteer) image as this installs Chrome and all the required libs to run headless chrome on Linux.
 
 You will need a `config.json` that sets the `--no-sandbox` Chromium launch arguments:
 
@@ -346,7 +346,7 @@ You will need a `config.json` that sets the `--no-sandbox` Chromium launch argum
 }
 ```
 
-And then a Dockerfile that installs `pa11y-ci` and adds the `config.json`
+And then a Dockerfile that installs Pa11y CI and adds the `config.json`
 
 ```Dockerfile
 FROM buildkite/puppeteer:v1.15.0
