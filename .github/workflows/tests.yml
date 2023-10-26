@@ -8,8 +8,6 @@ on:
     branches:
       - main
   pull_request:
-    branches: # Run actions when a PR is pushed based on one of these branches
-      - '**'
 
 jobs:
   checkout_and_test:
