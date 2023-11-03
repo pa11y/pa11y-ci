@@ -1,6 +1,6 @@
 # Pa11y CI
 
-Pa11y CI is an accessibility test runner built using [Pa11y] focused on running on Continuous Integration environments.
+Pa11y CI is an accessibility test runner built using [Pa11y] for use in Continuous Integration (CI) environments.
 
 Pa11y CI runs accessibility tests against multiple URLs and reports on any issues. This is best used during automated testing of your application and can act as a gatekeeper to stop a11y issues from making it to live.
 
@@ -34,7 +34,7 @@ Pa11y CI runs accessibility tests against multiple URLs and reports on any issue
 
 ## Requirements
 
-This command line tool requires [Node.js] 12+. You can install through npm:
+This command line tool requires [Node.js] 12+. Install through npm:
 
 ```sh
 npm install -g pa11y-ci
@@ -42,7 +42,7 @@ npm install -g pa11y-ci
 
 ## Usage
 
-Pa11y CI can be used by running it as a command line tool, `pa11y-ci`:
+Run Pa11y CI as a command line tool, `pa11y-ci`:
 
 ```sh
 Usage: pa11y-ci [options] [<paths>]
@@ -63,9 +63,11 @@ Options:
 
 ### Configuration
 
-By default, Pa11y CI looks for a config file in the current working directory, named `.pa11yci`. This should be a JSON file.
+By default, Pa11y CI looks for a JSON config file named `.pa11yci` in the current working directory.
 
-You can use the `--config` command line argument to specify a different file, which can be either JSON or JavaScript. The config files should look like this:
+To specify a different config file in JSON or JavaScript format, use the `--config` command line argument.
+
+Example config file (JSON):
 
 ```json
 {
@@ -76,11 +78,13 @@ You can use the `--config` command line argument to specify a different file, wh
 }
 ```
 
-Pa11y will be run against each of the URLs in the `urls` array and the paths specified as CLI arguments. Paths can be specified as relative, absolute and as [glob](https://github.com/isaacs/node-glob#glob) patterns.
+Pa11y will be run against each URL specified in the `urls` array and ech path specified in the command line arguments.
+
+Paths can be specified as relative, absolute, and [glob](https://github.com/isaacs/node-glob#glob) patterns.
 
 ### Default configuration
 
-You can specify a default set of [pa11y configurations] that should be used for each test run. These should be added to a `defaults` object in your config. For example:
+You can specify a default set of [pa11y configurations] to use for every test run. Do so by adding a `defaults` object to your config file. For example:
 
 ```json
 {
@@ -98,14 +102,16 @@ You can specify a default set of [pa11y configurations] that should be used for 
 }
 ```
 
-Pa11y CI has a few of its own configurations which you can set as well:
+Some additional configuration options unique to Pa11y CI can also be set:
 
 * `concurrency`: The number of tests that should be run in parallel. Defaults to `1`.
-* `useIncognitoBrowserContext`: Run test with an isolated incognito browser context, stops cookies being shared and modified between tests. Defaults to `true`.
+* `useIncognitoBrowserContext`: Runs test with an isolated incognito browser context, which stops cookies from being shared and modified between tests. Defaults to `true`.
 
 ### URL configuration
 
-Each URL in your config file can be an object and specify [pa11y configurations] which override the defaults too. You do this by using an object instead of a string, and providing the URL as a `url` property on that object. This can be useful if, for example, you know that a certain URL takes a while to load or you want to check what the page looked like when the tests were run:
+Each URL in your config file can be an object and specify [pa11y configurations] which override the defaults. To do so, use an object instead of a string, and provide  the URL as a `url` property on that object.
+
+This can be useful if, for example, you know that a certain URL takes a while to load or you want to check what the page looks like when the test is run.
 
 ```json
 {
@@ -125,52 +131,63 @@ Each URL in your config file can be an object and specify [pa11y configurations]
 
 ### Sitemaps
 
-If you don't wish to specify your URLs in a config file, you can use an XML sitemap that's published somewhere online. This is done with the `--sitemap` option:
+Instead of specifying URLs in a config file, you can use an XML sitemap available online. To do so, use the `--sitemap` option:
 
 ```sh
 pa11y-ci --sitemap https://pa11y.org/sitemap.xml
 ```
 
-This takes the text content of each `<loc>` in the XML and runs Pa11y against that URL. This can also be combined with a config file, but URLs in the sitemap will override any found in your JSON config.
+This takes the text content of each `<loc>` in the XML and runs Pa11y against that URL. This can also be combined with a config file, but **URLs in the sitemap will override any found in your config file.**
 
-If you'd like to perform a find/replace operation on each URL in a sitemap, e.g. if your sitemap points to your production URLs rather than local ones, then you can use the following flags:
+If you'd like to perform a find/replace operation on each URL in a sitemap-- for example, if your sitemap points to production URLs rather than local ones-- then you can use the following flags:
 
 ```sh
 pa11y-ci --sitemap https://pa11y.org/sitemap.xml --sitemap-find pa11y.org --sitemap-replace localhost
 ```
 
-The above would ensure that you run Pa11y CI against local URLs instead of the live site.
+The above code ensures that you run Pa11y CI against local URLs instead of the live site.
 
-If there are items in the sitemap that you'd like to exclude from the testing (for example PDFs) you can do so using the `--sitemap-exclude` flag.
+If there are items in the sitemap that you'd like to exclude from testing (for example, PDFs), you can use the `--sitemap-exclude` flag.
 
 ## Reporters
 
-Pa11y CI includes both a CLI reporter that outputs pa11y results to the console and a JSON reporter that outputs JSON-formatted results (to the console or a file). If no reporter is specified, the CLI reporter is selected by default.  You can use the `--reporter` option to define a single reporter. The option value can be:
+### Bundled reporters
 
-* `cli` for the included CLI reporter or `json` for the included JSON reporter
-* the path of a locally installed npm module (ie: `pa11y-reporter-html`)
-* the path to a local node module relative to the current working directory (ie: `./reporters/my-reporter.js`)
-* an absolute path to a node module (ie: `/root/user/me/reporters/my-reporter.js`)
+Pa11y CI includes two reporters as standard:
 
-Example:
+* `cli`, a command line interface reporter that outputs pa11y results to the console.
+* `json`, a JSON reporter that outputs JSON-formatted results (to the console or a file).
+
+If no reporter is specified, the `cli` reporter is selected by default.
+
+### Selecting a reporter
+
+Use the `--reporter` option to define a single reporter. Set `--reporter` to:
+
+* `cli` or `json` to use one of the two reporters bundled with Pa11y CI
+* the path of a locally installed npm module (e.g.: `pa11y-ci-reporter-html`)
+* the path to a local node module relative to the current working directory (e.g.: `./reporters/my-reporter.js`)
+* an absolute path to a node module (e.g.: `/root/user/me/reporters/my-reporter.js`)
+
+Example of adding an npm module as a reporter:
 
 ```sh
-npm install pa11y-reporter-html --save
-pa11y-ci --reporter=pa11y-reporter-html https://pa11y.org/
+npm install pa11y-ci-reporter-html --save
+pa11y-ci --reporter=pa11y-ci-reporter-html https://pa11y.org/
 ```
 
-**Note**: If custom reporter(s) are specified, the default CLI reporter will be overridden.
+**Note**: Specifying a reporter will override the default reporter (`cli`).
 
-### Use Multiple reporters
+### Use multiple reporters
 
-You can use multiple reporters by setting them on the `defaults.reporters` array in your config.  The shorthand `cli` and `json` can be included to select the included reporters.
+Use multiple reporters by setting them in the `defaults.reporters` array in your config.  To specify the reporters bundled with Pa11y CI, you can use the shorthand `cli` and `json`.
 
 ```json
 {
     "defaults": {
         "reporters": [
             "cli", // <-- this is the default reporter
-            "pa11y-reporter-html",
+            "pa11y-ci-reporter-html",
             "./my-local-reporter.js"
         ]
     },
@@ -185,17 +202,17 @@ You can use multiple reporters by setting them on the `defaults.reporters` array
 }
 ```
 
-**Note**: If the CLI `--reporter` option is specified, it will override any reporters specified in the config file.
+**Note**: Specifying the `--reporter` option on the command line will override any reporters specified in the config file.
 
 ### Reporter options
 
-Reporters can be configured, when supported, by settings the reporter as an array with its options as the second item:
+To configure a reporter, set it as an array and include the options as the second item:
 
 ```json
 {
     "defaults": {
         "reporters": [
-            "pa11y-reporter-html",
+            "pa11y-ci-reporter-html",
             ["./my-local-reporter.js", { "option1": true }] // <-- note that this is an array
         ]
     },
@@ -210,9 +227,9 @@ Reporters can be configured, when supported, by settings the reporter as an arra
 }
 ```
 
-The included CLI reporter does not support any options.
+The `cli` reporter has no options.
 
-The included JSON reporter outputs the results to the console by default.  It can also accept a `fileName` with a relative or absolute file name where the JSON results will be written. Relative file name will be resolved from the current working directory.
+The `json` reporter outputs results to the console by default.  As an option, it accepts a `fileName` with a relative or absolute file name to which the JSON results will be written. Relative file names are resolved from the current working directory.
 
 ```json
 {
