@@ -6,7 +6,7 @@ on:
 
 jobs:
   checkout_and_test:
-    name: Node v${{ matrix.node }} on ${{ matrix.os }}
+    name: Lint and test on ${{ matrix.os }} with ${{ matrix.node-version }}
     runs-on: ${{ matrix.os }}
     strategy:
       fail-fast: false
@@ -14,12 +14,12 @@ jobs:
         os: [ubuntu-latest, windows-latest, macOS-latest]
         node-version: [12, 14, 16]
     steps:
-      - name: Set git config
+      - name: Normalise line-ending handling in Git
         shell: bash
         run: |
           git config --global core.autocrlf false
         if: runner.os == 'Windows'
-      - uses: actions/checkout@v3
+      - uses: actions/checkout@v4
       - uses: actions/setup-node@v3
         with:
           node-version: ${{ matrix.node-version }}
