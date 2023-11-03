@@ -35,7 +35,7 @@
     "mocha": "^8.4.0",
     "mockery": "^2.1.0",
     "nyc": "^15.1.0",
-    "pa11y-lint-config": "^2.0.0",
+    "pa11y-lint-config": "^3.0.0",
     "proclaim": "^3.6.0",
     "sinon": "^11.1.0"
   },
