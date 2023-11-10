@@ -45,9 +45,7 @@ Options:
 
 ### Configuration
 
-By default, Pa11y CI looks for a config file in the current working directory, named `.pa11yci`. This should be a JSON file.
-
-You can use the `--config` command line argument to specify a different file, which can be either JSON or JavaScript. The config files should look like this:
+Pa11y CI looks for a JSON config file in the current working directory named `.pa11yci`. An example:
 
 ```json
 {
@@ -58,7 +56,13 @@ You can use the `--config` command line argument to specify a different file, wh
 }
 ```
 
-Pa11y will be run against each of the URLs in the `urls` array and the paths specified as CLI arguments. Paths can be specified as relative, absolute and as [glob](https://github.com/isaacs/node-glob#glob) patterns.
+Pa11y CI will visit each URL in the `urls` array, together with any path provided as a CLI argument. A path can be relative, absolute, or a [glob](https://github.com/isaacs/node-glob#glob) pattern.
+
+Specify a different configuration file, JSON or JavaScript, using the command-line parameter `--config`:
+
+```sh
+pa11y-ci --config path/to/config.json
+```
 
 ### Default configuration
 
@@ -87,7 +91,7 @@ Pa11y CI has a few of its own configurations which you can set as well:
 
 ### URL configuration
 
-Each URL in your config file can be an object and specify [pa11y configurations] which override the defaults too. You do this by using an object instead of a string, and providing the URL as a `url` property on that object. This can be useful if, for example, you know that a certain URL takes a while to load or you want to check what the page looked like when the tests were run:
+A URL can be a `string` or an `object`. In its object form, aspects of the default [pa11y configurations] can be overridden per URL. For example, this allows the timeout to be increased for a slow-loading page, or to take a screenshot for a page of particular interest:
 
 ```json
 {
@@ -107,7 +111,7 @@ Each URL in your config file can be an object and specify [pa11y configurations]
 
 ### Sitemaps
 
-If you don't wish to specify your URLs in a config file, you can use an XML sitemap that's published somewhere online. This is done with the `--sitemap` option:
+Provide a `--sitemap` argument to retrieve a sitemap and then test each URL within:
 
 ```sh
 pa11y-ci --sitemap https://pa11y.org/sitemap.xml
