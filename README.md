@@ -10,10 +10,8 @@ Use this tool to test against a list of URLs or a sitemap, and report on issues 
 [![NPM version][shield-npm]][info-npm]
 [![Node.js version support][shield-node]][info-node]
 [![Build status][shield-build]][info-build]
-[![Dependencies][shield-dependencies]][info-dependencies]
 [![LGPL-3.0-only licensed][shield-license]][info-license]
 
----
 
 ## Table of contents
 
@@ -416,12 +414,10 @@ Copyright &copy; 2016–2021, Team Pa11y
 [sidekick-proposal]: https://github.com/pa11y/sidekick/blob/master/PROPOSAL.md
 [twitter]: https://twitter.com/pa11yorg
 
-[info-dependencies]: https://gemnasium.com/pa11y/pa11y-ci
 [info-license]: LICENSE
 [info-node]: package.json
 [info-npm]: https://www.npmjs.com/package/pa11y-ci
 [info-build]: https://travis-ci.org/pa11y/pa11y-ci
-[shield-dependencies]: https://img.shields.io/gemnasium/pa11y/pa11y-ci.svg
 [shield-license]: https://img.shields.io/badge/license-LGPL--3.0--only-blue.svg
 [shield-node]: https://img.shields.io/badge/node.js%20support-8-brightgreen.svg
 [shield-npm]: https://img.shields.io/npm/v/pa11y-ci.svg
