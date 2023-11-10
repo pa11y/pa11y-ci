@@ -117,37 +117,46 @@ Provide a `--sitemap` argument to retrieve a sitemap and then test each URL with
 pa11y-ci --sitemap https://pa11y.org/sitemap.xml
 ```
 
-This takes the text content of each `<loc>` in the XML and runs Pa11y against that URL. This can also be combined with a config file, but URLs in the sitemap will override any found in your JSON config.
+Pa11y will be run against the text content of each `<loc/>` in the sitemap's XML.
 
-If you'd like to perform a find/replace operation on each URL in a sitemap, e.g. if your sitemap points to your production URLs rather than local ones, then you can use the following flags:
+> NOTE
+> Providing a sitemap will cause the `urls` property in your JSON config to be ignored.
+
+#### Transforming URLs retrieved from a sitemap before testing
+
+Pa11y CI can replace a string within each URL found in a sitemap, before beginning to test.  This can be useful when your sitemap contains production URLs, but you'd actually like to test
+those pages in another environment. Use the flags `--sitemap-find` and `sitemap-replace`:
 
 ```sh
 pa11y-ci --sitemap https://pa11y.org/sitemap.xml --sitemap-find pa11y.org --sitemap-replace localhost
 ```
 
-The above would ensure that you run Pa11y CI against local URLs instead of the live site.
+#### Excluding URLs
 
-If there are items in the sitemap that you'd like to exclude from the testing (for example PDFs) you can do so using the `--sitemap-exclude` flag.
+Exclude URLs from the test run with the flag `--sitemap-exclude`.
 
 ## Reporters
 
-Pa11y CI includes both a CLI reporter that outputs pa11y results to the console and a JSON reporter that outputs JSON-formatted results (to the console or a file). If no reporter is specified, the CLI reporter is selected by default.  You can use the `--reporter` option to define a single reporter. The option value can be:
+Pa11y CI includes two reporters:
 
-* `cli` for the included CLI reporter or `json` for the included JSON reporter
-* the path of a locally installed npm module (ie: `pa11y-reporter-html`)
-* the path to a local node module relative to the current working directory (ie: `./reporters/my-reporter.js`)
-* an absolute path to a node module (ie: `/root/user/me/reporters/my-reporter.js`)
+- (default) `cli`, a reporter that outputs pa11y results to the console
+- `json`, which outputs JSON-formatted results, either to the console or a file
+
+Custom reporters are also supported.
+
+Choose a specific reporter with the flag `--reporter`. The value of this flag can also be:
+
+* a path to a locally installed npm package (ie: `pa11y-reporter-html`)
+* a path to a local node module; either an absolute path, or one relative to the current working directory (for example `./reporters/my-reporter.js`)
 
 Example:
 
 ```sh
 npm install pa11y-reporter-html --save
-pa11y-ci --reporter=pa11y-reporter-html https://pa11y.org/
+pa11y-ci https://pa11y.org/ --reporter=pa11y-reporter-html 
 ```
 
-**Note**: If custom reporter(s) are specified, the default CLI reporter will be overridden.
-
-### Use Multiple reporters
+### Use multiple reporters
 
 You can use multiple reporters by setting them on the `defaults.reporters` array in your config.  The shorthand `cli` and `json` can be included to select the included reporters.
 
@@ -171,7 +180,8 @@ You can use multiple reporters by setting them on the `defaults.reporters` array
 }
 ```
 
-**Note**: If the CLI `--reporter` option is specified, it will override any reporters specified in the config file.
+> NOTE
+> If the `--reporter` flag is provided on the command line, all appearances of `reporters` in the config file will be overridden.
 
 ### Reporter options
 
@@ -351,11 +361,11 @@ Here are some useful articles written by Pa11y users and contributors:
 
 ## Contributing
 
-There are many ways to contribute to Pa11y CI, we cover these in the [contributing guide](CONTRIBUTING.md) for this repo.
+There are many ways to contribute to Pa11y CI, some of which we describe in the [contributing guide](CONTRIBUTING.md) for this repo.
 
 If you're ready to contribute some code, clone this repo locally and commit your code on a new branch.
 
-Please write unit tests for your code, and check that everything works by running the following before opening a <abbr title="pull request">PR</abbr>:
+Please write unit tests for your code, and check that everything works by running the following before opening a pull request:
 
 ```sh
 npm run lint
