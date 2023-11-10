@@ -1,37 +1,16 @@
 # Pa11y CI
 
+[![NPM version][shield-npm]][info-npm]
+[![Node.js version support][shield-node]][info-node]
+[![Build status][shield-build]][info-build]
+[![LGPL-3.0-only licensed][shield-license]][info-license]
+
 Pa11y CI is an accessibility test runner built using [Pa11y], designed to run in Continuous Integration environments. Automated testing of your application can help to prevent accessibility issues reaching production.
 
 Use this tool to test against a list of URLs or a sitemap, and report on issues it finds. 
 
 > [!NOTE]  
 > Version 3 of Pa11y CI requires a tweak to make it work with versions of Ubuntu above 20.04.  Version 4 will be unaffected by this issue.
-
-[![NPM version][shield-npm]][info-npm]
-[![Node.js version support][shield-node]][info-node]
-[![Build status][shield-build]][info-build]
-[![LGPL-3.0-only licensed][shield-license]][info-license]
-
-
-## Table of contents
-
-* [Table of contents](#table-of-contents)
-* [Requirements](#requirements)
-* [Usage](#usage)
-  * [Configuration](#configuration)
-  * [Default configuration](#default-configuration)
-  * [URL configuration](#url-configuration)
-  * [Sitemaps](#sitemaps)
-* [Reporters](#reporters)
-  * [Use Multiple reporters](#use-multiple-reporters)
-  * [Reporter options](#reporter-options)
-  * [Write a custom reporter](#write-a-custom-reporter)
-    * [Configurable reporters](#configurable-reporters)
-  * [Docker](#docker)
-* [Tutorials and articles](#tutorials-and-articles)
-* [Contributing](#contributing)
-* [Support and Migration](#support-and-migration)
-* [Licence](#licence)
 
 ## Requirements
 
