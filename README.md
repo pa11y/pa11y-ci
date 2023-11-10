@@ -1,8 +1,11 @@
 # Pa11y CI
 
-Pa11y CI is an accessibility test runner built using [Pa11y] focused on running on Continuous Integration environments.
+Pa11y CI is an accessibility test runner built using [Pa11y], designed to run in Continuous Integration environments. Automated testing of your application can help to prevent accessibility issues reaching production.
 
-Pa11y CI runs accessibility tests against multiple URLs and reports on any issues. This is best used during automated testing of your application and can act as a gatekeeper to stop a11y issues from making it to live.
+Use this tool to test against a list of URLs or a sitemap, and report on issues it finds. 
+
+> [!NOTE]  
+> Version 3 of Pa11y CI requires a tweak to make it work with versions of Ubuntu above 20.04.  Version 4 will be unaffected by this issue.
 
 [![NPM version][shield-npm]][info-npm]
 [![Node.js version support][shield-node]][info-node]
