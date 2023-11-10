@@ -14,7 +14,9 @@ Use this tool to test against a list of URLs or a sitemap, and report on issues 
 
 ## Requirements
 
-This command line tool requires [Node.js] 12+. You can install through npm:
+This command line tool requires [Node.js] 12, 14, or 16.
+
+Install Pa11y CI globally with npm:
 
 ```sh
 npm install -g pa11y-ci
