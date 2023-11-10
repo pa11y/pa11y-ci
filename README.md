@@ -375,31 +375,33 @@ npm test
 You can also run verifications and tests individually:
 
 ```sh
-npm run lint                # Verify all of the code (ESLint)
-npm test                    # Run all tests
-npm run test-unit           # Run the unit tests
-npm run coverage            # Run the unit tests with coverage
-npm run test-integration    # Run the integration tests
+npm run lint                # Lint the code
+npm test                    # Run every test
+npm run test-unit           # Run only the unit tests
+npm run coverage            # Run the unit tests, reporting coverage
+npm run test-integration    # Run only the integration tests
 ```
 
-## Support and Migration
+## Support and migration
 
-Pa11y CI major versions are normally supported for 6 months after their last minor release. This means that patch-level changes will be added and bugs will be fixed. The table below outlines the end-of-support dates for major versions, and the last minor release for that version.
+> [!NOTE]
+> We maintain a [migration guide](MIGRATION.md) to help you migrate between major versions.
 
-We also maintain a [migration guide](MIGRATION.md) to help you migrate.
+When we release a new major version we will continue to support the previous major version for 6 months. This support will be limited to fixes for critical bugs and security issues. If you're opening an issue related to this project, please mention the specific version that the issue affects.
 
-| :grey_question: | Major Version | Last Minor Release | Node.js Versions | Support End Date |
-| :-------------- | :------------ | :----------------- | :--------------- | :--------------- |
-| :heart:         | 3             | N/A                | 12+              | N/A              |
-| :hourglass:     | 2             | 2.4.2              | 8+               | 2022-05-26       |
-| :skull:         | 1             | 1.3                | 4+               | 2018-04-18       |
+The following table lists the major versions available and, for each previous major version, its end-of-support date, and its final minor version released.
 
-If you're opening issues related to these, please mention the version that the issue relates to.
+| Major version | Final minor release | Node.js Versions | Support End Date |
+| :------------ | :------------------ | :--------------- | :--------------- |
+| 🔜 4          |                     | 18, 20           |                  |
+| 3             | 3.1                 | 12, 14, 16       | May 2024         |
+| 2             | 2.4.2               | 8+               | 2022-05-26       |
+| 1             | 1.3                 | 4+               | 2018-04-18       |
 
 ## Licence
 
 Licensed under the [Lesser General Public License (LGPL-3.0-only)](LICENSE).<br/>
-Copyright &copy; 2016–2021, Team Pa11y
+Copyright &copy; 2016–2023, Team Pa11y and contributors
 
 [issues]: https://github.com/pa11y/pa11y-ci/issues
 [node.js]: https://nodejs.org/
