@@ -9,8 +9,8 @@ Pa11y CI is an accessibility test runner built using [Pa11y], designed to run in
 
 Use this tool to test against a list of URLs or a sitemap, and report on issues it finds.
 
-> [!NOTE]  
-> Version 3 of Pa11y CI requires a tweak to make it work with versions of Ubuntu above 20.04.  Version 4 will be unaffected by this issue.
+> [!NOTE]
+> To use version 3 of Pa11y CI with a version of Ubuntu above `20.04`, a path for the Chrome executable [must be defined in your Pa11y CI config][ubuntu-fix], as `defaults.chromeLaunchConfig.executablePath`. Version 4 of Pa11y CI, using Pa11y 7 and a more recent version of Puppeteer, will be unaffected by this issue.
 
 ## Requirements
 
@@ -407,6 +407,7 @@ Copyright &copy; 2016-2023, Team Pa11y and contributors
 [pa11y]: https://github.com/pa11y/pa11y
 [pa11y configurations]: https://github.com/pa11y/pa11y#configuration
 [pa11y reporters]: https://github.com/pa11y/pa11y#reporters
+[ubuntu-fix]: (https://github.com/pa11y/pa11y-ci/issues/198#issuecomment-1418343240)
 
 [info-license]: LICENSE
 [info-node]: package.json
