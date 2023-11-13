@@ -91,7 +91,7 @@ Pa11y CI has a few of its own configurations which you can set as well:
 
 ### URL configuration
 
-A URL can be a `string` or an `object`. In its object form, aspects of the default [pa11y configurations] can be overridden per URL. For example, this allows the timeout to be increased for a slow-loading page, or to take a screenshot for a page of particular interest:
+A URL can be a `string`, or an `object`; in its object form, aspects of the default [pa11y configurations] can be overridden per URL. For example, this allows the timeout to be increased for a slow-loading page, or to take a screenshot for a page of particular interest:
 
 ```json
 {
@@ -255,6 +255,7 @@ function fileName(url: any, prefix = '') {
 exports.afterAll = function (report) {
     return fs.promises.writeFile('report.json', JSON.stringify(report), 'utf8');
 }
+
 // write error details to an individual log for each URL
 exports.error = function (error, url) {
     const data = JSON.stringify({url, error});
