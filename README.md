@@ -409,7 +409,7 @@ Copyright &copy; 2016-2023, Team Pa11y and contributors
 [pa11y]: https://github.com/pa11y/pa11y
 [pa11y configurations]: https://github.com/pa11y/pa11y#configuration
 [pa11y reporters]: https://github.com/pa11y/pa11y#reporters
-[ubuntu-fix]: (https://github.com/pa11y/pa11y-ci/issues/198#issuecomment-1418343240)
+[ubuntu-fix]: https://github.com/pa11y/pa11y-ci/issues/198#issuecomment-1418343240
 
 [info-license]: LICENSE
 [info-node]: package.json
