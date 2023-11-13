@@ -403,13 +403,10 @@ The following table lists the major versions available and, for each previous ma
 Licensed under the [Lesser General Public License (LGPL-3.0-only)](LICENSE).  
 Copyright &copy; 2016-2023, Team Pa11y and contributors
 
-[issues]: https://github.com/pa11y/pa11y-ci/issues
 [node.js]: https://nodejs.org/
 [pa11y]: https://github.com/pa11y/pa11y
 [pa11y configurations]: https://github.com/pa11y/pa11y#configuration
 [pa11y reporters]: https://github.com/pa11y/pa11y#reporters
-[sidekick-proposal]: https://github.com/pa11y/sidekick/blob/master/PROPOSAL.md
-[twitter]: https://twitter.com/pa11yorg
 
 [info-license]: LICENSE
 [info-node]: package.json
