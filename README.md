@@ -7,7 +7,7 @@
 
 Pa11y CI is an accessibility test runner built using [Pa11y], designed to run in Continuous Integration environments. Automated testing of your application can help to prevent accessibility issues reaching production.
 
-Use this tool to test against a list of URLs or a sitemap, and report on issues it finds. 
+Use this tool to test against a list of URLs or a sitemap, and report on issues it finds.
 
 > [!NOTE]  
 > Version 3 of Pa11y CI requires a tweak to make it work with versions of Ubuntu above 20.04.  Version 4 will be unaffected by this issue.
@@ -122,7 +122,7 @@ Pa11y will be run against the text content of each `<loc/>` in the sitemap's XML
 > NOTE
 > Providing a sitemap will cause the `urls` property in your JSON config to be ignored.
 
-#### Transforming URLs retrieved from a sitemap before testing
+#### Transforming URLs retrieved from a sitemap before testing
 
 Pa11y CI can replace a string within each URL found in a sitemap, before beginning to test.  This can be useful when your sitemap contains production URLs, but you'd actually like to test
 those pages in another environment. Use the flags `--sitemap-find` and `sitemap-replace`:
@@ -139,8 +139,8 @@ Exclude URLs from the test run with the flag `--sitemap-exclude`.
 
 Pa11y CI includes two reporters:
 
-- (default) `cli`, a reporter that outputs pa11y results to the console
-- `json`, which outputs JSON-formatted results, either to the console or a file
+* (default) `cli`, a reporter that outputs pa11y results to the console
+* `json`, which outputs JSON-formatted results, either to the console or a file
 
 Custom reporters are also supported.
 
@@ -400,8 +400,8 @@ The following table lists the major versions available and, for each previous ma
 
 ## Licence
 
-Licensed under the [Lesser General Public License (LGPL-3.0-only)](LICENSE).<br/>
-Copyright &copy; 2016–2023, Team Pa11y and contributors
+Licensed under the [Lesser General Public License (LGPL-3.0-only)](LICENSE).  
+Copyright &copy; 2016-2023, Team Pa11y and contributors
 
 [issues]: https://github.com/pa11y/pa11y-ci/issues
 [node.js]: https://nodejs.org/
