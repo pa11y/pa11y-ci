@@ -56,7 +56,7 @@ Pa11y CI looks for a JSON config file in the current working directory named `.p
 }
 ```
 
-Pa11y CI will visit each URL in the `urls` array, together with any path provided as a CLI argument. A path can be relative, absolute, or a [glob](https://github.com/isaacs/node-glob#glob) pattern.
+Pa11y CI will visit each URL in the `urls` array, together with any path provided as a CLI argument. A path can be relative, absolute, or a [glob] pattern.
 
 Specify a different configuration file, JSON or JavaScript, using the command-line parameter `--config`:
 
@@ -403,6 +403,7 @@ The following table lists the major versions available and, for each previous ma
 Licensed under the [Lesser General Public License (LGPL-3.0-only)](LICENSE).  
 Copyright &copy; 2016-2023, Team Pa11y and contributors
 
+[glob]: https://github.com/isaacs/node-glob#glob
 [node.js]: https://nodejs.org/
 [pa11y]: https://github.com/pa11y/pa11y
 [pa11y configurations]: https://github.com/pa11y/pa11y#configuration
