@@ -394,7 +394,7 @@ The following table lists the major versions available and, for each previous ma
 | Major version | Final minor release | Node.js LTS support | Support end date |
 | :------------ | :------------------ | :------------------ | :--------------- |
 | 🔜 `4`        |                     | `>= 18`             |                  |
-| `3`           | Imminent            | `>= 12`[*](#pa11y-ci-3-and-ubuntu)| May 2024 |
+| `3`           | Imminent            | `>= 12` ([Ubuntu caveat](#pa11y-ci-3-and-ubuntu))| May 2024 |
 | `2`           | `2.4.2`             | `>= 8`              | 2022-05-26       |
 | `1`           | `1.3`               | `>= 4`              | 2018-04-18       |
 
