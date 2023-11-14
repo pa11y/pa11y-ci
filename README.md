@@ -118,15 +118,13 @@ If a JavaScript configuration file is used, it should be a CommonJS module that 
 module.exports = {
     defaults: {
         timeout: 1000,
-        viewport: {
-            width: 320,
-            height: 480
-        },
         headers: {
             token: process.env.TOKEN
         }
     },
-    urls: ["https://pa11y.org/", "https://pa11y.org/contributing"]
+    urls: [
+        "https://pa11y.org/"
+    ]
 };
 ```
 
