@@ -289,18 +289,18 @@ module.exports = function (options) {
     const fileName = options.fileName
 
     return {
-        // add test results to the report
+        // add results to the report
         results(results) {
             customReport.results[results.pageUrl] = results;
             customReport.violations += results.issues.length;
         },
 
-        // also store errors
+        // add errors too
         error(error, url) {
             customReport.errors.push({ error, url });
         },
 
-        // write to a file
+        // write everything to a file
         afterAll() {
             const data = JSON.stringify(customReport);
             return fs.promises.writeFile(fileName, data, 'utf8');
@@ -371,15 +371,13 @@ If you're ready to contribute some code, clone this repo locally and commit your
 Please write unit tests for your code, and check that everything works by running the following before opening a pull request:
 
 ```sh
-npm run lint
-npm test
+npm run lint    # Lint the code
+npm test        # Run every test, reporting coverage
 ```
 
 You can also run verifications and tests individually:
 
 ```sh
-npm run lint                # Lint the code
-npm test                    # Run every test
 npm run test-unit           # Run only the unit tests
 npm run coverage            # Run the unit tests, reporting coverage
 npm run test-integration    # Run only the integration tests
