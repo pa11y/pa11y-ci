@@ -65,7 +65,7 @@ Specify a different configuration file, JSON or JavaScript, using the command-li
 pa11y-ci --config path/to/config.json
 ```
 
-### Default configuration
+#### Default configuration
 
 You can specify a default set of [pa11y configurations] that should be used for each test run. Attach this to a `defaults` property in your config; for example:
 
@@ -90,7 +90,7 @@ Pa11y CI supports two additional options here:
 * `concurrency`: The number of tests that should be run in parallel. Defaults to `1`.
 * `useIncognitoBrowserContext`: Run test with an isolated incognito browser context; stops cookies being shared and modified between tests. Defaults to `true`.
 
-### URL configuration
+#### URL configuration
 
 A URL can be a `string`, or an `object`; in its object form, part or all of the default [pa11y configuration][pa11y configurations] can be overridden per URL. For example, this allows the timeout to be increased for a slow-loading page, or to take a screenshot for a page of particular interest:
 
@@ -108,6 +108,24 @@ A URL can be a `string`, or an `object`; in its object form, part or all of the 
         }
     ]
 }
+```
+
+#### Using a JavaScript configuration file
+
+If a JavaScript configuration file is used, it should be a CommonJS module that exports a configuration object. This can be used to dynamically update configuration parameters, for example taking data from environment variables as shown in the example below.
+
+```js
+module.exports = {
+    defaults: {
+        timeout: 1000,
+        headers: {
+            token: process.env.TOKEN
+        }
+    },
+    urls: [
+        "https://pa11y.org/"
+    ]
+};
 ```
 
 ### Sitemaps
