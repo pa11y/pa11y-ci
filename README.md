@@ -26,7 +26,7 @@ npm install -g pa11y-ci
 ```
 
 ```console
-$ npx pa11y-ci --help
+$ pa11y-ci --help
 
 Usage: pa11y-ci [options] <paths>
 
