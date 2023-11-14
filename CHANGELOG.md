@@ -22,7 +22,7 @@
 
 ### Full changelog
 
-https://github.com/pa11y/pa11y-ci/compare/3.0.1...3.1.0
+[3.0.1...3.1.0](https://github.com/pa11y/pa11y-ci/compare/3.0.1...3.1.0)
 
 ## 3.0.1 (2021-12-20)
 
