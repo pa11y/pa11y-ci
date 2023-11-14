@@ -2,7 +2,29 @@
 
 ## 3.1.0 (2023-11-14)
 
-* Placeholder
+### Changes
+
+* Upgrade `pa11y` to `^6.2.3` from `~6.1.0`
+  * Switch to caret for `pa11y` to allow `pa11y` to be upgraded to a more recent compatible version upon install (thanks @aarongoldenthal)
+* [Fix licensing identifier](https://github.com/pa11y/pa11y-ci/pull/123) (thanks @LorenzoAncora)
+* Update documentation:
+  * Indicate support for more recent stable versions of operating systems and Node.js
+  * Add [JS config file example](https://github.com/pa11y/pa11y-ci/pull/197) (thanks @aarongoldenthal)
+
+### New contributors
+
+* @LorenzoAncora [made their first contribution](https://github.com/pa11y/pa11y-ci/pull/123)
+* @danyalaytekin [made their first contribution](https://github.com/pa11y/pa11y-ci/pull/213)
+
+### Behind the scenes
+
+* Expand testing to:
+  * [test Windows and macOS](https://github.com/pa11y/pa11y-ci/pull/177) alongside Linux (thanks again @aarongoldenthal)
+  * test with Node.js 18 and 20, alongside 12, 14, 16
+
+### Full changelog
+
+[3.0.1...3.1.0](https://github.com/pa11y/pa11y-ci/compare/3.0.1...3.1.0)
 
 ## 3.0.1 (2021-12-20)
 

@@ -26,7 +26,7 @@ npm install -g pa11y-ci
 ```
 
 ```console
-$ npx pa11y-ci --help
+$ pa11y-ci --help
 
 Usage: pa11y-ci [options] <paths>
 
@@ -138,7 +138,7 @@ pa11y-ci --sitemap https://pa11y.org/sitemap.xml
 
 Pa11y will be run against the text content of each `<loc/>` in the sitemap's XML.
 
-> NOTE
+> [!NOTE]
 > Providing a sitemap will cause the `urls` property in your JSON config to be ignored.
 
 #### Transforming URLs retrieved from a sitemap before testing
@@ -199,7 +199,7 @@ You can use multiple reporters by setting them on the `defaults.reporters` array
 }
 ```
 
-> NOTE
+> [!NOTE]
 > If the `--reporter` flag is provided on the command line, all appearances of `reporters` in the config file will be overridden.
 
 ### Reporter options
@@ -434,6 +434,6 @@ Copyright &copy; 2016-2023, Team Pa11y and contributors
 [info-build]: https://github.com/pa11y/pa11y-ci/actions/workflows/tests.yml
 
 [shield-license]: https://img.shields.io/badge/license-LGPL--3.0--only-blue.svg
-[shield-node]: https://img.shields.io/badge/node.js%20support-8-brightgreen.svg
+[shield-node]: https://img.shields.io/node/v/pa11y-ci.svg
 [shield-npm]: https://img.shields.io/npm/v/pa11y-ci.svg
 [shield-build]: https://github.com/pa11y/pa11y-ci/actions/workflows/tests.yml/badge.svg
