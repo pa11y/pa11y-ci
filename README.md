@@ -1,55 +1,36 @@
 # Pa11y CI
 
-Pa11y CI is an accessibility test runner built using [Pa11y] focused on running on Continuous Integration environments.
-
-Pa11y CI runs accessibility tests against multiple URLs and reports on any issues. This is best used during automated testing of your application and can act as a gatekeeper to stop a11y issues from making it to live.
-
 [![NPM version][shield-npm]][info-npm]
 [![Node.js version support][shield-node]][info-node]
 [![Build status][shield-build]][info-build]
-[![Dependencies][shield-dependencies]][info-dependencies]
 [![LGPL-3.0-only licensed][shield-license]][info-license]
 
----
+Pa11y CI is an accessibility test runner built using [Pa11y], designed to run in Continuous Integration environments. Automated testing of your application can help to prevent accessibility issues reaching production.
 
-## Table of contents
-
-* [Table of contents](#table-of-contents)
-* [Requirements](#requirements)
-* [Usage](#usage)
-  * [Configuration](#configuration)
-  * [Default configuration](#default-configuration)
-  * [URL configuration](#url-configuration)
-  * [Sitemaps](#sitemaps)
-* [Reporters](#reporters)
-  * [Use Multiple reporters](#use-multiple-reporters)
-  * [Reporter options](#reporter-options)
-  * [Write a custom reporter](#write-a-custom-reporter)
-    * [Configurable reporters](#configurable-reporters)
-  * [Docker](#docker)
-* [Tutorials and articles](#tutorials-and-articles)
-* [Contributing](#contributing)
-* [Support and Migration](#support-and-migration)
-* [Licence](#licence)
+Use this tool to test against a list of URLs or a sitemap, and report on issues it finds.
 
 ## Requirements
 
-This command line tool requires [Node.js] 12+. You can install through npm:
+This command line tool requires a stable (even-numbered) [Node.js] version of 12 or above.
+
+### Pa11y CI 3 and Ubuntu
+
+To use version 3 of Pa11y CI with a version of Ubuntu above `20.04`, a path for the Chrome executable [must be defined in your Pa11y CI config][ubuntu-fix], as `defaults.chromeLaunchConfig.executablePath`. Version 4 of Pa11y CI, which will use Pa11y 7 along with a more recent version of Puppeteer, will resolve this issue.
+
+## Usage
+
+Pa11y CI is provided as a command line tool, `pa11y-ci`. To install it globally with npm:
 
 ```sh
 npm install -g pa11y-ci
 ```
 
-## Usage
+```console
+$ npx pa11y-ci --help
 
-Pa11y CI can be used by running it as a command line tool, `pa11y-ci`:
-
-```sh
-Usage: pa11y-ci [options] [<paths>]
+Usage: pa11y-ci [options] <paths>
 
 Options:
-
-  -h, --help                       output usage information
   -V, --version                    output the version number
   -c, --config <path>              the path to a JSON or JavaScript config file
   -s, --sitemap <url>              the path to a sitemap
@@ -58,14 +39,14 @@ Options:
   -x, --sitemap-exclude <pattern>  a pattern to find in sitemaps and exclude any url that matches
   -j, --json                       Output results as JSON
   -T, --threshold <number>         permit this number of errors, warnings, or notices, otherwise fail with exit code 2
-  --reporter <reporter>            The reporter to use. Can be "cli", "json", an npm module, or a path to a local file.
+                                   (default: "0")
+  --reporter <reporter>            the reporter to use. Can be a npm module or a path to a local file.
+  -h, --help                       display help for command
 ```
 
 ### Configuration
 
-By default, Pa11y CI looks for a config file in the current working directory, named `.pa11yci`. This should be a JSON file.
-
-You can use the `--config` command line argument to specify a different file, which can be either JSON or JavaScript. The config files should look like this:
+Pa11y CI checks the current working directory for a JSON config file named `.pa11yci`. An example:
 
 ```json
 {
@@ -76,11 +57,17 @@ You can use the `--config` command line argument to specify a different file, wh
 }
 ```
 
-Pa11y will be run against each of the URLs in the `urls` array and the paths specified as CLI arguments. Paths can be specified as relative, absolute and as [glob](https://github.com/isaacs/node-glob#glob) patterns.
+Pa11y CI will visit each URL in the `urls` array, together with any path provided as a CLI argument. A path can be relative, absolute, or a [glob] pattern.
+
+Specify a different configuration file, JSON or JavaScript, using the command-line parameter `--config`:
+
+```sh
+pa11y-ci --config path/to/config.json
+```
 
 ### Default configuration
 
-You can specify a default set of [pa11y configurations] that should be used for each test run. These should be added to a `defaults` object in your config. For example:
+You can specify a default set of [pa11y configurations] that should be used for each test run. Attach this to a `defaults` property in your config; for example:
 
 ```json
 {
@@ -98,14 +85,14 @@ You can specify a default set of [pa11y configurations] that should be used for 
 }
 ```
 
-Pa11y CI has a few of its own configurations which you can set as well:
+Pa11y CI supports two additional options here:
 
 * `concurrency`: The number of tests that should be run in parallel. Defaults to `1`.
-* `useIncognitoBrowserContext`: Run test with an isolated incognito browser context, stops cookies being shared and modified between tests. Defaults to `true`.
+* `useIncognitoBrowserContext`: Run test with an isolated incognito browser context; stops cookies being shared and modified between tests. Defaults to `true`.
 
 ### URL configuration
 
-Each URL in your config file can be an object and specify [pa11y configurations] which override the defaults too. You do this by using an object instead of a string, and providing the URL as a `url` property on that object. This can be useful if, for example, you know that a certain URL takes a while to load or you want to check what the page looked like when the tests were run:
+A URL can be a `string`, or an `object`; in its object form, part or all of the default [pa11y configuration][pa11y configurations] can be overridden per URL. For example, this allows the timeout to be increased for a slow-loading page, or to take a screenshot for a page of particular interest:
 
 ```json
 {
@@ -125,43 +112,52 @@ Each URL in your config file can be an object and specify [pa11y configurations]
 
 ### Sitemaps
 
-If you don't wish to specify your URLs in a config file, you can use an XML sitemap that's published somewhere online. This is done with the `--sitemap` option:
+Provide a `--sitemap` argument to retrieve a sitemap and then test each URL within:
 
 ```sh
 pa11y-ci --sitemap https://pa11y.org/sitemap.xml
 ```
 
-This takes the text content of each `<loc>` in the XML and runs Pa11y against that URL. This can also be combined with a config file, but URLs in the sitemap will override any found in your JSON config.
+Pa11y will be run against the text content of each `<loc/>` in the sitemap's XML.
 
-If you'd like to perform a find/replace operation on each URL in a sitemap, e.g. if your sitemap points to your production URLs rather than local ones, then you can use the following flags:
+> NOTE
+> Providing a sitemap will cause the `urls` property in your JSON config to be ignored.
+
+#### Transforming URLs retrieved from a sitemap before testing
+
+Pa11y CI can replace a string within each URL found in a sitemap, before beginning to test.  This can be useful when your sitemap contains production URLs, but you'd actually like to test
+those pages in another environment. Use the flags `--sitemap-find` and `sitemap-replace`:
 
 ```sh
 pa11y-ci --sitemap https://pa11y.org/sitemap.xml --sitemap-find pa11y.org --sitemap-replace localhost
 ```
 
-The above would ensure that you run Pa11y CI against local URLs instead of the live site.
+#### Excluding URLs
 
-If there are items in the sitemap that you'd like to exclude from the testing (for example PDFs) you can do so using the `--sitemap-exclude` flag.
+Exclude URLs from the test run with the flag `--sitemap-exclude`.
 
 ## Reporters
 
-Pa11y CI includes both a CLI reporter that outputs pa11y results to the console and a JSON reporter that outputs JSON-formatted results (to the console or a file). If no reporter is specified, the CLI reporter is selected by default.  You can use the `--reporter` option to define a single reporter. The option value can be:
+Pa11y CI includes two reporters:
 
-* `cli` for the included CLI reporter or `json` for the included JSON reporter
-* the path of a locally installed npm module (ie: `pa11y-reporter-html`)
-* the path to a local node module relative to the current working directory (ie: `./reporters/my-reporter.js`)
-* an absolute path to a node module (ie: `/root/user/me/reporters/my-reporter.js`)
+* (default) `cli`, a reporter that outputs pa11y results to the console
+* `json`, which outputs JSON-formatted results, either to the console or a file
+
+Custom reporters are also supported.
+
+Choose a specific reporter with the flag `--reporter`. The value of this flag can also be:
+
+* a path to a locally installed npm package (ie: `pa11y-reporter-html`)
+* a path to a local node module; either an absolute path, or one relative to the current working directory (for example `./reporters/my-reporter.js`)
 
 Example:
 
 ```sh
 npm install pa11y-reporter-html --save
-pa11y-ci --reporter=pa11y-reporter-html https://pa11y.org/
+pa11y-ci https://pa11y.org/ --reporter=pa11y-reporter-html 
 ```
 
-**Note**: If custom reporter(s) are specified, the default CLI reporter will be overridden.
-
-### Use Multiple reporters
+### Use multiple reporters
 
 You can use multiple reporters by setting them on the `defaults.reporters` array in your config.  The shorthand `cli` and `json` can be included to select the included reporters.
 
@@ -185,7 +181,8 @@ You can use multiple reporters by setting them on the `defaults.reporters` array
 }
 ```
 
-**Note**: If the CLI `--reporter` option is specified, it will override any reporters specified in the config file.
+> NOTE
+> If the `--reporter` flag is provided on the command line, all appearances of `reporters` in the config file will be overridden.
 
 ### Reporter options
 
@@ -259,6 +256,7 @@ function fileName(url: any, prefix = '') {
 exports.afterAll = function (report) {
     return fs.promises.writeFile('report.json', JSON.stringify(report), 'utf8');
 }
+
 // write error details to an individual log for each URL
 exports.error = function (error, url) {
     const data = JSON.stringify({url, error});
@@ -290,18 +288,18 @@ module.exports = function (options) {
     const fileName = options.fileName
 
     return {
-        // add test results to the report
+        // add results to the report
         results(results) {
             customReport.results[results.pageUrl] = results;
             customReport.violations += results.issues.length;
         },
 
-        // also store errors
+        // add errors too
         error(error, url) {
             customReport.errors.push({ error, url });
         },
 
-        // write to a file
+        // write everything to a file
         afterAll() {
             const data = JSON.stringify(customReport);
             return fs.promises.writeFile(fileName, data, 'utf8');
@@ -365,61 +363,59 @@ Here are some useful articles written by Pa11y users and contributors:
 
 ## Contributing
 
-There are many ways to contribute to Pa11y CI, we cover these in the [contributing guide](CONTRIBUTING.md) for this repo.
+There are many ways to contribute to Pa11y CI, some of which we describe in the [contributing guide](CONTRIBUTING.md) for this repo.
 
 If you're ready to contribute some code, clone this repo locally and commit your code on a new branch.
 
-Please write unit tests for your code, and check that everything works by running the following before opening a <abbr title="pull request">PR</abbr>:
+Please write unit tests for your code, and check that everything works by running the following before opening a pull request:
 
 ```sh
-npm run lint
-npm test
+npm run lint    # Lint the code
+npm test        # Run every test, reporting coverage
 ```
 
 You can also run verifications and tests individually:
 
 ```sh
-npm run lint                # Verify all of the code (ESLint)
-npm test                    # Run all tests
-npm run test-unit           # Run the unit tests
-npm run coverage            # Run the unit tests with coverage
-npm run test-integration    # Run the integration tests
+npm run test-unit           # Run only the unit tests
+npm run coverage            # Run the unit tests, reporting coverage
+npm run test-integration    # Run only the integration tests
 ```
 
-## Support and Migration
+## Support and migration
 
-Pa11y CI major versions are normally supported for 6 months after their last minor release. This means that patch-level changes will be added and bugs will be fixed. The table below outlines the end-of-support dates for major versions, and the last minor release for that version.
+> [!NOTE]
+> We maintain a [migration guide](MIGRATION.md) to help you migrate between major versions.
 
-We also maintain a [migration guide](MIGRATION.md) to help you migrate.
+When we release a new major version we will continue to support the previous major version for 6 months. This support will be limited to fixes for critical bugs and security issues. If you're opening an issue related to this project, please mention the specific version that the issue affects.
 
-| :grey_question: | Major Version | Last Minor Release | Node.js Versions | Support End Date |
-| :-------------- | :------------ | :----------------- | :--------------- | :--------------- |
-| :heart:         | 3             | N/A                | 12+              | N/A              |
-| :hourglass:     | 2             | 2.4.2              | 8+               | 2022-05-26       |
-| :skull:         | 1             | 1.3                | 4+               | 2018-04-18       |
+The following table lists the major versions available and, for each previous major version, its end-of-support date, and its final minor version released.
 
-If you're opening issues related to these, please mention the version that the issue relates to.
+| Major version | Final minor release | Node.js LTS support | Support end date |
+| :------------ | :------------------ | :------------------ | :--------------- |
+| 🔜 `4`        |                     | `>= 18`             |                  |
+| `3`           | Imminent            | `>= 12` ([Ubuntu caveat](#pa11y-ci-3-and-ubuntu))| May 2024 |
+| `2`           | `2.4.2`             | `>= 8`              | 2022-05-26       |
+| `1`           | `1.3`               | `>= 4`              | 2018-04-18       |
 
 ## Licence
 
-Licensed under the [Lesser General Public License (LGPL-3.0-only)](LICENSE).<br/>
-Copyright &copy; 2016–2021, Team Pa11y
+Licensed under the [Lesser General Public License (LGPL-3.0-only)](LICENSE).  
+Copyright &copy; 2016-2023, Team Pa11y and contributors
 
-[issues]: https://github.com/pa11y/pa11y-ci/issues
+[glob]: https://github.com/isaacs/node-glob#glob
 [node.js]: https://nodejs.org/
 [pa11y]: https://github.com/pa11y/pa11y
 [pa11y configurations]: https://github.com/pa11y/pa11y#configuration
 [pa11y reporters]: https://github.com/pa11y/pa11y#reporters
-[sidekick-proposal]: https://github.com/pa11y/sidekick/blob/master/PROPOSAL.md
-[twitter]: https://twitter.com/pa11yorg
+[ubuntu-fix]: https://github.com/pa11y/pa11y-ci/issues/198#issuecomment-1418343240
 
-[info-dependencies]: https://gemnasium.com/pa11y/pa11y-ci
 [info-license]: LICENSE
 [info-node]: package.json
 [info-npm]: https://www.npmjs.com/package/pa11y-ci
-[info-build]: https://travis-ci.org/pa11y/pa11y-ci
-[shield-dependencies]: https://img.shields.io/gemnasium/pa11y/pa11y-ci.svg
+[info-build]: https://github.com/pa11y/pa11y-ci/actions/workflows/tests.yml
+
 [shield-license]: https://img.shields.io/badge/license-LGPL--3.0--only-blue.svg
 [shield-node]: https://img.shields.io/badge/node.js%20support-8-brightgreen.svg
 [shield-npm]: https://img.shields.io/npm/v/pa11y-ci.svg
-[shield-build]: https://img.shields.io/travis/pa11y/pa11y-ci/master.svg
+[shield-build]: https://github.com/pa11y/pa11y-ci/actions/workflows/tests.yml/badge.svg
