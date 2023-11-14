@@ -7,7 +7,9 @@
 * Upgrade `pa11y` to `^6.2.3` from `~6.1.0`
   * Switch to caret for `pa11y` to allow `pa11y` to be upgraded to a more recent compatible version upon install (thanks @aarongoldenthal)
 * [Fix licensing identifier](https://github.com/pa11y/pa11y-ci/pull/123) (thanks @LorenzoAncora)
-* Update documentation to indicate support for more recent stable versions of operating systems and Node.js
+* Update documentation:
+  * Indicate support for more recent stable versions of operating systems and Node.js
+  * Add [JS config file example](https://github.com/pa11y/pa11y-ci/pull/197) (thanks @aarongoldenthal)
 
 ### New contributors
 
