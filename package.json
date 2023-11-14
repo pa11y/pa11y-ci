@@ -15,7 +15,7 @@
   "bugs": "https://github.com/pa11y/pa11y-ci/issues",
   "license": "LGPL-3.0-only",
   "engines": {
-    "node": "^12.0.0 || ^14.0.0 || ^16.0.0"
+    "node": ">= 12"
   },
   "dependencies": {
     "async": "~2.6.4",

@@ -9,18 +9,14 @@ Pa11y CI is an accessibility test runner built using [Pa11y], designed to run in
 
 Use this tool to test against a list of URLs or a sitemap, and report on issues it finds.
 
-> [!NOTE]
-> To use version 3 of Pa11y CI with a version of Ubuntu above `20.04`, a path for the Chrome executable [must be defined in your Pa11y CI config][ubuntu-fix], as `defaults.chromeLaunchConfig.executablePath`. Version 4 of Pa11y CI, using Pa11y 7 and a more recent version of Puppeteer, will be unaffected by this issue.
-
 ## Requirements
 
-This command line tool requires [Node.js] 12, 14, or 16.
+This command line tool requires a stable (even-numbered) [Node.js] version of 12 or above.
 
-Install Pa11y CI globally with npm:
+### Pa11y CI 3 and Ubuntu
 
-```sh
-npm install -g pa11y-ci
-```
+> [!NOTE]
+> To use version 3 of Pa11y CI with a version of Ubuntu above `20.04`, a path for the Chrome executable [must be defined in your Pa11y CI config][ubuntu-fix], as `defaults.chromeLaunchConfig.executablePath`. Version 4 of Pa11y CI, which will use Pa11y 7 along with a more recent version of Puppeteer, will resolve this issue.
 
 ## Usage
 
@@ -392,12 +388,12 @@ When we release a new major version we will continue to support the previous maj
 
 The following table lists the major versions available and, for each previous major version, its end-of-support date, and its final minor version released.
 
-| Major version | Final minor release | Node.js Versions | Support End Date |
-| :------------ | :------------------ | :--------------- | :--------------- |
-| 🔜 4          |                     | 18, 20           |                  |
-| 3             | 3.1                 | 12, 14, 16       | May 2024         |
-| 2             | 2.4.2               | 8+               | 2022-05-26       |
-| 1             | 1.3                 | 4+               | 2018-04-18       |
+| Major version | Final minor release | Node.js LTS support | Support end date |
+| :------------ | :------------------ | :------------------ | :--------------- |
+| 🔜 `4`        |                     | `>= 18`             |                  |
+| `3`           | Imminent            | `>= 12`[*](#pa11y-ci-3-and-ubuntu)| May 2024 |
+| `2`           | `2.4.2`             | `>= 8`              | 2022-05-26       |
+| `1`           | `1.3`               | `>= 4`              | 2018-04-18       |
 
 ## Licence
 
@@ -415,6 +411,7 @@ Copyright &copy; 2016-2023, Team Pa11y and contributors
 [info-node]: package.json
 [info-npm]: https://www.npmjs.com/package/pa11y-ci
 [info-build]: https://github.com/pa11y/pa11y-ci/actions/workflows/tests.yml
+
 [shield-license]: https://img.shields.io/badge/license-LGPL--3.0--only-blue.svg
 [shield-node]: https://img.shields.io/badge/node.js%20support-8-brightgreen.svg
 [shield-npm]: https://img.shields.io/npm/v/pa11y-ci.svg
