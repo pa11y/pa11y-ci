@@ -46,7 +46,7 @@ Options:
 
 ### Configuration
 
-Pa11y CI looks for a JSON config file in the current working directory named `.pa11yci`. An example:
+Pa11y CI checks the current working directory for a JSON config file named `.pa11yci`. An example:
 
 ```json
 {
@@ -67,7 +67,7 @@ pa11y-ci --config path/to/config.json
 
 ### Default configuration
 
-You can specify a default set of [pa11y configurations] that should be used for each test run. These should be added to a `defaults` object in your config. For example:
+You can specify a default set of [pa11y configurations] that should be used for each test run. Attach this to a `defaults` property in your config; for example:
 
 ```json
 {
@@ -85,14 +85,14 @@ You can specify a default set of [pa11y configurations] that should be used for 
 }
 ```
 
-Pa11y CI has a few of its own configurations which you can set as well:
+Pa11y CI supports two additional options here:
 
 * `concurrency`: The number of tests that should be run in parallel. Defaults to `1`.
-* `useIncognitoBrowserContext`: Run test with an isolated incognito browser context, stops cookies being shared and modified between tests. Defaults to `true`.
+* `useIncognitoBrowserContext`: Run test with an isolated incognito browser context; stops cookies being shared and modified between tests. Defaults to `true`.
 
 ### URL configuration
 
-A URL can be a `string`, or an `object`; in its object form, aspects of the default [pa11y configurations] can be overridden per URL. For example, this allows the timeout to be increased for a slow-loading page, or to take a screenshot for a page of particular interest:
+A URL can be a `string`, or an `object`; in its object form, part or all of the default [pa11y configuration][pa11y configurations] can be overridden per URL. For example, this allows the timeout to be increased for a slow-loading page, or to take a screenshot for a page of particular interest:
 
 ```json
 {
