@@ -138,7 +138,7 @@ pa11y-ci --sitemap https://pa11y.org/sitemap.xml
 
 Pa11y will be run against the text content of each `<loc/>` in the sitemap's XML.
 
-> NOTE
+> [!NOTE]
 > Providing a sitemap will cause the `urls` property in your JSON config to be ignored.
 
 #### Transforming URLs retrieved from a sitemap before testing
@@ -199,7 +199,7 @@ You can use multiple reporters by setting them on the `defaults.reporters` array
 }
 ```
 
-> NOTE
+> [!NOTE]
 > If the `--reporter` flag is provided on the command line, all appearances of `reporters` in the config file will be overridden.
 
 ### Reporter options
