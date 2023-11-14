@@ -20,14 +20,18 @@ This command line tool requires a stable (even-numbered) [Node.js] version of 12
 
 ## Usage
 
-Pa11y CI can be used by running it as a command line tool, `pa11y-ci`:
+Pa11y CI is provided as a command line tool, `pa11y-ci`. To install it globally with npm:
 
 ```sh
-Usage: pa11y-ci [options] [<paths>]
+npm install -g pa11y-ci
+```
+
+```console
+$ npx pa11y-ci --help
+
+Usage: pa11y-ci [options] <paths>
 
 Options:
-
-  -h, --help                       output usage information
   -V, --version                    output the version number
   -c, --config <path>              the path to a JSON or JavaScript config file
   -s, --sitemap <url>              the path to a sitemap
@@ -36,7 +40,9 @@ Options:
   -x, --sitemap-exclude <pattern>  a pattern to find in sitemaps and exclude any url that matches
   -j, --json                       Output results as JSON
   -T, --threshold <number>         permit this number of errors, warnings, or notices, otherwise fail with exit code 2
-  --reporter <reporter>            The reporter to use. Can be "cli", "json", an npm module, or a path to a local file.
+                                   (default: "0")
+  --reporter <reporter>            the reporter to use. Can be a npm module or a path to a local file.
+  -h, --help                       display help for command
 ```
 
 ### Configuration
