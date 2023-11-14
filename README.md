@@ -15,8 +15,7 @@ This command line tool requires a stable (even-numbered) [Node.js] version of 12
 
 ### Pa11y CI 3 and Ubuntu
 
-> [!NOTE]
-> To use version 3 of Pa11y CI with a version of Ubuntu above `20.04`, a path for the Chrome executable [must be defined in your Pa11y CI config][ubuntu-fix], as `defaults.chromeLaunchConfig.executablePath`. Version 4 of Pa11y CI, which will use Pa11y 7 along with a more recent version of Puppeteer, will resolve this issue.
+To use version 3 of Pa11y CI with a version of Ubuntu above `20.04`, a path for the Chrome executable [must be defined in your Pa11y CI config][ubuntu-fix], as `defaults.chromeLaunchConfig.executablePath`. Version 4 of Pa11y CI, which will use Pa11y 7 along with a more recent version of Puppeteer, will resolve this issue.
 
 ## Usage
 
