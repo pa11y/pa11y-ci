@@ -16,7 +16,7 @@ jobs:
       - run: npm run lint
 
   test:
-    name: Test on ${{ matrix.os }} with ${{ matrix.node-version }}
+    name: test on ${{ matrix.os }} with node ${{ matrix.node-version }}
     runs-on: ${{ matrix.os }}
     strategy:
       matrix:
