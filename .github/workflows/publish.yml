@@ -4,7 +4,7 @@ on:
   workflow_dispatch:
     inputs:
       dryRun:
-        description: "Dry run only"
+        description: Dry run only
         required: true
         default: true
         type: boolean
@@ -17,7 +17,7 @@ jobs:
       - uses: actions/setup-node@v3
         with:
           node-version: 16
-          registry-url: "https://registry.npmjs.org"
+          registry-url: https://registry.npmjs.org
       - run: npm ci
 
       - name: Publish package
