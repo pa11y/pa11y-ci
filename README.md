@@ -110,7 +110,7 @@ A URL can be a `string`, or an `object`; in its object form, part or all of the 
 }
 ```
 
-#### Javascript configuration
+#### Using a JavaScript configuration file
 
 If a JavaScript configuration file is used, it should be a CommonJS module that exports a configuration object. This can be used to dynamically update configuration parameters, for example taking data from environment variables as shown in the example below.
 
