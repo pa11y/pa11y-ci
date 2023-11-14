@@ -5,8 +5,18 @@ on:
   pull_request:
 
 jobs:
-  checkout_and_test:
-    name: Lint and test on ${{ matrix.os }} with ${{ matrix.node-version }}
+  lint:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v3
+        with:
+          node-version: 12
+      - run: npm ci
+      - run: npm run lint
+
+  test:
+    name: Test on ${{ matrix.os }} with ${{ matrix.node-version }}
     runs-on: ${{ matrix.os }}
     strategy:
       fail-fast: false
@@ -24,5 +34,4 @@ jobs:
         with:
           node-version: ${{ matrix.node-version }}
       - run: npm ci
-      - run: npm run lint
       - run: npm test
