@@ -107,3 +107,24 @@ describe('pa11y-ci (with a sitemap being sitemapindex)', () => {
 	});
 
 });
+
+describe('pa11y-ci (with a sitemap being sitemapindex) and config. should ignore config urls', () => {
+
+	before(() => {
+		return global.cliCall([
+			'--sitemap',
+			'http://localhost:8090/sitemapindex.xml',
+			'--config',
+			'extension-json'
+		]);
+	});
+
+	it('loads the expected urls from multiple sitemaps', () => {
+		assert.notInclude(global.lastResult.output, 'http://localhost:8090/config-extension-json');
+		assert.include(global.lastResult.output, 'http://localhost:8090/passing-1');
+		assert.include(global.lastResult.output, 'http://localhost:8090/failing-1');
+		assert.include(global.lastResult.output, 'http://localhost:8090/excluded');
+		assert.include(global.lastResult.output, 'http://localhost:8090/passing-2');
+	});
+
+});

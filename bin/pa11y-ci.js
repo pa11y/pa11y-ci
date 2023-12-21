@@ -72,6 +72,7 @@ Promise.resolve()
 	.then(config => {
 		// Load a sitemap based on the `--sitemap` flag
 		if (commander.sitemap) {
+			config.urls = [];
 			return loadSitemapIntoConfig(commander, config);
 		}
 		return config;
@@ -209,6 +210,7 @@ function defaultConfig(config) {
 // Load a sitemap from a remote URL, parse out the
 // URLs, and add them to an existing config object
 function loadSitemapIntoConfig(program, initialConfig) {
+	console.log('config', initialConfig);
 	const sitemapFind = (
 		program.sitemapFind ?
 			new RegExp(program.sitemapFind, 'gi') :
