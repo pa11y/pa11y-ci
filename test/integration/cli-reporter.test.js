@@ -30,7 +30,7 @@ describe('pa11y-ci (with json built-in reporter)', () => {
 	it('logs json to stdout', () => {
 		let report;
 		assert.doesNotThrow(() => {
-			report = JSON.parse(global.lastResult.output);
+			report = JSON.parse(global.lastResult.stdout);
 		});
 		assert.isObject(report);
 		assert.include(Object.keys(report.results), 'http://localhost:8090/passing-1');
@@ -54,7 +54,7 @@ describe('pa11y-ci (with json built-in reporter and configuration)', () => {
 
 
 	it('stores report in a file', () => {
-		assert.equal(global.lastResult.output, '');
+		assert.equal(global.lastResult.stdout, '');
 		let report;
 
 		assert.ok(fs.existsSync(reportFile));
@@ -85,7 +85,7 @@ describe('pa11y-ci (with custom json reporter configuration)', () => {
 
 
 	it('stores report in a "my-results.json" file', () => {
-		assert.equal(global.lastResult.output, '');
+		assert.equal(global.lastResult.stdout, '');
 		let report;
 
 		assert.ok(fs.existsSync(reportFile));
