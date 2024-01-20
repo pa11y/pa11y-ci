@@ -57,6 +57,9 @@ commander
 	)
 	.parse(process.argv);
 
+// Process the Commander options
+const options = commander.opts();
+
 // Parse the args into valid paths using glob and protocolify
 const urls = globby.sync(commander.args, {
 	// Ensure not-found paths (like "google.com"), are returned
@@ -67,26 +70,26 @@ const urls = globby.sync(commander.args, {
 Promise.resolve()
 	.then(() => {
 		// Load config based on the `--config` flag
-		return loadConfig(commander.config);
+		return loadConfig(options.config);
 	})
 	.then(config => {
 		// Load a sitemap based on the `--sitemap` flag
-		if (commander.sitemap) {
-			return loadSitemapIntoConfig(commander, config);
+		if (options.sitemap) {
+			return loadSitemapIntoConfig(options, config);
 		}
 		return config;
 	})
 	.then(config => {
 		// Override config reporters with CLI argument
-		if (commander.reporter) {
-			config.defaults.reporters = [commander.reporter];
+		if (options.reporter) {
+			config.defaults.reporters = [options.reporter];
 		}
 		// Actually run Pa11y CI
 		return pa11yCi(urls.concat(config.urls || []), config.defaults);
 	})
 	.then(report => {
 		// Output JSON if asked for it
-		if (commander.json) {
+		if (options.json) {
 			console.log(JSON.stringify(report, (key, value) => {
 				if (value instanceof Error) {
 					return {
@@ -98,7 +101,7 @@ Promise.resolve()
 		}
 		// Decide on an exit code based on whether
 		// errors are below threshold or everything passes
-		if (report.errors >= parseInt(commander.threshold, 10) && report.passes < report.total) {
+		if (report.errors >= parseInt(options.threshold, 10) && report.passes < report.total) {
 			process.exit(2);
 		} else {
 			process.exit(0);
@@ -128,7 +131,7 @@ function loadConfig(configPath) {
 			if (!config) {
 				config = loadLocalConfigWithJson(configPath);
 			}
-			if (commander.config && !config) {
+			if (options.config && !config) {
 				return reject(new Error(`The config file "${configPath}" could not be loaded`));
 			}
 		} catch (error) {
@@ -200,7 +203,7 @@ function defaultConfig(config) {
 	config.defaults.log = config.defaults.log || console;
 	// 	Setting to undefined rather than 0 allows for a fallback to the default
 	config.defaults.wrapWidth = process.stdout.columns || undefined;
-	if (commander.json) {
+	if (options.json) {
 		delete config.defaults.log;
 	}
 	return config;
