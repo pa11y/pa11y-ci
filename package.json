@@ -2,7 +2,12 @@
   "name": "pa11y-ci",
   "version": "3.1.0",
   "description": "Pa11y CI is a CI-centric accessibility test runner, built using Pa11y",
-  "keywords": [],
+  "keywords": [
+    "accessibility",
+    "analysis",
+    "cli",
+    "report"
+  ],
   "author": "Team Pa11y",
   "contributors": [
     "Rowan Manning (https://rowanmanning.com/)"
