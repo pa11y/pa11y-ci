@@ -60,10 +60,13 @@ commander
 // Process the Commander options
 const options = commander.opts();
 
-// Parse the args into valid paths using glob and protocolify
-const urls = globby.sync(commander.args, {
-	// Ensure not-found paths (like "google.com"), are returned
-	nonull: true
+// Parse the args into valid paths using glob and protocolify.
+// Ensure not-found paths (like "google.com"), are returned.
+const urls = commander.args.flatMap(arg => {
+	// With globby v10, there's no longer a `nonull` capability to
+	// return non-matching paths, so check for results.
+	const globbyResults = globby.sync(arg);
+	return globbyResults.length ? globbyResults : arg;
 }).map(protocolify);
 
 // Start the promise chain to actually run everything
