@@ -61,13 +61,10 @@ commander
 const options = commander.opts();
 
 // Parse the args into valid paths using glob and protocolify.
-// Ensure not-found paths (like "google.com"), are returned.
-const urls = commander.args.flatMap(arg => {
-	// With globby v10, there's no longer a `nonull` capability to
-	// return non-matching paths, so check for results.
-	const globbyResults = globby.sync(arg);
-	return globbyResults.length ? globbyResults : arg;
-}).map(protocolify);
+const globResults = globby.sync(commander.args);
+// If no files are found, assume args are URLs and pass on.
+const rawUrls = globResults.length ? globResults : commander.args;
+const urls = rawUrls.map(protocolify);
 
 // Start the promise chain to actually run everything
 Promise.resolve()
