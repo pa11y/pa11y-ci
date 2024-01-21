@@ -102,15 +102,15 @@ Promise.resolve()
 		// Decide on an exit code based on whether
 		// errors are below threshold or everything passes
 		if (report.errors >= parseInt(options.threshold, 10) && report.passes < report.total) {
-			process.exit(2);
+			process.exitCode = 2;
 		} else {
-			process.exit(0);
+			process.exitCode = 0;
 		}
 	})
 	.catch(error => {
 		// Handle any errors
 		console.error(error.message);
-		process.exit(1);
+		process.exitCode = 1;
 	});
 
 // This function loads the JSON or JavaScript config
