@@ -11,7 +11,7 @@ Use this tool to test against a list of URLs or a sitemap, and report on issues 
 
 ## Requirements
 
-This command line tool requires a stable (even-numbered) [Node.js] version of 12 or above.
+This command line tool requires a stable (even-numbered) [Node.js] version of 18 or above.
 
 ### Pa11y CI 3 and Ubuntu
 
