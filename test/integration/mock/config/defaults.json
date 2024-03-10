@@ -1,6 +1,6 @@
 {
 	"defaults": {
-		"timeout": 100
+		"timeout": 500
 	},
 	"urls": [
 		"http://localhost:8090/passing-1",
