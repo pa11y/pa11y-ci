@@ -57,9 +57,6 @@ commander
 	)
 	.parse(process.argv);
 
-// Process the Commander options
-const options = commander.opts();
-
 // Parse the args into valid paths using glob and protocolify.
 const globResults = globby.sync(commander.args);
 // If no files are found, assume args are URLs and pass on.
@@ -67,6 +64,7 @@ const rawUrls = globResults.length ? globResults : commander.args;
 const urls = rawUrls.map(protocolify);
 
 // Start the promise chain to actually run everything
+const options = commander.opts();
 Promise.resolve()
 	.then(() => {
 		// Load config based on the `--config` flag
