@@ -1,6 +1,6 @@
 {
 	"defaults": {
-		"timeout": 100,
+		"timeout": 500,
 		"reporters": [
             ["json", { "fileName": "./__output__/results.json"}]
         ]

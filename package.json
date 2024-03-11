@@ -2,7 +2,12 @@
   "name": "pa11y-ci",
   "version": "3.1.0",
   "description": "Pa11y CI is a CI-centric accessibility test runner, built using Pa11y",
-  "keywords": [],
+  "keywords": [
+    "accessibility",
+    "analysis",
+    "cli",
+    "report"
+  ],
   "author": "Team Pa11y",
   "contributors": [
     "Rowan Manning (https://rowanmanning.com/)"
@@ -15,29 +20,29 @@
   "bugs": "https://github.com/pa11y/pa11y-ci/issues",
   "license": "LGPL-3.0-only",
   "engines": {
-    "node": ">= 12"
+    "node": ">=18"
   },
   "dependencies": {
-    "async": "~2.6.4",
-    "cheerio": "~1.0.0-rc.10",
-    "commander": "~6.2.1",
+    "async": "~3.2.5",
+    "cheerio": "~1.0.0-rc.12",
+    "commander": "~11.1.0",
     "globby": "~6.1.0",
-    "kleur": "~4.1.4",
+    "kleur": "~4.1.5",
     "lodash": "~4.17.21",
-    "node-fetch": "~2.6.1",
-    "pa11y": "^6.2.3",
+    "node-fetch": "~2.7.0",
+    "pa11y": "^7.0.0",
     "protocolify": "~3.0.0",
-    "puppeteer": "~9.1.1",
+    "puppeteer": "^20.9.0",
     "wordwrap": "~1.0.0"
   },
   "devDependencies": {
-    "eslint": "^7.27.0",
-    "mocha": "^8.4.0",
+    "eslint": "^8.56.0",
+    "mocha": "^10.3.0",
     "mockery": "^2.1.0",
     "nyc": "^15.1.0",
     "pa11y-lint-config": "^3.0.0",
     "proclaim": "^3.6.0",
-    "sinon": "^11.1.0"
+    "sinon": "^17.0.1"
   },
   "main": "./lib/pa11y-ci.js",
   "bin": {

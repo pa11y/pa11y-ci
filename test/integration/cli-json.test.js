@@ -15,7 +15,7 @@ describe('pa11y-ci (with the `--json` flag set)', () => {
 	});
 
 	it('outputs the results as JSON', () => {
-		const outputData = JSON.parse(global.lastResult.output);
+		const outputData = JSON.parse(global.lastResult.stdout);
 		const filePath = path.resolve(__dirname, 'mock/config/foo/erroring.html');
 		assert.deepEqual(outputData, {
 			total: 3,

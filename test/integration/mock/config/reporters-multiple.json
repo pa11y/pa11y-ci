@@ -1,6 +1,6 @@
 {
 	"defaults": {
-		"timeout": 100,
+		"timeout": 500,
 		"reporters": [
 			"cli",
 			"./reporters/custom.js",
