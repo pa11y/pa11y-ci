@@ -2,6 +2,10 @@
 
 Major versions of Pa11y CI can bring API or compatibility changes. This is a guide to help you make the switch when that happens.
 
+## Migrating from 3.0 to 4.0
+
+Details to follow.
+
 ## Migrating from 2.0 to 3.0
 
 ### New defaults for `concurrency` and `useIncognitoBrowserContext`

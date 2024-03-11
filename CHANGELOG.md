@@ -1,5 +1,9 @@
 # Changelog
 
+## 4.0.0 (2024-03-??)
+
+Details to follow.
+
 ## 3.1.0 (2023-11-14)
 
 ### Changes
