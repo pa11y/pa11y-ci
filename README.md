@@ -419,7 +419,7 @@ The following table lists the major versions available and, for each previous ma
 ## Licence
 
 Licensed under the [Lesser General Public License (LGPL-3.0-only)](LICENSE).  
-Copyright &copy; 2016-2023, Team Pa11y and contributors
+Copyright &copy; 2016-2024, Team Pa11y and contributors
 
 [glob]: https://github.com/isaacs/node-glob#glob
 [node.js]: https://nodejs.org/
