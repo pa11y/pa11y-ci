@@ -57,11 +57,11 @@ commander
 	)
 	.parse(process.argv);
 
-// Parse the args into valid paths using glob and protocolify.
-const globResults = globby.sync(commander.args);
-// If no files are found, assume args are URLs and pass on.
-const rawUrls = globResults.length ? globResults : commander.args;
-const urls = rawUrls.map(protocolify);
+// Parse the args into valid paths using glob and protocolify
+const urls = globby.sync(commander.args, {
+	// Ensure not-found paths (like "google.com"), are returned
+	nonull: true
+}).map(protocolify);
 
 // Start the promise chain to actually run everything
 const options = commander.opts();
