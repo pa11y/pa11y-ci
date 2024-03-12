@@ -342,25 +342,7 @@ module.exports = function (options) {
 
 ### Docker
 
-We could make use of [Puppeteer's official Docker image](https://pptr.dev/guides/docker) to run Pa11y CI inside a container. This would require the `SYS_ADMIN` capability, which increases the security surface of a container. We can avoid this by installing Puppeteer and Chromium afresh at the cost of a slightly more complex Dockerfile. This will also reduce the size of Puppeteer-related layers from over 2GB to ~750MB.
-
-1. Create a `./config.json`. Use the `--no-sandbox` argument for Chromium.
-
-    ```json
-    {
-        "defaults": {
-            "chromeLaunchConfig": {
-                "args": [
-                    "--no-sandbox"
-                ]
-            }
-        },
-        "urls": [
-            "https://pa11y.org/",
-            "https://pa11y.org/contributing"
-        ]
-    }
-    ```
+We could use [Puppeteer's official Docker image](https://pptr.dev/guides/docker) as the base of a Pa11y CI image. However, this would require the `SYS_ADMIN` capability, which will increase the security surface of the container. We can avoid this by installing Puppeteer and Chromium afresh at the cost of a more complex Dockerfile. This will also reduce the size of the Puppeteer-related layers from over 2GB to ~750MB.
 
 1. Create a `Dockerfile`. Install `pa11y-ci` within and expose `config.json`.
 
@@ -397,13 +379,33 @@ We could make use of [Puppeteer's official Docker image](https://pptr.dev/guides
     ENTRYPOINT ["pa11y-ci", "--config", "/usr/config.json"]
     ```
 
-1. Build and run the image.
+1. Create a `./config.json`. Use the `--no-sandbox` argument for Chromium.
 
-    ```shell
+    ```json
+    {
+        "defaults": {
+            "chromeLaunchConfig": {
+                "args": [
+                    "--no-sandbox"
+                ]
+            }
+        },
+        "urls": [
+            "https://pa11y.org/",
+            "https://pa11y.org/contributing"
+        ]
+    }
+    ```
+
+1. Build our configured image.
+
+    ```sh
     docker build -t pa11y-ci-for-some-project .
     ```
 
-    ```shell
+1. Create and run a container from the image.
+
+    ```sh
     docker run pa11y-ci-for-some-project
     ```
 
