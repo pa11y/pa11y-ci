@@ -342,7 +342,7 @@ module.exports = function (options) {
 
 ### Docker
 
-If you want to run `pa11y-ci` in a Docker container then you can use the [`buildkite/puppeteer`](https://github.com/buildkite/docker-puppeteer) image as this installs Chrome and all the required libs to run headless chrome on Linux.
+We could make use of [Puppeteer's official Docker image](https://pptr.dev/guides/docker) to run Pa11y CI inside a container. This would require the `SYS_ADMIN` capability, which increases the security surface of a container. We can avoid this by installing Puppeteer and Chromium afresh at the cost of a slightly more complex Dockerfile. This will also reduce the size of Puppeteer-related layers from over 2GB to ~750MB.
 
 You will need a `config.json` that sets the `--no-sandbox` Chromium launch arguments:
 
