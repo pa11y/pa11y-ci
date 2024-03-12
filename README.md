@@ -344,34 +344,68 @@ module.exports = function (options) {
 
 We could make use of [Puppeteer's official Docker image](https://pptr.dev/guides/docker) to run Pa11y CI inside a container. This would require the `SYS_ADMIN` capability, which increases the security surface of a container. We can avoid this by installing Puppeteer and Chromium afresh at the cost of a slightly more complex Dockerfile. This will also reduce the size of Puppeteer-related layers from over 2GB to ~750MB.
 
-You will need a `config.json` that sets the `--no-sandbox` Chromium launch arguments:
+1. Create a `./config.json`. Use the `--no-sandbox` argument for Chromium.
 
-```json
-{
-    "defaults": {
-        "chromeLaunchConfig": {
-            "args": [
-                "--no-sandbox"
-            ]
-        }
-    },
-    "urls": [
-        "https://pa11y.org/",
-        "https://pa11y.org/contributing"
-    ]
-}
-```
+    ```json
+    {
+        "defaults": {
+            "chromeLaunchConfig": {
+                "args": [
+                    "--no-sandbox"
+                ]
+            }
+        },
+        "urls": [
+            "https://pa11y.org/",
+            "https://pa11y.org/contributing"
+        ]
+    }
+    ```
 
-And then a Dockerfile that installs `pa11y-ci` and adds the `config.json`
+1. Create a `Dockerfile`. Install `pa11y-ci` within and expose `config.json`.
 
-```Dockerfile
-FROM buildkite/puppeteer:v1.15.0
+    ```Dockerfile
+    FROM node:20-alpine
 
-RUN npm install --global --unsafe-perm pa11y-ci
-ADD config.json /usr/config.json
+    # Install Chromium
+    RUN apk add --no-cache \
+        chromium
 
-ENTRYPOINT ["pa11y-ci", "-c", "/usr/config.json"]
-```
+    # Install Chromium's dependencies
+    RUN apk add --no-cache \
+        ca-certificates \
+        freetype \
+        harfbuzz \
+        nss \
+        ttf-freefont
+
+    # Switch user from 'root' to 'node' (inherited from node:alpine)
+    USER node
+
+    # Let's install global dependencies somewhere visitable by user 'node'
+    ENV NPM_CONFIG_PREFIX=/home/node/.npm-global
+    ENV PATH=$PATH:/home/node/.npm-global/bin
+
+    # Avoid downloading Chromium again
+    ENV PUPPETEER_SKIP_CHROMIUM_DOWNLOAD=true
+    ENV PUPPETEER_EXECUTABLE_PATH=/usr/bin/chromium-browser
+
+    # Install Pa11y CI and our config into the container
+    RUN npm install --global --unsafe-perm pa11y-ci
+    COPY ./config.json /usr/config.json
+
+    ENTRYPOINT ["pa11y-ci", "--config", "/usr/config.json"]
+    ```
+
+1. Build and run the image.
+
+    ```shell
+    docker build -t pa11y-ci-for-some-project .
+    ```
+
+    ```shell
+    docker run pa11y-ci-for-some-project
+    ```
 
 ## Tutorials and articles
 
