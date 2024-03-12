@@ -344,7 +344,7 @@ module.exports = function (options) {
 
 We could use [Puppeteer's official Docker image](https://pptr.dev/guides/docker) as the base of a Pa11y CI image. However, this would require the `SYS_ADMIN` capability, which will increase the security surface of the container. We can avoid this by installing Puppeteer and Chromium afresh at the cost of a more complex Dockerfile. This will also reduce the size of the Puppeteer-related layers from over 2GB to ~750MB.
 
-1. Create a `Dockerfile`. Install `pa11y-ci` within and expose `config.json`.
+1. Create a `Dockerfile`. Install `pa11y-ci` within and supply `config.json`.
 
     ```Dockerfile
     FROM node:20-alpine
