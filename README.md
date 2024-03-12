@@ -391,7 +391,7 @@ We could make use of [Puppeteer's official Docker image](https://pptr.dev/guides
     ENV PUPPETEER_EXECUTABLE_PATH=/usr/bin/chromium-browser
 
     # Install Pa11y CI and our config into the container
-    RUN npm install --global --unsafe-perm pa11y-ci
+    RUN npm install --global pa11y-ci
     COPY ./config.json /usr/config.json
 
     ENTRYPOINT ["pa11y-ci", "--config", "/usr/config.json"]
