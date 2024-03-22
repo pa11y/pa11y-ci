@@ -1,4 +1,3 @@
-/* eslint max-len: 'off' */
 'use strict';
 
 const assert = require('proclaim');
