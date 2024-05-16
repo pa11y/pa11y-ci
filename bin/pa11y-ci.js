@@ -127,6 +127,9 @@ function loadConfig(configPath) {
 				config = loadLocalConfigWithJs(configPath);
 			}
 			if (!config) {
+				config = loadLocalConfigWithCjs(configPath);
+			}
+			if (!config) {
 				config = loadLocalConfigWithJson(configPath);
 			}
 			if (options.config && !config) {
@@ -153,8 +156,8 @@ function resolveConfigPath(configPath) {
 	if (!path.isAbsolute(configPath)) {
 		configPath = path.join(process.cwd(), configPath);
 	}
-	if (/\.js(on)?$/.test(configPath)) {
-		configPath = configPath.replace(/\.js(on)?$/, '');
+	if (/\.(c?js|json)$/.test(configPath)) {
+		configPath = configPath.replace(/\.(c?js|json)$/, '');
 	}
 	return configPath;
 }
@@ -175,6 +178,17 @@ function loadLocalConfigUnmodified(configPath) {
 function loadLocalConfigWithJs(configPath) {
 	try {
 		return require(`${configPath}.js`);
+	} catch (error) {
+		if (error.code !== 'MODULE_NOT_FOUND') {
+			throw error;
+		}
+	}
+}
+
+// Load the config file but adding a .cjs extension
+function loadLocalConfigWithCjs(configPath) {
+	try {
+		return require(`${configPath}.cjs`);
 	} catch (error) {
 		if (error.code !== 'MODULE_NOT_FOUND') {
 			throw error;
