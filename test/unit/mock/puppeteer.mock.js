@@ -8,11 +8,11 @@ const puppeteer = module.exports = {
 
 const mockBrowser = (puppeteer.mockBrowser = {
 	close: sinon.stub(),
-	createIncognitoBrowserContext: sinon.spy(() => {
-		return {close: mockBrowser.createIncognitoBrowserContext.close};
+	createBrowserContext: sinon.spy(() => {
+		return {close: mockBrowser.createBrowserContext.close};
 	})
 });
 
-mockBrowser.createIncognitoBrowserContext.close = sinon.stub();
+mockBrowser.createBrowserContext.close = sinon.stub();
 
 puppeteer.launch.resolves(mockBrowser);
