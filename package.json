@@ -42,7 +42,7 @@
     "nyc": "^15.1.0",
     "pa11y-lint-config": "^3.0.0",
     "proclaim": "^3.6.0",
-    "sinon": "^17.0.1"
+    "sinon": "^18.0.0"
   },
   "main": "./lib/pa11y-ci.js",
   "bin": {
