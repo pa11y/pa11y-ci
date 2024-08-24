@@ -23,7 +23,7 @@
     "node": ">=18"
   },
   "dependencies": {
-    "async": "~3.2.5",
+    "async": "~3.2.6",
     "cheerio": "~1.0.0-rc.12",
     "commander": "~12.1.0",
     "globby": "~6.1.0",
