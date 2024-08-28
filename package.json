@@ -32,7 +32,7 @@
     "node-fetch": "~2.7.0",
     "pa11y": "^8.0.0",
     "protocolify": "~3.0.0",
-    "puppeteer": "^23.1.1",
+    "puppeteer": "^23.2.1",
     "wordwrap": "~1.0.0"
   },
   "devDependencies": {
