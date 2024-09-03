@@ -16,8 +16,8 @@ const path = require('path');
 const globby = require('globby');
 const protocolify = require('protocolify');
 const pkg = require('../package.json');
-const commander = require('commander');
-
+const {Command} = require('commander');
+const commander = new Command();
 
 // Here we're using Commander to specify the CLI options
 commander

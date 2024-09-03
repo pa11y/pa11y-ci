@@ -23,26 +23,26 @@
     "node": ">=18"
   },
   "dependencies": {
-    "async": "~3.2.5",
+    "async": "~3.2.6",
     "cheerio": "~1.0.0-rc.12",
-    "commander": "~11.1.0",
+    "commander": "~12.1.0",
     "globby": "~6.1.0",
     "kleur": "~4.1.5",
     "lodash": "~4.17.21",
     "node-fetch": "~2.7.0",
-    "pa11y": "^7.0.0",
+    "pa11y": "^8.0.0",
     "protocolify": "~3.0.0",
-    "puppeteer": "^20.9.0",
+    "puppeteer": "^23.2.1",
     "wordwrap": "~1.0.0"
   },
   "devDependencies": {
-    "eslint": "^8.56.0",
-    "mocha": "^10.3.0",
+    "eslint": "^8.57.0",
+    "mocha": "^10.7.3",
     "mockery": "^2.1.0",
-    "nyc": "^15.1.0",
+    "nyc": "^17.0.0",
     "pa11y-lint-config": "^3.0.0",
     "proclaim": "^3.6.0",
-    "sinon": "^17.0.1"
+    "sinon": "^18.0.0"
   },
   "main": "./lib/pa11y-ci.js",
   "bin": {
@@ -53,7 +53,7 @@
     "verify-coverage": "nyc check-coverage --lines 90 --functions 90 --branches 90",
     "test-unit": "mocha --file test/unit/setup.test.js 'test/unit/**/*.test.js' --recursive",
     "test-coverage": "nyc --reporter=text --reporter=html mocha --file test/unit/setup.test.js 'test/unit/**/*.test.js' --recursive",
-    "test-integration": "mocha --file test/integration/setup.test.js 'test/integration/**/*.test.js' test/integration/teardown.test.js --recursive --timeout 20000 --slow 5000",
+    "test-integration": "mocha --file test/integration/setup.test.js 'test/integration/**/*.test.js' test/integration/teardown.test.js --recursive --timeout 30000 --slow 5000",
     "test": "npm run test-coverage && npm run verify-coverage && npm run test-integration"
   },
   "files": [

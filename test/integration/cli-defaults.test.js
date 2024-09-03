@@ -15,7 +15,7 @@ describe('pa11y-ci (with default configurations set)', () => {
 	it('uses the default config for each URL', () => {
 		assert.include(global.lastResult.output, 'http://localhost:8090/passing-1 - Failed to run');
 		assert.include(global.lastResult.output, 'http://localhost:8090/passing-2 - Failed to run');
-		assert.include(global.lastResult.output, 'timed out');
+		assert.include(global.lastResult.output, 'timeout');
 	});
 
 });
