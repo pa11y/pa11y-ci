@@ -20,7 +20,7 @@ describe('lib/pa11y-ci', () => {
 		log = require('../mock/log.mock');
 
 		pa11y = require('../mock/pa11y.mock');
-		mockery.registerMock('pa11y', pa11y);
+		mockery.registerMock('@aarongoldenthal/pa11y', pa11y);
 
 		queue = sinon.spy(require('async/queue'));
 		mockery.registerMock('async/queue', queue);
