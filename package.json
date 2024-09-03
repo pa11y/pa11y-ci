@@ -24,7 +24,7 @@
   },
   "dependencies": {
     "async": "^3.2.6",
-    "cheerio": "^1.0.0-rc.12",
+    "cheerio": "^1.0.0",
     "commander": "^12.1.0",
     "globby": "^6.1.0",
     "kleur": "^4.1.5",
