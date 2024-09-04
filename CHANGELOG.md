@@ -1,5 +1,26 @@
 # Changelog
 
+## 4.0.0 (2024-09-03)
+
+### Changes
+
+* Initial release of the `@aarongoldenthal/pa11y-ci` fork, intended to actively maintain dependency updates.
+* BREAKING: Updated from `pa11y@6.2.3` to `@aarongoldenthal/pa11y@8.1.0` and from `puppeteer` from `9.1.1` to `23.2.1`.
+  * This includes multiple major versions of `pa11y` and `puppeteer`, and with that updating Chrome from v92 to v128.
+  * See the [migration guide](https://github.com/aarongoldenthal/pa11y-ci/blob/fork/MIGRATION.md#migrating-from-30-to-40) for details.
+* BREAKING: Deprecated support for Node.js versions 12, 14, and 16. Supported versions are now 18, 20, and 22.
+* Updated other `dependencies` with no functional changes (`async@3.2.6`, `cheerio@1.0.0`, `commander@12.1.0`, `globby@6.1.0`, `kleur@4.1.5`, `lodash@4.17.21`, `node-fetch@2.7.0`).
+* Updated `devDependencies` (`eslint@8.57.0`, `mocha@10.7.3`, `nyc@17.0.0`, `sinon@18.0.0`), which required minor refactoring of tests.
+* Expanded all dependency ranges to the default allowing patch and minor releases.
+* Configured [Renovate](https://docs.renovatebot.com/) to manage dependency updates.
+* Increased integration test timeouts to help with macOS test issues.
+
+See the [migration guide](https://github.com/aarongoldenthal/pa11y-ci/blob/fork/MIGRATION.md#migrating-from-30-to-40) for details.
+
+### Full changelog
+
+[3.1.0...4.0.0](https://github.com/aarongoldenthal/pa11y-ci/compare/3.1.0...4.0.0)
+
 ## 3.1.0 (2023-11-14)
 
 ### Changes

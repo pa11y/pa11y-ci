@@ -1,6 +1,6 @@
 {
-  "name": "pa11y-ci",
-  "version": "3.1.0",
+  "name": "@aarongoldenthal/pa11y-ci",
+  "version": "4.0.0",
   "description": "Pa11y CI is a CI-centric accessibility test runner, built using Pa11y",
   "keywords": [
     "accessibility",
@@ -10,19 +10,21 @@
   ],
   "author": "Team Pa11y",
   "contributors": [
-    "Rowan Manning (https://rowanmanning.com/)"
+    "Rowan Manning (https://rowanmanning.com/)",
+    "Aaron Goldenthal (https://github.com/aarongoldenthal)"
   ],
   "repository": {
     "type": "git",
-    "url": "https://github.com/pa11y/pa11y-ci.git"
+    "url": "https://github.com/aarongoldenthal/pa11y-ci.git"
   },
-  "homepage": "https://github.com/pa11y/pa11y-ci",
-  "bugs": "https://github.com/pa11y/pa11y-ci/issues",
+  "homepage": "https://github.com/aarongoldenthal/pa11y-ci",
+  "bugs": "https://github.com/aarongoldenthal/pa11y-ci/issues",
   "license": "LGPL-3.0-only",
   "engines": {
     "node": ">=18"
   },
   "dependencies": {
+    "@aarongoldenthal/pa11y": "github:aarongoldenthal/pa11y#semver:^8.1.0",
     "async": "^3.2.6",
     "cheerio": "^1.0.0",
     "commander": "^12.1.0",
@@ -30,7 +32,6 @@
     "kleur": "^4.1.5",
     "lodash": "^4.17.21",
     "node-fetch": "^2.7.0",
-    "pa11y": "^8.0.0",
     "protocolify": "^3.0.0",
     "puppeteer": "^23.2.1",
     "wordwrap": "^1.0.0"
@@ -53,7 +54,7 @@
     "verify-coverage": "nyc check-coverage --lines 90 --functions 90 --branches 90",
     "test-unit": "mocha --file test/unit/setup.test.js 'test/unit/**/*.test.js' --recursive",
     "test-coverage": "nyc --reporter=text --reporter=html mocha --file test/unit/setup.test.js 'test/unit/**/*.test.js' --recursive",
-    "test-integration": "mocha --file test/integration/setup.test.js 'test/integration/**/*.test.js' test/integration/teardown.test.js --recursive --timeout 30000 --slow 5000",
+    "test-integration": "mocha --file test/integration/setup.test.js 'test/integration/**/*.test.js' test/integration/teardown.test.js --recursive --timeout 30000",
     "test": "npm run test-coverage && npm run verify-coverage && npm run test-integration"
   },
   "files": [

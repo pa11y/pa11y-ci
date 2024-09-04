@@ -2,6 +2,17 @@
 
 Major versions of Pa11y CI can bring API or compatibility changes. This is a guide to help you make the switch when that happens.
 
+## Migrating from 3.0 to 4.0
+
+`@aarongoldenthal/pa11y-ci` v4 requires a stable (even-numbered) Node.js version of 18 or above.
+
+This includes moving to `@aarongoldenthal/pa11y` v8.0.0 (upgrading from from `pa11y@6.1.1`), upgrading `puppeteer` from `9.1.1` to `23.2.1`, and Chrome from v92 to v128. Puppeteer v22 and subs default to Chrome's [_new_ headless mode](https://developer.chrome.com/docs/chromium/new-headless) to more closely mimic the behavior of headful Chrome. This may affect performance; see the [Puppeteer docs](https://github.com/puppeteer/puppeteer?tab=readme-ov-file#default-runtime-settings) for more information.
+
+* If you were using a `chromeLaunchConfig` with `headless: 'new'`, change to `headless: true` or remove the `headless` setting as `true` is now the default.
+* If you were using a `chromeLaunchConfig` with `headless: true` or no `headless` setting, and want to continue use the previous headless mode, change to `headless: 'shell'`.
+
+See the `@aarongoldenthal/pa11y` [migration guide](https://github.com/aarongoldenthal/pa11y/blob/fork/MIGRATION.md) for details on the changes from 6.0 to 8.0.
+
 ## Migrating from 2.0 to 3.0
 
 ### New defaults for `concurrency` and `useIncognitoBrowserContext`
