@@ -24,7 +24,7 @@
     "node": ">=18"
   },
   "dependencies": {
-    "@aarongoldenthal/pa11y": "github:aarongoldenthal/pa11y#semver:^8.1.0",
+    "@aarongoldenthal/pa11y": "github:aarongoldenthal/pa11y#semver:^8.1.2",
     "async": "^3.2.6",
     "cheerio": "^1.0.0",
     "commander": "^12.1.0",
