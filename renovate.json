@@ -26,6 +26,17 @@
       "enabled": false
 	}
   ],
+  "customManagers": [
+    {
+      "description": "Update git repo packages with semver ranges",
+      "customType": "regex",
+      "fileMatch": ["^package\\.json$"],
+      "matchStrings": [
+        "^github:(?<packageName>.+)#semver:(?<currentValue>.+)$"
+      ],
+      "datasourceTemplate": "github-releases"
+      }
+	],
   "rangeStrategy": "bump",
   "rebaseWhen": "behind-base-branch",
   "timezone": "America/Chicago"
