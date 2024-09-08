@@ -1,5 +1,11 @@
 # Changelog
 
+## 4.0.1 (2024-09-08)
+
+### Fixes
+
+* Updated to latest dependencies (`@aarongoldenthal/pa11y@8.1.2`, `puppeteer@23.3.0`).
+
 ## 4.0.0 (2024-09-03)
 
 ### Changes
