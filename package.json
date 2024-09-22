@@ -15,7 +15,7 @@
   ],
   "repository": {
     "type": "git",
-    "url": "https://github.com/aarongoldenthal/pa11y-ci.git"
+    "url": "git+https://github.com/aarongoldenthal/pa11y-ci.git"
   },
   "homepage": "https://github.com/aarongoldenthal/pa11y-ci",
   "bugs": "https://github.com/aarongoldenthal/pa11y-ci/issues",
@@ -47,7 +47,7 @@
   },
   "main": "./lib/pa11y-ci.js",
   "bin": {
-    "pa11y-ci": "./bin/pa11y-ci.js"
+    "pa11y-ci": "bin/pa11y-ci.js"
   },
   "scripts": {
     "lint": "eslint .",
