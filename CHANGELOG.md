@@ -1,5 +1,11 @@
 # Changelog
 
+## 4.0.2 (2024-09-22)
+
+### Fixes
+
+* Updated to latest dependencies (`pa11y@8.1.3`, `puppeteer@23.4.0`). This includes updating `puppeteer` to Chrome 129.
+
 ## 4.0.1 (2024-09-08)
 
 ### Fixes
