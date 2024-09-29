@@ -1,5 +1,11 @@
 # Changelog
 
+## 4.0.3 (2024-09-29)
+
+### Fixes
+
+* Updated to latest dependencies (`pa11y@8.1.4`, `puppeteer@23.4.1`). This includes security patches for `puppeteer` Chrome 129.
+
 ## 4.0.2 (2024-09-22)
 
 ### Fixes
