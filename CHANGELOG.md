@@ -1,5 +1,13 @@
 # Changelog
 
+## 4.1.0 (2024-10-20)
+
+### Changes
+
+- Updated to [`aarongoldenthal/pa11y@8.2.0`](https://github.com/aarongoldenthal/pa11y/releases/tag/8.2.0), with the following changes:
+  - Updated to `puppeteer@23.6.0`, which includes updating to Chrome 130.
+  - Updated to `axe-core@4.10.1`, which fixed several false positives.
+
 ## 4.0.4 (2024-10-13)
 
 ### Fixes
