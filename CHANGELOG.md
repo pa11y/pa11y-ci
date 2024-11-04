@@ -1,5 +1,18 @@
 # Changelog
 
+## 4.1.1 (2024-11-03)
+
+### Fixes
+
+- Updated to [`aarongoldenthal/pa11y@8.2.1`](https://github.com/aarongoldenthal/pa11y/releases/tag/8.2.1), with the following changes:
+  - Updated to `axe-core@4.10.2`, which fixed several false positives.
+  - Updated to `puppeteer@23.6.1`, which includes updating to Chrome 130.
+
+### Miscellaneous
+
+- Moved `lint` CI job to Node 22, which is the Active LTS release as of 2024-10-29.
+- Added tests for Node 23, released 2024-10-24.
+
 ## 4.1.0 (2024-10-20)
 
 ### Changes
