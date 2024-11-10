@@ -1,5 +1,12 @@
 # Changelog
 
+## 4.2.0 (2024-11-10)
+
+### Changes
+
+- Updated to [`aarongoldenthal/pa11y@8.3.0`](https://github.com/aarongoldenthal/pa11y/releases/tag/8.3.0), with the following changes:
+  - Updated to `puppeteer@23.7.1`, which includes security updates to Chrome 130 and updating to Firefox 132.
+
 ## 4.1.1 (2024-11-03)
 
 ### Fixes

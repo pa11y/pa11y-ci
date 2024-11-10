@@ -432,8 +432,8 @@ Copyright &copy; 2016-2023, Team Pa11y and contributors
 
 [info-license]: LICENSE
 [info-node]: package.json
-[info-npm]: https://www.npmjs.com/package/pa11y-ci
-[info-build]: https://github.com/pa11y/pa11y-ci/actions/workflows/tests.yml
+[info-npm]: https://www.npmjs.com/package/@aarongoldenthal/pa11y-ci
+[info-build]: https://github.com/@aarongoldenthal/pa11y-ci/actions/workflows/tests.yml
 
 [shield-license]: https://img.shields.io/badge/license-LGPL--3.0--only-blue.svg
 [shield-node]: https://img.shields.io/node/v/pa11y-ci.svg
