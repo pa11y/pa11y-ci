@@ -1,5 +1,16 @@
 # Changelog
 
+## 4.3.0 (2024-11-17)
+
+### Changes
+
+- Updated to [`aarongoldenthal/pa11y@8.4.0`](https://github.com/aarongoldenthal/pa11y/releases/tag/8.4.0), with the following changes:
+  - Updated to `puppeteer@23.8.0`, which includes updating to Chrome 131.
+
+### Fixes
+
+- Updated integration tests to ensure run serially, as `mocha@8` introduced parallel test running. These tests use global state and sequences setup/teardown, so they can produce erroneous results if run in parallel with nondeterministic order.
+
 ## 4.2.0 (2024-11-10)
 
 ### Changes
