@@ -27,7 +27,7 @@
     "@aarongoldenthal/pa11y": "^8.4.4",
     "async": "^3.2.6",
     "cheerio": "^1.0.0",
-    "commander": "^12.1.0",
+    "commander": "^13.0.0",
     "globby": "^6.1.0",
     "kleur": "^4.1.5",
     "lodash": "^4.17.21",

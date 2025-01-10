@@ -55,6 +55,7 @@ commander
 		'--reporter <reporter>',
 		'the reporter to use. Can be a npm module or a path to a local file.'
 	)
+	.allowExcessArguments()
 	.parse(process.argv);
 
 // Parse the args into valid paths using glob and protocolify
