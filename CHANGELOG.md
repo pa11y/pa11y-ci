@@ -1,5 +1,12 @@
 # Changelog
 
+## 4.4.1 (2025-01-19)
+
+### Changes
+
+- Updated to [`aarongoldenthal/pa11y@8.5.1`](https://github.com/aarongoldenthal/pa11y/releases/tag/8.5.1), with the following changes:
+  - Updated to `puppeteer@24.1.0`, which includes updating to Chrome 132.
+
 ## 4.4.0 (2025-01-10)
 
 ### Changes
