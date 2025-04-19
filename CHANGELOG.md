@@ -1,5 +1,12 @@
 # Changelog
 
+## 4.6.1 (2025-04-19)
+
+### Fixes
+
+- Updated to [`aarongoldenthal/pa11y@8.7.1`](https://github.com/aarongoldenthal/pa11y/releases/tag/8.7.1), with the following changes:
+  - Updated to [`puppeteer@24.6.1`](https://github.com/puppeteer/puppeteer/releases), which includes fixes and security updates to Chrome 135 and Firefox 137.
+
 ## 4.6.0 (2025-04-03)
 
 ### Changes
