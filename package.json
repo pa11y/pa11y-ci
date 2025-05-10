@@ -1,6 +1,6 @@
 {
-  "name": "@aarongoldenthal/pa11y-ci",
-  "version": "4.6.2",
+  "name": "pa11y-ci",
+  "version": "3.1.0",
   "description": "Pa11y CI is a CI-centric accessibility test runner, built using Pa11y",
   "keywords": [
     "accessibility",
@@ -15,10 +15,10 @@
   ],
   "repository": {
     "type": "git",
-    "url": "git+https://github.com/aarongoldenthal/pa11y-ci.git"
+    "url": "https://github.com/pa11y/pa11y-ci.git"
   },
-  "homepage": "https://github.com/aarongoldenthal/pa11y-ci",
-  "bugs": "https://github.com/aarongoldenthal/pa11y-ci/issues",
+  "homepage": "https://github.com/pa11y/pa11y-ci",
+  "bugs": "https://github.com/pa11y/pa11y-ci/issues",
   "license": "LGPL-3.0-only",
   "engines": {
     "node": ">=18"
@@ -47,14 +47,14 @@
   },
   "main": "./lib/pa11y-ci.js",
   "bin": {
-    "pa11y-ci": "bin/pa11y-ci.js"
+    "pa11y-ci": "./bin/pa11y-ci.js"
   },
   "scripts": {
     "lint": "eslint .",
     "verify-coverage": "nyc check-coverage --lines 90 --functions 90 --branches 90",
     "test-unit": "mocha --file test/unit/setup.test.js 'test/unit/**/*.test.js' --recursive",
     "test-coverage": "nyc --reporter=text --reporter=html mocha --file test/unit/setup.test.js 'test/unit/**/*.test.js' --recursive",
-    "test-integration": "mocha --file test/integration/setup.test.js 'test/integration/**/*.test.js' test/integration/teardown.test.js --recursive --timeout 30000 --jobs 1",
+    "test-integration": "mocha --file test/integration/setup.test.js 'test/integration/**/*.test.js' test/integration/teardown.test.js --recursive --timeout 20000 --slow 5000",
     "test": "npm run test-coverage && npm run verify-coverage && npm run test-integration"
   },
   "files": [

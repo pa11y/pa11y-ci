@@ -409,16 +409,14 @@ When we release a new major version we will continue to support the previous maj
 
 The following table lists the major versions available and, for each previous major version, its end-of-support date, and its final minor version released.
 
-| Major version | Final minor release | Node.js LTS support | Support end date         |
-| :------------ | :------------------ | :------------------ | :----------------------- |
-| `4`           |                     | `^18`, `^20`, `^22` | ✅ Current major version |
-| `3`           | `3.1.0`             | `>= 12` ([Ubuntu caveat](#pa11y-ci-3-and-ubuntu))| May 2024 |
-| `2`           | `2.4.2`             | `>= 8`              | 2022-05-26               |
-| `1`           | `1.3`               | `>= 4`              | 2018-04-18               |
+| Major version | Final minor release | Node.js LTS support | Support end date |
+| :------------ | :------------------ | :------------------ | :--------------- |
+| 🔜 `4`        |                     | `>= 18`             |                  |
+| `3`           | Imminent            | `>= 12` ([Ubuntu caveat](#pa11y-ci-3-and-ubuntu))| May 2024 |
+| `2`           | `2.4.2`             | `>= 8`              | 2022-05-26       |
+| `1`           | `1.3`               | `>= 4`              | 2018-04-18       |
 
-> Note the `fork` branch of this repository is the default branch and has changes from the upstream `pa11y` repository and all tagged releases. The upstream `pa11y` repository's `main` branch is mirrored here.
-
-## License
+## Licence
 
 Licensed under the [Lesser General Public License (LGPL-3.0-only)](LICENSE).  
 Copyright &copy; 2016-2023, Team Pa11y and contributors
@@ -432,8 +430,8 @@ Copyright &copy; 2016-2023, Team Pa11y and contributors
 
 [info-license]: LICENSE
 [info-node]: package.json
-[info-npm]: https://www.npmjs.com/package/@aarongoldenthal/pa11y-ci
-[info-build]: https://github.com/@aarongoldenthal/pa11y-ci/actions/workflows/tests.yml
+[info-npm]: https://www.npmjs.com/package/pa11y-ci
+[info-build]: https://github.com/pa11y/pa11y-ci/actions/workflows/tests.yml
 
 [shield-license]: https://img.shields.io/badge/license-LGPL--3.0--only-blue.svg
 [shield-node]: https://img.shields.io/node/v/pa11y-ci.svg
