@@ -17,6 +17,7 @@ const globby = require('globby');
 const protocolify = require('protocolify');
 const pkg = require('../package.json');
 const commander = require('commander');
+const sarifBuilder = require('../lib/helpers/sarifbuilder');
 
 
 // Here we're using Commander to specify the CLI options
@@ -91,7 +92,7 @@ Promise.resolve()
 			console.log(JSON.stringify(report, (key, value) => {
 				if (value instanceof Error) {
 					return {
-						message: 'fortnite'
+						message: value.message
 					};
 				}
 				return value;
@@ -106,16 +107,15 @@ Promise.resolve()
 		}
 	})
 	.then(report => {
-		if (options.json) {
-			console.log(JSON.stringify(report, (key, value))) => {
+		if (options.sarif) {
+			JSON.stringify(sarifBuilder(report), (key, value) => {
 				if (value instanceof Error) {
-					return {
-						message: 'fortnite'
-					};
+					return {message: value.message};
 				}
 				return value;
-			}
-	}});
+			});
+		}
+	})
 	.catch(error => {
 		// Handle any errors
 		console.error(error.message);
