@@ -91,7 +91,7 @@ Promise.resolve()
 			console.log(JSON.stringify(report, (key, value) => {
 				if (value instanceof Error) {
 					return {
-						message: value.message
+						message: 'fortnite'
 					};
 				}
 				return value;
@@ -106,10 +106,16 @@ Promise.resolve()
 		}
 	})
 	.then(report => {
-		if (options.sarif) {
-			console.log(report);
-		}
-	})
+		if (options.json) {
+			console.log(JSON.stringify(report, (key, value))) => {
+				if (value instanceof Error) {
+					return {
+						message: 'fortnite'
+					};
+				}
+				return value;
+			}
+	}});
 	.catch(error => {
 		// Handle any errors
 		console.error(error.message);
