@@ -46,7 +46,7 @@ commander
 	.option(
 		'-j, --json',
 		'Output results as JSON'
-	)
+	).option('-s, --sarif', 'Output results as SARIF')
 	.option(
 		'-T, --threshold <number>',
 		'permit this number of errors, warnings, or notices, otherwise fail with exit code 2',
@@ -103,6 +103,11 @@ Promise.resolve()
 			process.exitCode = 2;
 		} else {
 			process.exitCode = 0;
+		}
+	})
+	.then(report => {
+		if (options.sarif) {
+			console.log(report);
 		}
 	})
 	.catch(error => {
