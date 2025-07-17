@@ -15,7 +15,7 @@ describe('pa11y-ci (with default reporter)', () => {
 		assert.include(global.lastResult.stdout, 'Running Pa11y on 2 URLs');
 		assert.include(global.lastResult.stderr, 'http://localhost:8090/passing-1 - Failed to run');
 		assert.include(global.lastResult.stderr, 'http://localhost:8090/passing-2 - Failed to run');
-		assert.include(global.lastResult.stderr, 'timed out');
+		assert.include(global.lastResult.stderr, 'timeout');
 	});
 
 });
@@ -149,7 +149,7 @@ describe('pa11y-ci (with multiple reporters)', () => {
 		assert.include(global.lastResult.stdout, 'Running Pa11y on 2 URLs');
 		assert.include(global.lastResult.stderr, 'http://localhost:8090/passing-1 - Failed to run');
 		assert.include(global.lastResult.stderr, 'http://localhost:8090/passing-2 - Failed to run');
-		assert.include(global.lastResult.stderr, 'timed out');
+		assert.include(global.lastResult.stderr, 'timeout');
 	});
 
 });

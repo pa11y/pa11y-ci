@@ -16,8 +16,8 @@ const path = require('path');
 const globby = require('globby');
 const protocolify = require('protocolify');
 const pkg = require('../package.json');
-const commander = require('commander');
-
+const {Command} = require('commander');
+const commander = new Command();
 
 // Here we're using Commander to specify the CLI options
 commander
@@ -55,6 +55,7 @@ commander
 		'--reporter <reporter>',
 		'the reporter to use. Can be a npm module or a path to a local file.'
 	)
+	.allowExcessArguments()
 	.parse(process.argv);
 
 // Parse the args into valid paths using glob and protocolify
@@ -100,15 +101,15 @@ Promise.resolve()
 		// Decide on an exit code based on whether
 		// errors are below threshold or everything passes
 		if (report.errors >= parseInt(options.threshold, 10) && report.passes < report.total) {
-			process.exitCode = 2;
+			process.exit(2);
 		} else {
-			process.exitCode = 0;
+			process.exit(0);
 		}
 	})
 	.catch(error => {
 		// Handle any errors
 		console.error(error.message);
-		process.exitCode = 1;
+		process.exit(1);
 	});
 
 // This function loads the JSON or JavaScript config

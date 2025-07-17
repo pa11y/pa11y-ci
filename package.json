@@ -10,7 +10,8 @@
   ],
   "author": "Team Pa11y",
   "contributors": [
-    "Rowan Manning (https://rowanmanning.com/)"
+    "Rowan Manning (https://rowanmanning.com/)",
+    "Aaron Goldenthal (https://github.com/aarongoldenthal)"
   ],
   "repository": {
     "type": "git",
@@ -20,29 +21,29 @@
   "bugs": "https://github.com/pa11y/pa11y-ci/issues",
   "license": "LGPL-3.0-only",
   "engines": {
-    "node": ">=18"
+    "node": ">=20"
   },
   "dependencies": {
-    "async": "~3.2.5",
-    "cheerio": "~1.0.0-rc.12",
-    "commander": "~11.1.0",
+    "async": "~3.2.6",
+    "cheerio": "~1.0.0",
+    "commander": "~13.1.0",
     "globby": "~6.1.0",
     "kleur": "~4.1.5",
     "lodash": "~4.17.21",
     "node-fetch": "~2.7.0",
-    "pa11y": "^7.0.0",
+    "pa11y": "^9.0.0",
     "protocolify": "~3.0.0",
-    "puppeteer": "^20.9.0",
+    "puppeteer": "^24.7.2",
     "wordwrap": "~1.0.0"
   },
   "devDependencies": {
-    "eslint": "^8.56.0",
-    "mocha": "^10.3.0",
+    "eslint": "^8.57.1",
+    "mocha": "^11.1.0",
     "mockery": "^2.1.0",
-    "nyc": "^15.1.0",
+    "nyc": "^17.1.0",
     "pa11y-lint-config": "^3.0.0",
     "proclaim": "^3.6.0",
-    "sinon": "^17.0.1"
+    "sinon": "^20.0.0"
   },
   "main": "./lib/pa11y-ci.js",
   "bin": {
