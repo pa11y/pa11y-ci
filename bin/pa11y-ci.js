@@ -47,7 +47,7 @@ commander
 	.option(
 		'-j, --json',
 		'Output results as JSON'
-	).option('--sarif', 'Output results as SARIF')
+	).option('-sa ,--sarif', 'Output results as SARIF')
 	.option(
 		'-T, --threshold <number>',
 		'permit this number of errors, warnings, or notices, otherwise fail with exit code 2',
@@ -87,17 +87,6 @@ Promise.resolve()
 		return pa11yCi(urls.concat(config.urls || []), config.defaults);
 	})
 	.then(report => {
-		if (options.sarif) {
-			// console.log(report);
-			console.log(JSON.stringify(sarifBuilder(report), (key, value) => {
-				if (value instanceof Error) {
-					return {message: value.message};
-				}
-				return value;
-			}));
-		}
-	})
-	.then(report => {
 		// Output JSON if asked for it
 		// console.log(report);
 		if (options.json) {
@@ -117,6 +106,26 @@ Promise.resolve()
 		} else {
 			process.exitCode = 0;
 		}
+	})
+	.then(report => {
+		if (options.sarif) {
+			// console.log(report);
+			console.log(JSON.stringify(sarifBuilder(report), (key, value) => {
+				if (value instanceof Error) {
+					return {message: value.message};
+				}
+				return value;
+			}));
+		}
+		if (
+			report.errors >= parseInt(options.threshold, 10) &&
+			report.passes < report.total
+		) {
+			process.exitCode = 2;
+		} else {
+			process.exitCode = 0;
+		}
+
 	})
 	.catch(error => {
 		// Handle any errors
