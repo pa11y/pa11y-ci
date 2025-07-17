@@ -37,7 +37,7 @@
 					  "physicalLocation":{
 						 "artifactLocation":{
 							"uri":"https://byuri.moe/"
-						 },
+						 }
 
 					  },
 					  "logicalLocations":[
@@ -49,9 +49,10 @@
 				   }
 				],
 				"properties":{
-				   "context":"<span class=""flex size-full items-center justify-center bg-muted"">b",
+				   "context":"test",
 				   "runner":"htmlcs"
 				}
+
 			 }
 		  ]
 	   }

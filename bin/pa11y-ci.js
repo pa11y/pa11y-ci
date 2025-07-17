@@ -87,7 +87,19 @@ Promise.resolve()
 		return pa11yCi(urls.concat(config.urls || []), config.defaults);
 	})
 	.then(report => {
+		if (options.sarif) {
+			// console.log(report);
+			console.log(JSON.stringify(sarifBuilder(report), (key, value) => {
+				if (value instanceof Error) {
+					return {message: value.message};
+				}
+				return value;
+			}));
+		}
+	})
+	.then(report => {
 		// Output JSON if asked for it
+		// console.log(report);
 		if (options.json) {
 			console.log(JSON.stringify(report, (key, value) => {
 				if (value instanceof Error) {
@@ -104,16 +116,6 @@ Promise.resolve()
 			process.exitCode = 2;
 		} else {
 			process.exitCode = 0;
-		}
-	})
-	.then(report => {
-		if (options.sarif) {
-			JSON.stringify(sarifBuilder(report), (key, value) => {
-				if (value instanceof Error) {
-					return {message: value.message};
-				}
-				return value;
-			});
 		}
 	})
 	.catch(error => {
