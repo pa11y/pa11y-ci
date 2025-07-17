@@ -53,7 +53,7 @@ describe('pa11y-ci (with multiple erroring URLs)', () => {
 		assert.include(global.lastResult.output, 'Errors in ./foo/erroring.html');
 		assert.include(global.lastResult.output, 'net::ERR_FILE_NOT_FOUND');
 		assert.include(global.lastResult.output, 'Errors in http://localhost:8090/timeout');
-		assert.include(global.lastResult.output, 'timed out');
+		assert.include(global.lastResult.output, 'timeout');
 	});
 
 	it('outputs a total erroring notice', () => {
