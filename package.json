@@ -52,9 +52,9 @@
   "scripts": {
     "lint": "eslint .",
     "verify-coverage": "nyc check-coverage --lines 90 --functions 90 --branches 90",
-    "test-unit": "mocha --file test/unit/setup.test.js \"test/unit/**/*.test.js\"",
-    "test-coverage": "nyc --reporter=text --reporter=html mocha --file test/unit/setup.test.js \"test/unit/**/*.test.js\"",
-    "test-integration": "mocha --file test/integration/setup.test.js \"test/integration/**/*.test.js\" test/integration/teardown.test.js --timeout 20000 --slow 5000",
+    "test-unit": "mocha --file test/unit/setup.test.js \"test/unit/**/*.test.js\" --fail-zero",
+    "test-coverage": "nyc --reporter=text --reporter=html mocha --file test/unit/setup.test.js \"test/unit/**/*.test.js\" --fail-zero",
+    "test-integration": "mocha --file test/integration/setup.test.js \"test/integration/**/*.test.js\" test/integration/teardown.test.js --timeout 20000 --slow 5000 --fail-zero",
     "test": "npm run test-coverage && npm run verify-coverage && npm run test-integration"
   },
   "files": [
