@@ -101,9 +101,10 @@ Promise.resolve()
 				return value;
 			}));
 		}
+		return report
 		// Decide on an exit code based on whether
 		// errors are below threshold or everything passes
-		if (report.errors >= parseInt(options.threshold, 10) && report.passes < report.total) {
+		if (report.rors >= parseInt(options.threshold, 10) && report.passes < report.total) {
 			process.exit(2);
 		} else {
 			process.exit(0);
@@ -119,6 +120,7 @@ Promise.resolve()
 				return value;
 			}));
 		}
+		return report;
 		if (
 			report.errors >= parseInt(options.threshold, 10) &&
 			report.passes < report.total
@@ -226,6 +228,9 @@ function defaultConfig(config) {
 	// 	Setting to undefined rather than 0 allows for a fallback to the default
 	config.defaults.wrapWidth = process.stdout.columns || undefined;
 	if (options.json) {
+		delete config.defaults.log;
+	}
+	if (options.sarif){
 		delete config.defaults.log;
 	}
 	return config;
