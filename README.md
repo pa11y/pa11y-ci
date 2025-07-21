@@ -11,11 +11,11 @@ Use this tool to test against a list of URLs or a sitemap, and report on issues 
 
 ## Requirements
 
-This command line tool requires a stable (even-numbered) [Node.js] version of 18 or above.
+This command line tool requires a stable (even-numbered) [Node.js] version of 20 or above.
 
 ### Pa11y CI 3 and Ubuntu
 
-To use version 3 of Pa11y CI with a version of Ubuntu above `20.04`, a path for the Chrome executable [must be defined in your Pa11y CI config][ubuntu-fix], as `defaults.chromeLaunchConfig.executablePath`. Version 4 of Pa11y CI, which will use Pa11y 7 along with a more recent version of Puppeteer, will resolve this issue.
+To use version 3 of Pa11y CI with a version of Ubuntu above `20.04`, a path for the Chrome executable [must be defined in your Pa11y CI config][ubuntu-fix], as `defaults.chromeLaunchConfig.executablePath`. Version 4 of Pa11y CI, which uses Pa11y 9 along with a more recent version of Puppeteer, resolves this issue.
 
 ## Usage
 
@@ -409,17 +409,17 @@ When we release a new major version we will continue to support the previous maj
 
 The following table lists the major versions available and, for each previous major version, its end-of-support date, and its final minor version released.
 
-| Major version | Final minor release | Node.js LTS support | Support end date |
-| :------------ | :------------------ | :------------------ | :--------------- |
-| 🔜 `4`        |                     | `>= 18`             |                  |
-| `3`           | Imminent            | `>= 12` ([Ubuntu caveat](#pa11y-ci-3-and-ubuntu))| May 2024 |
-| `2`           | `2.4.2`             | `>= 8`              | 2022-05-26       |
-| `1`           | `1.3`               | `>= 4`              | 2018-04-18       |
+| Major version | Final minor release | Node.js LTS support | Support end date         |
+| :------------ | :------------------ | :------------------ | :----------------------- |
+| `4`           |                     | `20`, `22`, `24`    | ✅ Current major version |
+| `3`           | `3.1.0`             | `>= 12` ([Ubuntu caveat](#pa11y-ci-3-and-ubuntu))| May 2024 |
+| `2`           | `2.4.2`             | `>= 8`              | 2022-05-26               |
+| `1`           | `1.3`               | `>= 4`              | 2018-04-18               |
 
 ## Licence
 
 Licensed under the [Lesser General Public License (LGPL-3.0-only)](LICENSE).  
-Copyright &copy; 2016-2023, Team Pa11y and contributors
+Copyright &copy; 2016-2025, Team Pa11y and contributors
 
 [glob]: https://github.com/isaacs/node-glob#glob
 [node.js]: https://nodejs.org/
