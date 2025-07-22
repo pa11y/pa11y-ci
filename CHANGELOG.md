@@ -12,7 +12,7 @@ Pa11y CI 4.0.0 requires a stable (even-numbered) Node.js version of `20` or abov
   * Upgrade `axe-core` to `4.10` from `4.2`. This includes rule fixes that may change results when using the `axe` runner. See axe-core [releases](https://github.com/dequelabs/axe-core/releases) for complete details.
   * Upgrade `semver` to `7.7` from `7.3`, resolving [CVE-2022-25883](https://github.com/advisories/GHSA-c2qf-rxjj-qqgw).
 * Fixed issue with `pa11y-ci` process hanging if `browser` passed from config file. (#248)
-* Other dependency upgrades: `commander` to `13.1`, `async` to `3.2`, `cheerio` to `1.0`, and `node-fetch` to `2.7`.
+* Other dependency upgrades: `commander` to `14.0`, `async` to `3.2`, `cheerio` to `1.1`, and `node-fetch` to `2.7`.
 * GitHub Actions changes: Update workflows for supported Node version, [Ubuntu 24.04 compatibility](https://chromium.googlesource.com/chromium/src/+/main/docs/security/apparmor-userns-restrictions.md), and [publishing package with provenance](https://github.blog/security/supply-chain-security/introducing-npm-package-provenance/).
 * Other changes: Refactor code and tests for dependency compatibility, update support table and fix some links in the README.
 
