@@ -1,5 +1,29 @@
 # Changelog
 
+## 4.0.0 (2025-07-22)
+
+Pa11y CI 4.0.0 requires a stable (even-numbered) Node.js version of `20` or above, updates to the latest version of Pa11y (`9`) and Puppeteer (`24`), updates several other dependencies, and includes some GitHub actions and documentation cleanup. See the [migration guide](https://github.com/pa11y/pa11y-ci/blob/main/MIGRATION.md#migrating-from-30-to-40) for details.
+
+### Changes
+
+* **Breaking**: Upgrade Node.js support: Pa11y CI 4 requires a stable (even-numbered) Node.js version of `20` or above, dropping support for Node 12, 14, 16, 18.
+* **Breaking**: Upgrade `pa11y` to `9` (from `6`), which updates numerous dependencies, fixes issues with Pa11y CI failing to run on Ubuntu 24.04, and resolves several vulnerabilities and deprecated packages (closing [#198](https://github.com/pa11y/pa11y-ci/issues/198), [#227](https://github.com/pa11y/pa11y-ci/issues/227), [#242](https://github.com/pa11y/pa11y-ci/issues/242), [#247](https://github.com/pa11y/pa11y-ci/issues/247)).
+  * Upgrade `puppeteer` to `24` (from `9.1`), which updates to the current Chrome. This changes Chrome's default headless mode, see the [migration guide](https://github.com/pa11y/pa11y-ci/blob/main/MIGRATION.md#migrating-from-30-to-40) for details. Also expand the `puppeteer` dependency compatibility to caret (patch and minor releases) to allow upgrades to a more recent compatible version upon install (which frequently contains Chrome updates and security patches).
+  * Upgrade `axe-core` to `4.10` from `4.2`. This includes rule fixes that may change results when using the `axe` runner. See axe-core [releases](https://github.com/dequelabs/axe-core/releases) for complete details.
+  * Upgrade `semver` to `7.7` from `7.3`, resolving [CVE-2022-25883](https://github.com/advisories/GHSA-c2qf-rxjj-qqgw).
+* Fixed issue with `pa11y-ci` process hanging if `browser` passed from config file. (#248)
+* Other dependency upgrades: `commander` to `14.0`, `async` to `3.2`, `cheerio` to `1.1`, and `node-fetch` to `2.7`.
+* GitHub Actions changes: Update workflows for supported Node version, [Ubuntu 24.04 compatibility](https://chromium.googlesource.com/chromium/src/+/main/docs/security/apparmor-userns-restrictions.md), and [publishing package with provenance](https://github.blog/security/supply-chain-security/introducing-npm-package-provenance/).
+* Other changes: Refactor code and tests for dependency compatibility, update support table and fix some links in the README.
+
+See the [migration guide](https://github.com/pa11y/pa11y-ci/blob/main/MIGRATION.md#migrating-from-30-to-40) for details.
+
+### Full changelog
+
+[3.1.0...4.0.0](https://github.com/pa11y/pa11y-ci/compare/3.1.0...4.0.0)
+
+### Changes
+
 ## 3.1.0 (2023-11-14)
 
 ### Changes
