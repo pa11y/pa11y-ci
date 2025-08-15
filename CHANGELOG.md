@@ -1,5 +1,15 @@
 # Changelog
 
+## 4.0.1 (2025-08-15)
+
+Pa11y CI 4.0.1 reintroduces compatibility for node `>=20.0.0 <20.18.1`. (At the time of writing, `v20.19.4` is the latest version of node `20`.)
+
+Pa11y CI 4.0.0 updated the `cheerio` dependency to `1.1.2`. But this causes `EBADENGINE` warnings when installing, if node `<20.18.1`. We target compatibility with node `>20`, which after [some discussion](https://github.com/pa11y/pa11y-ci/pull/272) we think should mean `>=20.0.0`.
+
+### Full changelog
+
+[4.0.0...4.0.1](https://github.com/pa11y/pa11y-ci/compare/4.0.0...4.0.1)
+
 ## 4.0.0 (2025-07-22)
 
 Pa11y CI 4.0.0 requires a stable (even-numbered) Node.js version of `20` or above, updates to the latest version of Pa11y (`9`) and Puppeteer (`24`), updates several other dependencies, and includes some GitHub actions and documentation cleanup. See the [migration guide](https://github.com/pa11y/pa11y-ci/blob/main/MIGRATION.md#migrating-from-30-to-40) for details.
