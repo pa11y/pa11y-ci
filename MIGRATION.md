@@ -2,6 +2,21 @@
 
 Major versions of Pa11y CI can bring API or compatibility changes. This is a guide to help you make the switch when that happens.
 
+## Migrating from 3.0 to 4.0
+
+Pa11y CI v4 requires a stable (even-numbered) Node.js version of 20 or above.
+
+We've also upgraded to Pa11y 9 (from 6), which includes upgrading to Puppeteer 24 (from 20) and Axe 4.10 (from 4.8), as well as  more recent major versions of several other dependencies - see the Pa11y CI [changelog](https://github.com/pa11y/pa11y-ci/blob/main/CHANGELOG.md) for the complete list.
+
+Puppeteer v22 and subs default to Chrome's [_new_ headless mode](https://developer.chrome.com/docs/chromium/new-headless) to more closely mimic the behavior of headful Chrome. This may affect performance; see the [Puppeteer docs](https://github.com/puppeteer/puppeteer?tab=readme-ov-file#default-runtime-settings) for more information.
+
+* If you were using a `chromeLaunchConfig` with `headless: 'new'`, change to `headless: true` or remove the `headless` setting as `true` is now the default.
+* If you were using a `chromeLaunchConfig` with `headless: true` or no `headless` setting, and want to continue use the previous headless mode, change to `headless: 'shell'`.
+
+The Pa11y upgrade incorporates an upgrade of `axe-core` to `4.10` from `4.2`, which contains rule fixes that may change results when using the `axe` runner. See axe-core [releases](https://github.com/dequelabs/axe-core/releases) for complete details.
+
+See the `pa11y` [migration guide](https://github.com/pa11y/pa11y/blob/main/MIGRATION.md) for details on other changes from 6.0 to 9.0, which should not affect most users of Pa11y CI.
+
 ## Migrating from 2.0 to 3.0
 
 ### New defaults for `concurrency` and `useIncognitoBrowserContext`
