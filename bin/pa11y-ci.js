@@ -101,7 +101,7 @@ Promise.resolve()
 				return value;
 			}));
 		}
-		return report
+		return report;
 		// Decide on an exit code based on whether
 		// errors are below threshold or everything passes
 		if (report.errors >= parseInt(options.threshold, 10) && report.passes < report.total) {
@@ -112,7 +112,6 @@ Promise.resolve()
 	})
 	.then(report => {
 		if (options.sarif) {
-			// console.log(report);
 			console.log(JSON.stringify(sarifBuilder(report), (key, value) => {
 				if (value instanceof Error) {
 					return {message: value.message};
