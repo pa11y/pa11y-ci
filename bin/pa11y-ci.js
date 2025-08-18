@@ -90,7 +90,6 @@ Promise.resolve()
 	})
 	.then(report => {
 		// Output JSON if asked for it
-		// console.log(report);
 		if (options.json) {
 			console.log(JSON.stringify(report, (key, value) => {
 				if (value instanceof Error) {
@@ -101,7 +100,6 @@ Promise.resolve()
 				return value;
 			}));
 		}
-		return report;
 		// Decide on an exit code based on whether
 		// errors are below threshold or everything passes
 		if (report.errors >= parseInt(options.threshold, 10) && report.passes < report.total) {
@@ -119,7 +117,6 @@ Promise.resolve()
 				return value;
 			}));
 		}
-		return report;
 		if (
 			report.errors >= parseInt(options.threshold, 10) &&
 			report.passes < report.total
@@ -226,14 +223,11 @@ function defaultConfig(config) {
 	config.defaults.log = config.defaults.log || console;
 	// 	Setting to undefined rather than 0 allows for a fallback to the default
 	config.defaults.wrapWidth = process.stdout.columns || undefined;
-	switch(options){
-		case(options.json):
-			delete config.defaults.log;
-	}
+
 	if (options.json) {
 		delete config.defaults.log;
 	}
-	if (options.sarif){
+	if (options.sarif) {
 		delete config.defaults.log;
 	}
 	return config;
