@@ -104,7 +104,7 @@ Promise.resolve()
 		return report
 		// Decide on an exit code based on whether
 		// errors are below threshold or everything passes
-		if (report.rors >= parseInt(options.threshold, 10) && report.passes < report.total) {
+		if (report.errors >= parseInt(options.threshold, 10) && report.passes < report.total) {
 			process.exit(2);
 		} else {
 			process.exit(0);
@@ -227,6 +227,10 @@ function defaultConfig(config) {
 	config.defaults.log = config.defaults.log || console;
 	// 	Setting to undefined rather than 0 allows for a fallback to the default
 	config.defaults.wrapWidth = process.stdout.columns || undefined;
+	switch(options){
+		case(options.json):
+			delete config.defaults.log;
+	}
 	if (options.json) {
 		delete config.defaults.log;
 	}
