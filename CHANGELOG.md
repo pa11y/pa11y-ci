@@ -4,7 +4,7 @@
 
 Pa11y CI 4.0.1 reintroduces compatibility for node `>=20.0.0 <20.18.1`. (At the time of writing, `v20.19.4` is the latest version of node `20`.)
 
-Pa11y CI 4.0.0 updated the `cheerio` dependency to `1.1.2`. But this causes `EBADENGINE` warnings when installing, if node `<20.18.1`. We target compatibility with node `>20`, which after [some discussion](https://github.com/pa11y/pa11y-ci/pull/272) we think should mean `>=20.0.0`.
+Pa11y CI 4.0.0 updated the `cheerio` dependency to `1.1.2`. But this causes `EBADENGINE` warnings when installing, if node `<20.18.1`. We target compatibility with node `>=20`, which after [some discussion](https://github.com/pa11y/pa11y-ci/pull/272) we think should mean `>=20.0.0`.
 
 ### Full changelog
 
