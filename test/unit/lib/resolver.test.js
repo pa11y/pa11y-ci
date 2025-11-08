@@ -2,7 +2,7 @@
 'use strict';
 
 const assert = require('proclaim');
-const mockery = require('mockery');
+const quibble = require('quibble');
 const sinon = require('sinon');
 
 describe('lib/helpers/resolver', () => {
@@ -14,7 +14,7 @@ describe('lib/helpers/resolver', () => {
 		beforeEach(() => {
 			config = {reporters: ['my-reporter']};
 			stubReporter = sinon.stub().returns(mock);
-			mockery.registerMock('my-reporter', stubReporter);
+			quibble('my-reporter', stubReporter);
 		});
 
 		it('returns an empty array for non-array and empty array argument', () => {
@@ -32,7 +32,8 @@ describe('lib/helpers/resolver', () => {
 
 		it('calls loadReporter', () => {
 			const loadStub = sinon.stub();
-			mockery.registerMock('./loader', loadStub);
+			const loaderPath = require.resolve('../../../lib/helpers/loader');
+			quibble(loaderPath, loadStub);
 			const resolveReporters = require('../../../lib/helpers/resolver');
 			const mock1 = {mock1: true};
 			const mock2 = {mock2: true};
@@ -53,7 +54,8 @@ describe('lib/helpers/resolver', () => {
 			const includedReportersResolved = [require.resolve(`${reporterPath}/cli.js`),
 				require.resolve(`${reporterPath}/json.js`)];
 			const loaderStub = sinon.stub();
-			mockery.registerMock('./loader', loaderStub);
+			const loaderPath = require.resolve('../../../lib/helpers/loader');
+			quibble(loaderPath, loaderStub);
 			const resolveReporters = require('../../../lib/helpers/resolver');
 
 			resolveReporters({reporters: includedReporters});

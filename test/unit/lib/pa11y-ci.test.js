@@ -2,7 +2,7 @@
 'use strict';
 
 const assert = require('proclaim');
-const mockery = require('mockery');
+const quibble = require('quibble');
 const sinon = require('sinon');
 
 describe('lib/pa11y-ci', () => {
@@ -15,18 +15,18 @@ describe('lib/pa11y-ci', () => {
 
 	beforeEach(() => {
 		defaults = sinon.spy(require('lodash/defaultsDeep'));
-		mockery.registerMock('lodash/defaultsDeep', defaults);
+		quibble('lodash/defaultsDeep', defaults);
 
 		log = require('../mock/log.mock');
 
 		pa11y = require('../mock/pa11y.mock');
-		mockery.registerMock('pa11y', pa11y);
+		quibble('pa11y', pa11y);
 
 		queue = sinon.spy(require('async/queue'));
-		mockery.registerMock('async/queue', queue);
+		quibble('async/queue', queue);
 
 		puppeteer = require('../mock/puppeteer.mock');
-		mockery.registerMock('puppeteer', puppeteer);
+		quibble('puppeteer', puppeteer);
 
 		pa11yCi = require('../../..');
 	});
@@ -423,7 +423,7 @@ describe('lib/pa11y-ci', () => {
 
 		beforeEach(done => {
 			reporter = require('../mock/reporter.mock')();
-			mockery.registerMock('my-pa11y-reporter', reporter);
+			quibble('my-pa11y-reporter', reporter);
 
 			userUrls = [
 				'foo-url',
@@ -503,8 +503,8 @@ describe('lib/pa11y-ci', () => {
 		beforeEach(async () => {
 			reporter = require('../mock/reporter.mock')();
 			optionReporter = require('../mock/reporter-options.mock');
-			mockery.registerMock('my-reporter', reporter);
-			mockery.registerMock('option-reporter', optionReporter);
+			quibble('my-reporter', reporter);
+			quibble('option-reporter', optionReporter);
 
 			userUrls = [
 				'foo-url'

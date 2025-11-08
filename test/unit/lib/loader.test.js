@@ -2,7 +2,7 @@
 'use strict';
 
 const assert = require('proclaim');
-const mockery = require('mockery');
+const quibble = require('quibble');
 const sinon = require('sinon');
 const path = require('path');
 
@@ -20,7 +20,7 @@ describe('lib/helpers/loader', () => {
 		it('resolves npm modules', () => {
 			const loadReporter = require('../../../lib/helpers/loader');
 			const mock = {};
-			mockery.registerMock('my-reporter', mock);
+			quibble('my-reporter', mock);
 			const reporter = loadReporter('my-reporter');
 
 			assert.equal(reporter, mock);
@@ -28,12 +28,12 @@ describe('lib/helpers/loader', () => {
 
 		it('resolves local modules', () => {
 			const mock = {};
-			mockery.registerMock('fs', {
+			quibble('fs', {
 				existsSync: () => true
 			});
 			const loadReporter = require('../../../lib/helpers/loader');
 
-			mockery.registerMock(path.join(process.cwd(), '/my-reporter.js'), mock);
+			quibble(path.join(process.cwd(), '/my-reporter.js'), mock);
 			const reporter = loadReporter('my-reporter.js');
 
 			assert.equal(reporter, mock);
