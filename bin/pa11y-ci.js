@@ -116,6 +116,7 @@ Promise.resolve()
 // file specified by the user. It checks for config
 // files in the following order:
 //   - no extension (JSON)
+//   - cjs extension (JavaScript)
 //   - js extension (JavaScript)
 //   - json extension (JSON)
 function loadConfig(configPath) {
@@ -123,13 +124,8 @@ function loadConfig(configPath) {
 		configPath = resolveConfigPath(configPath);
 		let config;
 		try {
-			config = loadLocalConfigUnmodified(configPath);
-			if (!config) {
-				config = loadLocalConfigWithJs(configPath);
-			}
-			if (!config) {
-				config = loadLocalConfigWithJson(configPath);
-			}
+			config = loadLocalConfigUnmodified(configPath) || loadConfigModule(configPath);
+
 			if (options.config && !config) {
 				return reject(new Error(`The config file "${configPath}" could not be loaded`));
 			}
@@ -154,8 +150,9 @@ function resolveConfigPath(configPath) {
 	if (!path.isAbsolute(configPath)) {
 		configPath = path.join(process.cwd(), configPath);
 	}
-	if (/\.js(on)?$/.test(configPath)) {
-		configPath = configPath.replace(/\.js(on)?$/, '');
+	const extensionPattern = /\.(cjs)?(js)?(json)?$/;
+	if (extensionPattern.test(configPath)) {
+		configPath = configPath.replace(extensionPattern, '');
 	}
 	return configPath;
 }
@@ -172,21 +169,15 @@ function loadLocalConfigUnmodified(configPath) {
 	}
 }
 
-// Load the config file but adding a .js extension
-function loadLocalConfigWithJs(configPath) {
-	try {
-		return require(`${configPath}.js`);
-	} catch (error) {
-		if (error.code !== 'MODULE_NOT_FOUND') {
-			throw error;
-		}
-	}
+function loadConfigModule(pathWithoutExtension) {
+	return loadConfigModuleWithExtension(pathWithoutExtension, 'cjs') ||
+		loadConfigModuleWithExtension(pathWithoutExtension, 'js') ||
+		loadConfigModuleWithExtension(pathWithoutExtension, 'json');
 }
 
-// Load the config file but adding a .json extension
-function loadLocalConfigWithJson(configPath) {
+function loadConfigModuleWithExtension(pathWithoutExtension, extension) {
 	try {
-		return require(`${configPath}.json`);
+		return require(`${pathWithoutExtension}.${extension}`);
 	} catch (error) {
 		if (error.code !== 'MODULE_NOT_FOUND') {
 			throw error;
