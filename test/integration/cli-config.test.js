@@ -2,6 +2,7 @@
 'use strict';
 
 const assert = require('proclaim');
+const path = require('path');
 
 describe('pa11y-ci (with no config file)', () => {
 
@@ -110,7 +111,7 @@ describe('pa11y-ci (with a config file that has an absolute path)', () => {
 	before(() => {
 		return global.cliCall([
 			'--config',
-			`${__dirname}/mock/config/extension-json.json`
+			path.join(__dirname, 'mock', 'config', 'extension-json.json')
 		]);
 	});
 
