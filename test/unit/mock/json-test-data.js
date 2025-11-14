@@ -1,6 +1,8 @@
 /* eslint max-len: 'off' */
 'use strict';
 
+const path = require('path');
+
 // Example results object for unit tests
 module.exports.testResults = {
 	total: 3,
@@ -8,7 +10,7 @@ module.exports.testResults = {
 	passes: 1,
 	results: {
 		'./foo/erroring.html': [
-			new Error(`net::ERR_FILE_NOT_FOUND at file://${__dirname}/mock/config/foo/erroring.html`)
+			new Error(`net::ERR_FILE_NOT_FOUND at file://${path.join(__dirname, 'mock', 'config', 'foo', 'erroring.html')}`)
 		],
 		'http://localhost:8090/failing-1': [
 			{
@@ -34,7 +36,7 @@ module.exports.testResultsOutput = {
 	results: {
 		'./foo/erroring.html': [
 			{
-				message: `net::ERR_FILE_NOT_FOUND at file://${__dirname}/mock/config/foo/erroring.html`
+				message: `net::ERR_FILE_NOT_FOUND at file://${path.join(__dirname, 'mock', 'config', 'foo', 'erroring.html')}`
 			}
 		],
 		'http://localhost:8090/failing-1': [
