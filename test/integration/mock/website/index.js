@@ -3,7 +3,7 @@
 const fs = require('fs');
 const http = require('http');
 const path = require('path');
-const parseUrl = require('url').parse;
+const {URL} = require('url');
 
 module.exports = startWebsite;
 
@@ -11,7 +11,7 @@ function startWebsite(port, done) {
 
 	const server = http.createServer((request, response) => {
 
-		const urlPath = parseUrl(request.url).pathname;
+		const urlPath = new URL(request.url, 'http://localhost').pathname;
 		const viewPath = path.join(__dirname, 'html', `${urlPath}.html`);
 
 		if (urlPath.includes('.xml')) {
