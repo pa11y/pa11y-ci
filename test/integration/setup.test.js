@@ -2,7 +2,7 @@
 'use strict';
 
 const path = require('path');
-const spawn = require('child_process').spawn;
+const {spawn} = require('child_process');
 const startWebsite = require('./mock/website');
 
 before(done => {

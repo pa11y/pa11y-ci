@@ -41,7 +41,7 @@ describe('lib/pa11y-ci', () => {
 
 	describe('.defaults', () => {
 		beforeEach(() => {
-			defaults = pa11yCi.defaults;
+			({defaults} = pa11yCi);
 		});
 
 		it('has a `concurrency` property', () => {
