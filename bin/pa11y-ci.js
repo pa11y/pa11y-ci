@@ -19,6 +19,8 @@ const pkg = require('../package.json');
 const {Command} = require('commander');
 const commander = new Command();
 
+const sarifBuilder = require('../lib/helpers/sarifbuilder');
+
 // Here we're using Commander to specify the CLI options
 commander
 	.version(pkg.version)
@@ -46,7 +48,7 @@ commander
 	.option(
 		'-j, --json',
 		'Output results as JSON'
-	)
+	).option('--sarif', 'Output results as SARIF')
 	.option(
 		'-T, --threshold <number>',
 		'permit this number of errors, warnings, or notices, otherwise fail with exit code 2',
@@ -105,6 +107,25 @@ Promise.resolve()
 		} else {
 			process.exit(0);
 		}
+	})
+	.then(report => {
+		if (options.sarif) {
+			console.log(JSON.stringify(sarifBuilder(report), (key, value) => {
+				if (value instanceof Error) {
+					return {message: value.message};
+				}
+				return value;
+			}));
+		}
+		if (
+			report.errors >= parseInt(options.threshold, 10) &&
+			report.passes < report.total
+		) {
+			process.exitCode = 2;
+		} else {
+			process.exitCode = 0;
+		}
+
 	})
 	.catch(error => {
 		// Handle any errors
@@ -193,7 +214,11 @@ function defaultConfig(config) {
 	config.defaults.log = config.defaults.log || console;
 	// 	Setting to undefined rather than 0 allows for a fallback to the default
 	config.defaults.wrapWidth = process.stdout.columns || undefined;
+
 	if (options.json) {
+		delete config.defaults.log;
+	}
+	if (options.sarif) {
 		delete config.defaults.log;
 	}
 	return config;
