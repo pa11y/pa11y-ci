@@ -163,6 +163,11 @@ The `--sitemap-exclude` flag like the `--sitemap-find` flag accepts a regular ex
 ```sh
 pa11y-ci --sitemap https://pa11y.org/sitemap.xml --sitemap-exclude "path|example"
 ```
+Additionally, you can selectively add urls back to the test run after excluding them using CLI arguments:
+
+```sh
+pa11y-ci --sitemap https://pa11y.org/sitemap.xml --sitemap-exclude "path|example" https://pa11y.org/example/2
+```
 
 > [!NOTE]
 > The `--sitemap-exclude` flag cannot be chained as only the last arguement will be accepted.
