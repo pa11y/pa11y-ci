@@ -1,5 +1,20 @@
 # Changelog
 
+## 4.1.0 (2026-03-02)
+
+* Add support for config files with the `.cjs` extension
+* Improve documentation for `sitemap-exclude`
+* Improve npm keywords for better discoverability
+* Replace nyc with c8 for test coverage
+* Replace mockery with quibble for mocking
+* Upgrade dependencies to recent versions matching pa11y's to ensure deduplication works well
+
+## New Contributors
+
+* @Maxzolythus made their first contribution in https://github.com/pa11y/pa11y-ci/pull/306
+
+**Full Changelog**: https://github.com/pa11y/pa11y-ci/compare/4.0.1...4.1.0
+
 ## 4.0.1 (2025-08-15)
 
 Pa11y CI 4.0.1 reintroduces compatibility for node `>=20.0.0 <20.18.1`. (At the time of writing, `v20.19.4` is the latest version of node `20`.)
