@@ -172,6 +172,19 @@ pa11y-ci --sitemap https://pa11y.org/sitemap.xml --sitemap-exclude "path|example
 > [!NOTE]
 > The `--sitemap-exclude` flag cannot be chained as only the last arguement will be accepted.
 
+#### Including Certain URLs
+
+Include only certain URLs from the test run with the flag `--sitemap-only-include`:
+
+```sh
+pa11y-ci --sitemap https://pa11y.org/sitemap.xml --sitemap-only-include path
+```
+
+The `--sitemap-only-include` flag like the `--sitemap-exclude` flag accepts a regular expression therefore if you want to include multiple patterns:
+
+```sh
+pa11y-ci --sitemap https://pa11y.org/sitemap.xml --sitemap-only-include "path|example"
+
 ## Reporters
 
 Pa11y CI includes two reporters:
