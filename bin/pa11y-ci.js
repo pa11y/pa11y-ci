@@ -58,10 +58,13 @@ commander
 	.allowExcessArguments()
 	.parse(process.argv);
 
-// Parse the args into valid paths using glob and protocolify
-const urls = globby.sync(commander.args, {
-	// Ensure not-found paths (like "google.com"), are returned
-	nonull: true
+// Parse the args into valid paths using glob and protocolify.
+// globby v11 uses fast-glob which doesn't support the nonull option,
+// so we replicate it: for each arg, if globbing yields no matches,
+// keep the original string (it's probably a URL, not a file pattern).
+const urls = commander.args.flatMap(arg => {
+	const matches = globby.sync(arg);
+	return matches.length > 0 ? matches : [arg];
 }).map(protocolify);
 
 // Start the promise chain to actually run everything
