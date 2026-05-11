@@ -1,5 +1,9 @@
 # Changelog
 
+## 4.1.1 (2026-05-11)
+
+Pa11y CI 4.1.1 updates the `lodash` dependency  to `~4.18.1` to resolve [GHSA-f23m-r3pf-42r](https://osv.dev/vulnerability/GHSA-f23m-r3pf-42rh) / [CVE-2026-2950](https://nvd.nist.gov/vuln/detail/CVE-2026-2950).
+
 ## 4.1.0 (2026-03-02)
 
 * Add support for config files with the `.cjs` extension
