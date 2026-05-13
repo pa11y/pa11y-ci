@@ -1,4 +1,3 @@
-/* eslint max-len: 'off' */
 'use strict';
 
 const assert = require('proclaim');
@@ -88,6 +87,33 @@ describe('pa11y-ci (with a sitemap and sitemap-exclude)', () => {
 
 });
 
+describe('pa11y-ci (with URLs defined in both sitemap and config)', () => {
+
+	before(() => {
+		return global.cliCall([
+			'--sitemap',
+			'http://localhost:8090/sitemap.xml',
+			'--config',
+			'passing-multiple'
+		]);
+	});
+
+	it('loads the URLs listed by the sitemap', () => {
+		assert.include(global.lastResult.output, 'http://localhost:8090/passing-1');
+		assert.include(global.lastResult.output, 'http://localhost:8090/failing-1');
+		assert.include(global.lastResult.output, 'http://localhost:8090/excluded');
+	});
+
+	it('loads the URLs listed by the config', () => {
+		assert.include(global.lastResult.output, 'http://localhost:8090/passing-2');
+	});
+
+	it('will not remove URLs duplicated across both sitemap and config', () => {
+		assert.lengthEquals(global.lastResult.output.match(/passing-1/g), 2);
+	});
+
+});
+
 describe('pa11y-ci (with a sitemap being sitemapindex)', () => {
 
 	before(() => {
@@ -99,7 +125,7 @@ describe('pa11y-ci (with a sitemap being sitemapindex)', () => {
 		]);
 	});
 
-	it('loads the expected urls from multiple sitemaps', () => {
+	it('loads the expected URLs from multiple sitemaps', () => {
 		assert.include(global.lastResult.output, 'http://localhost:8090/passing-1');
 		assert.include(global.lastResult.output, 'http://localhost:8090/failing-1');
 		assert.include(global.lastResult.output, 'http://localhost:8090/excluded');
