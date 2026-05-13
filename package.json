@@ -40,7 +40,7 @@
   "bugs": "https://github.com/pa11y/pa11y-ci/issues",
   "license": "LGPL-3.0-only",
   "engines": {
-    "node": ">=20"
+    "node": ">=20.18.1 <25"
   },
   "dependencies": {
     "async": "~3.2.6",
