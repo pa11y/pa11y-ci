@@ -43,3 +43,14 @@ jobs:
           node-version: ${{ matrix.node-version }}
       - run: npm ci
       - run: npm test
+
+  test-docker:
+    name: test on base Docker image 'node:${{ matrix.node-version }}-alpine'
+    runs-on: ubuntu-latest
+    strategy:
+      fail-fast: true
+      matrix:
+        node-version: [18, 20]
+    steps:
+      - uses: actions/checkout@v4
+      - run: docker build . --build-arg BASE_IMAGE=node:${{ matrix.node-version }}-alpine -t pa11y-ci-on-node-${{ matrix.node-version }}-alpine
