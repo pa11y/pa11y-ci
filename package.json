@@ -40,14 +40,13 @@
   "bugs": "https://github.com/pa11y/pa11y-ci/issues",
   "license": "LGPL-3.0-only",
   "engines": {
-    "node": ">=20"
+    "node": ">=22"
   },
   "dependencies": {
     "async": "~3.2.6",
     "cheerio": "~1.0.0",
     "commander": "~14.0.3",
     "globby": "~6.1.0",
-    "kleur": "~4.1.5",
     "lodash": "~4.18.1",
     "node-fetch": "~2.7.0",
     "pa11y": "^9.1.1",
