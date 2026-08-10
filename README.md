@@ -170,7 +170,7 @@ pa11y-ci --sitemap https://pa11y.org/sitemap.xml --sitemap-exclude "path|example
 ```
 
 > [!NOTE]
-> The `--sitemap-exclude` flag cannot be chained as only the last arguement will be accepted.
+> The `--sitemap-exclude` flag cannot be chained as only the last argument will be accepted.
 
 ## Reporters
 
