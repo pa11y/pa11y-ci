@@ -141,6 +141,9 @@ Pa11y will be run against the text content of each `<loc/>` in the sitemap's XML
 > [!NOTE]
 > Providing a sitemap will cause the `urls` property in your JSON config to be ignored.
 
+Any `headers` set in `defaults` are sent with the sitemap request as well as with
+the page loads, so a sitemap behind the same authentication can still be read.
+
 #### Transforming URLs retrieved from a sitemap before testing
 
 Pa11y CI can replace a string within each URL found in a sitemap, before beginning to test.  This can be useful when your sitemap contains production URLs, but you'd actually like to test
