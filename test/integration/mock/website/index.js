@@ -15,10 +15,16 @@ function startWebsite(port, done) {
 		const viewPath = path.join(__dirname, 'html', `${urlPath}.html`);
 
 		if (urlPath.includes('.xml')) {
+			// Stands in for a preview environment behind a bypass secret
+			if (urlPath.includes('protected') && request.headers['x-test-secret'] !== 'let-me-in') {
+				response.writeHead(403);
+				return response.end('Forbidden');
+			}
 			response.writeHead(200, {
 				'Content-Type': 'text/xml'
 			});
-			return response.end(fs.readFileSync(path.join(__dirname, urlPath), 'utf-8'));
+			const file = urlPath.replace('-protected', '');
+			return response.end(fs.readFileSync(path.join(__dirname, file), 'utf-8'));
 		}
 
 		try {
