@@ -2,11 +2,11 @@
 	"defaults": {
 		"timeout": 500,
 		"reporters": [
-            ["json", { "fileName": "./__output__/results.json"}]
-        ]
+			["json", { "fileName": "./__output__/results.json"}]
+		]
 	},
 	"urls": [
-		"http://localhost:8090/passing-1",
-		"http://localhost:8090/passing-2"
+		"http://127.0.0.1:8090/passing-1",
+		"http://127.0.0.1:8090/passing-2"
 	]
 }

@@ -2,7 +2,7 @@
 	"urls": [
 		"./foo/erroring.html",
 		{
-			"url": "http://localhost:8090/timeout",
+			"url": "http://127.0.0.1:8090/timeout",
 			"timeout": 10
 		}
 	]

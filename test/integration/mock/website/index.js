@@ -11,7 +11,7 @@ function startWebsite(port, done) {
 
 	const server = http.createServer((request, response) => {
 
-		const urlPath = new URL(request.url, 'http://localhost').pathname;
+		const urlPath = new URL(request.url, 'http://127.0.0.1').pathname;
 		const viewPath = path.join(__dirname, 'html', `${urlPath}.html`);
 
 		if (urlPath.includes('.xml')) {

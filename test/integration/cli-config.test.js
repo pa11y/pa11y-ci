@@ -11,7 +11,7 @@ describe('pa11y-ci (with no config file)', () => {
 	});
 
 	it('loads the expected config', () => {
-		assert.include(global.lastResult.output, 'http://localhost:8090/config-default');
+		assert.include(global.lastResult.output, 'http://127.0.0.1:8090/config-default');
 	});
 
 });
@@ -26,7 +26,7 @@ describe('pa11y-ci (with a config file that has no extension)', () => {
 	});
 
 	it('loads the expected config', () => {
-		assert.include(global.lastResult.output, 'http://localhost:8090/config-extension-none');
+		assert.include(global.lastResult.output, 'http://127.0.0.1:8090/config-extension-none');
 	});
 
 });
@@ -41,7 +41,7 @@ describe('pa11y-ci (with a config file that has a "json" extension)', () => {
 	});
 
 	it('loads the expected config', () => {
-		assert.include(global.lastResult.output, 'http://localhost:8090/config-extension-json');
+		assert.include(global.lastResult.output, 'http://127.0.0.1:8090/config-extension-json');
 	});
 
 });
@@ -56,7 +56,7 @@ describe('pa11y-ci (with a config file that has a "cjs" extension)', () => {
 	});
 
 	it('loads the expected config', () => {
-		assert.include(global.lastResult.output, 'http://localhost:8090/config-extension-cjs');
+		assert.include(global.lastResult.output, 'http://127.0.0.1:8090/config-extension-cjs');
 	});
 
 });
@@ -71,7 +71,7 @@ describe('pa11y-ci (with a config file that has a "js" extension)', () => {
 	});
 
 	it('loads the expected config', () => {
-		assert.include(global.lastResult.output, 'http://localhost:8090/config-extension-js');
+		assert.include(global.lastResult.output, 'http://127.0.0.1:8090/config-extension-js');
 	});
 
 });
@@ -86,7 +86,7 @@ describe('pa11y-ci (with a config file that has a "js" extension that returns a 
 	});
 
 	it('loads the expected config', () => {
-		assert.include(global.lastResult.output, 'http://localhost:8090/config-extension-js-promise');
+		assert.include(global.lastResult.output, 'http://127.0.0.1:8090/config-extension-js-promise');
 	});
 
 });
@@ -101,7 +101,7 @@ describe('pa11y-ci (with a config file that has a specified JSON extension)', ()
 	});
 
 	it('loads the expected config', () => {
-		assert.include(global.lastResult.output, 'http://localhost:8090/config-extension-json');
+		assert.include(global.lastResult.output, 'http://127.0.0.1:8090/config-extension-json');
 	});
 
 });
@@ -116,7 +116,7 @@ describe('pa11y-ci (with a config file that has a specified JS extension)', () =
 	});
 
 	it('loads the expected config', () => {
-		assert.include(global.lastResult.output, 'http://localhost:8090/config-extension-js');
+		assert.include(global.lastResult.output, 'http://127.0.0.1:8090/config-extension-js');
 	});
 
 });
@@ -131,7 +131,7 @@ describe('pa11y-ci (with a config file that has a specified CJS extension)', () 
 	});
 
 	it('loads the expected config', () => {
-		assert.include(global.lastResult.output, 'http://localhost:8090/config-extension-cjs');
+		assert.include(global.lastResult.output, 'http://127.0.0.1:8090/config-extension-cjs');
 	});
 
 });
@@ -146,7 +146,7 @@ describe('pa11y-ci (with a config file that has an absolute path)', () => {
 	});
 
 	it('loads the expected config', () => {
-		assert.include(global.lastResult.output, 'http://localhost:8090/config-extension-json');
+		assert.include(global.lastResult.output, 'http://127.0.0.1:8090/config-extension-json');
 	});
 
 });

@@ -1,10 +1,10 @@
 {
 	"urls": [
 		{
-			"url": "http://localhost:8090/passing-1"
+			"url": "http://127.0.0.1:8090/passing-1"
 		},
 		{
-			"url": "http://localhost:8090/passing-2"
+			"url": "http://127.0.0.1:8090/passing-2"
 		}
 	]
 }

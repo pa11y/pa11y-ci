@@ -27,7 +27,7 @@ describe('pa11y-ci (with the `--json` flag set)', () => {
 						message: `net::ERR_FILE_NOT_FOUND at file://${filePath}`
 					}
 				],
-				'http://localhost:8090/failing-1': [
+				'http://127.0.0.1:8090/failing-1': [
 					{
 						code: 'WCAG2AA.Principle3.Guideline3_1.3_1_1.H57.2',
 						context: '<html><head>\n\t<meta charset="utf-8">\n...</html>',
@@ -39,7 +39,7 @@ describe('pa11y-ci (with the `--json` flag set)', () => {
 						typeCode: 1
 					}
 				],
-				'http://localhost:8090/passing-1': []
+				'http://127.0.0.1:8090/passing-1': []
 			}
 		});
 	});

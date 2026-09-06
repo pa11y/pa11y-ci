@@ -13,8 +13,8 @@ describe('pa11y-ci (with default reporter)', () => {
 
 	it('outputs to the stdout and stderr', () => {
 		assert.include(global.lastResult.stdout, 'Running Pa11y on 2 URLs');
-		assert.include(global.lastResult.stderr, 'http://localhost:8090/passing-1 - Failed to run');
-		assert.include(global.lastResult.stderr, 'http://localhost:8090/passing-2 - Failed to run');
+		assert.include(global.lastResult.stderr, 'http://127.0.0.1:8090/passing-1 - Failed to run');
+		assert.include(global.lastResult.stderr, 'http://127.0.0.1:8090/passing-2 - Failed to run');
 		assert.include(global.lastResult.stderr, 'timeout');
 	});
 
@@ -33,8 +33,8 @@ describe('pa11y-ci (with json built-in reporter)', () => {
 			report = JSON.parse(global.lastResult.stdout);
 		});
 		assert.isObject(report);
-		assert.include(Object.keys(report.results), 'http://localhost:8090/passing-1');
-		assert.include(Object.keys(report.results), 'http://localhost:8090/passing-2');
+		assert.include(Object.keys(report.results), 'http://127.0.0.1:8090/passing-1');
+		assert.include(Object.keys(report.results), 'http://127.0.0.1:8090/passing-2');
 	});
 
 });
@@ -63,8 +63,8 @@ describe('pa11y-ci (with json built-in reporter and configuration)', () => {
 			report = JSON.parse(fs.readFileSync(reportFile, 'utf-8'));
 		});
 		assert.isObject(report);
-		assert.include(Object.keys(report.results), 'http://localhost:8090/passing-1');
-		assert.include(Object.keys(report.results), 'http://localhost:8090/passing-2');
+		assert.include(Object.keys(report.results), 'http://127.0.0.1:8090/passing-1');
+		assert.include(Object.keys(report.results), 'http://127.0.0.1:8090/passing-2');
 	});
 
 });
@@ -94,8 +94,8 @@ describe('pa11y-ci (with custom json reporter configuration)', () => {
 			report = JSON.parse(fs.readFileSync(reportFile, 'utf-8'));
 		});
 		assert.isObject(report);
-		assert.include(Object.keys(report.results), 'http://localhost:8090/passing-1');
-		assert.include(Object.keys(report.results), 'http://localhost:8090/passing-2');
+		assert.include(Object.keys(report.results), 'http://127.0.0.1:8090/passing-1');
+		assert.include(Object.keys(report.results), 'http://127.0.0.1:8090/passing-2');
 	});
 
 });
@@ -128,8 +128,8 @@ describe('pa11y-ci (with multiple reporters)', () => {
 			report = JSON.parse(fs.readFileSync(customReportFile, 'utf-8'));
 		});
 		assert.isObject(report);
-		assert.include(Object.keys(report.results), 'http://localhost:8090/passing-1');
-		assert.include(Object.keys(report.results), 'http://localhost:8090/passing-2');
+		assert.include(Object.keys(report.results), 'http://127.0.0.1:8090/passing-1');
+		assert.include(Object.keys(report.results), 'http://127.0.0.1:8090/passing-2');
 	});
 
 	it('stores report in the default reporter file', () => {
@@ -141,14 +141,14 @@ describe('pa11y-ci (with multiple reporters)', () => {
 			report = JSON.parse(fs.readFileSync(defaultReportFile, 'utf-8'));
 		});
 		assert.isObject(report);
-		assert.include(Object.keys(report.results), 'http://localhost:8090/passing-1');
-		assert.include(Object.keys(report.results), 'http://localhost:8090/passing-2');
+		assert.include(Object.keys(report.results), 'http://127.0.0.1:8090/passing-1');
+		assert.include(Object.keys(report.results), 'http://127.0.0.1:8090/passing-2');
 	});
 
 	it('outputs results to console', () => {
 		assert.include(global.lastResult.stdout, 'Running Pa11y on 2 URLs');
-		assert.include(global.lastResult.stderr, 'http://localhost:8090/passing-1 - Failed to run');
-		assert.include(global.lastResult.stderr, 'http://localhost:8090/passing-2 - Failed to run');
+		assert.include(global.lastResult.stderr, 'http://127.0.0.1:8090/passing-1 - Failed to run');
+		assert.include(global.lastResult.stderr, 'http://127.0.0.1:8090/passing-2 - Failed to run');
 		assert.include(global.lastResult.stderr, 'timeout');
 	});
 

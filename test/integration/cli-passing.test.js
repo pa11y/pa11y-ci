@@ -17,7 +17,7 @@ describe('pa11y-ci (with a single passing URL)', () => {
 	});
 
 	it('outputs a result notice for each URL', () => {
-		assert.include(global.lastResult.output, 'http://localhost:8090/passing-1 - 0 errors');
+		assert.include(global.lastResult.output, 'http://127.0.0.1:8090/passing-1 - 0 errors');
 	});
 
 	it('outputs a total passing notice', () => {
@@ -40,8 +40,8 @@ describe('pa11y-ci (with multiple passing URLs)', () => {
 	});
 
 	it('outputs a result notice for each URL', () => {
-		assert.include(global.lastResult.output, 'http://localhost:8090/passing-1 - 0 errors');
-		assert.include(global.lastResult.output, 'http://localhost:8090/passing-2 - 0 errors');
+		assert.include(global.lastResult.output, 'http://127.0.0.1:8090/passing-1 - 0 errors');
+		assert.include(global.lastResult.output, 'http://127.0.0.1:8090/passing-2 - 0 errors');
 	});
 
 	it('outputs a total passing notice', () => {
@@ -64,7 +64,7 @@ describe('pa11y-ci (with URLs passing due to threshold)', () => {
 	});
 
 	it('outputs a result notice for each URL', () => {
-		assert.include(global.lastResult.output, 'http://localhost:8090/failing-1 - 1 errors (within threshold of 1)');
+		assert.include(global.lastResult.output, 'http://127.0.0.1:8090/failing-1 - 1 errors (within threshold of 1)');
 	});
 
 	it('outputs a total passing notice', () => {

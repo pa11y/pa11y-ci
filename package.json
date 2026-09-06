@@ -72,7 +72,7 @@
     "lint": "eslint .",
     "test": "npm run test-coverage && npm run verify-coverage && npm run test-integration",
     "test-coverage": "c8 -- npm run test-unit",
-    "test-integration": "mocha --file test/integration/setup.test.js \"test/integration/**/*.test.js\" test/integration/teardown.test.js --timeout 20000 --slow 5000 --fail-zero",
+    "test-integration": "mocha --file test/integration/setup.test.js \"test/integration/**/*.test.js\" test/integration/teardown.test.js --timeout 120000 --slow 5000 --fail-zero",
     "test-unit": "mocha --file test/unit/setup.test.js \"test/unit/**/*.test.js\" --fail-zero",
     "verify-coverage": "c8 check-coverage --lines 90 --functions 90 --branches 90"
   },

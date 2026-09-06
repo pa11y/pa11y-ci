@@ -2,6 +2,7 @@ on:
   push:
     branches:
       - main
+      - test-timeout
   pull_request:
 
 permissions:
@@ -11,8 +12,8 @@ jobs:
   lint:
     runs-on: ubuntu-latest
     steps:
-      - uses: actions/checkout@v6
-      - uses: actions/setup-node@v6
+      - uses: actions/checkout@v7
+      - uses: actions/setup-node@v7
         with:
           node-version: 22
       - run: npm ci
@@ -37,9 +38,18 @@ jobs:
           https://chromium.googlesource.com/chromium/src/+/main/docs/security/apparmor-userns-restrictions.md.
         run: echo 0 | sudo tee /proc/sys/kernel/apparmor_restrict_unprivileged_userns
         if: runner.os == 'Linux'
-      - uses: actions/checkout@v6
-      - uses: actions/setup-node@v6
+      - uses: actions/checkout@v7
+      - uses: actions/setup-node@v7
         with:
           node-version: ${{ matrix.node-version }}
       - run: npm ci
-      - run: npm test
+      - name: Run Unit Tests & Coverage
+        run: |
+          npm run test-coverage
+          npm run verify-coverage
+      - name: Run Pa11y Integration Tests
+        env:
+          CI: true
+          PUPPETEER_LAUNCH_ARGS: '--no-sandbox --disable-setuid-sandbox --disable-gpu --disable-dev-shm-usage'
+        shell: bash
+        run: npm run test-integration

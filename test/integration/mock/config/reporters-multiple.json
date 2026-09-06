@@ -4,11 +4,11 @@
 		"reporters": [
 			"cli",
 			"./reporters/custom.js",
-            ["./reporters/custom.js", { "fileName": "./__output__/my-results.json"}]
-        ]
+			["./reporters/custom.js", { "fileName": "./__output__/my-results.json" }]
+		]
 	},
 	"urls": [
-		"http://localhost:8090/passing-1",
-		"http://localhost:8090/passing-2"
+		"http://127.0.0.1:8090/passing-1",
+		"http://127.0.0.1:8090/passing-2"
 	]
 }

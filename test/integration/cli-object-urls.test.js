@@ -17,8 +17,8 @@ describe('pa11y-ci (with URLs defined as objects)', () => {
 	});
 
 	it('outputs a result notice for each URL', () => {
-		assert.include(global.lastResult.output, 'http://localhost:8090/passing-1 - 0 errors');
-		assert.include(global.lastResult.output, 'http://localhost:8090/passing-2 - 0 errors');
+		assert.include(global.lastResult.output, 'http://127.0.0.1:8090/passing-1 - 0 errors');
+		assert.include(global.lastResult.output, 'http://127.0.0.1:8090/passing-2 - 0 errors');
 	});
 
 });

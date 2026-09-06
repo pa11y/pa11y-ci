@@ -46,13 +46,13 @@ describe('pa11y-ci (with multiple erroring URLs)', () => {
 
 	it('outputs a result notice for each URL', () => {
 		assert.include(global.lastResult.output, './foo/erroring.html - Failed to run');
-		assert.include(global.lastResult.output, 'http://localhost:8090/timeout - Failed to run');
+		assert.include(global.lastResult.output, 'http://127.0.0.1:8090/timeout - Failed to run');
 	});
 
 	it('outputs error information', () => {
 		assert.include(global.lastResult.output, 'Errors in ./foo/erroring.html');
 		assert.include(global.lastResult.output, 'net::ERR_FILE_NOT_FOUND');
-		assert.include(global.lastResult.output, 'Errors in http://localhost:8090/timeout');
+		assert.include(global.lastResult.output, 'Errors in http://127.0.0.1:8090/timeout');
 		assert.include(global.lastResult.output, 'timeout');
 	});
 
