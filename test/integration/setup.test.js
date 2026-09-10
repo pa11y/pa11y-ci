@@ -38,6 +38,11 @@ function cliCall(cliArguments = []) {
 			result.stderr += data;
 			result.output += data;
 		});
+		child.on('error', () => {
+			result.code = 1;
+			global.lastResult = result;
+			resolve(result);
+		});
 		child.on('close', code => {
 			result.code = code;
 			global.lastResult = result;
