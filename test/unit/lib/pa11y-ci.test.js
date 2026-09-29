@@ -411,6 +411,28 @@ describe('lib/pa11y-ci', () => {
 				assert.callCount(mockBrowser.close, 1);
 			});
 		});
+
+		describe('when URLs are strings', () => {
+			let stringUrls;
+			let stringOptions;
+			let stringPromise;
+
+			beforeEach(done => {
+				stringOptions = {
+					concurrency: 2,
+					log,
+					useIncognitoBrowserContext: true
+				};
+				stringUrls = ['str-url-1', 'str-url-2'];
+				pa11y.reset();
+				stringPromise = pa11yCi(stringUrls, stringOptions);
+				stringPromise.then(() => done()).catch(done);
+			});
+
+			it('does not mutate the options object by attaching browser property', () => {
+				assert.isUndefined(stringOptions.browser);
+			});
+		});
 	});
 
 	describe('reporters', () => {
