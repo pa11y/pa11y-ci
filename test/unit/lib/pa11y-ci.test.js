@@ -411,6 +411,104 @@ describe('lib/pa11y-ci', () => {
 				assert.callCount(mockBrowser.close, 1);
 			});
 		});
+
+		describe('when URLs are strings and run concurrently', () => {
+			let concurrentBrowser;
+			let mockContext1;
+			let mockContext2;
+			let concurrentUrls;
+			let concurrentOptions;
+			let concurrentPromise;
+			let resolvePa11y1;
+			let resolvePa11y2;
+
+			beforeEach(async () => {
+				concurrentUrls = ['concurrent-url-1', 'concurrent-url-2'];
+				concurrentOptions = {
+					concurrency: 2,
+					log,
+					useIncognitoBrowserContext: true
+				};
+
+				concurrentBrowser = await puppeteer.launch();
+				mockContext1 = {
+					close: sinon.stub().resolves()
+				};
+				mockContext2 = {
+					close: sinon.stub().resolves()
+				};
+
+				concurrentBrowser.createBrowserContext = sinon.stub().onFirstCall().resolves(mockContext1);
+				concurrentBrowser.createBrowserContext.onSecondCall().resolves(mockContext2);
+
+				pa11y.reset();
+				const pa11yPromise1 = new Promise(resolve => {
+					resolvePa11y1 = resolve;
+				});
+				const pa11yPromise2 = new Promise(resolve => {
+					resolvePa11y2 = resolve;
+				});
+
+				pa11y.withArgs('concurrent-url-1').callsFake(() => pa11yPromise1);
+				pa11y.withArgs('concurrent-url-2').callsFake(() => pa11yPromise2);
+
+				concurrentPromise = pa11yCi(concurrentUrls, concurrentOptions);
+			});
+
+			it('isolates config objects and their browser contexts across concurrent runs', async () => {
+				await new Promise(process.nextTick);
+
+				assert.strictEqual(pa11y.callCount, 2);
+
+				const config1 = pa11y.firstCall.args[1];
+				const config2 = pa11y.secondCall.args[1];
+
+				assert.notStrictEqual(config1, config2);
+				assert.strictEqual(config1.browser, mockContext1);
+				assert.strictEqual(config2.browser, mockContext2);
+
+				resolvePa11y1({
+					pageUrl: 'concurrent-url-1',
+					issues: []
+				});
+				await new Promise(process.nextTick);
+
+				assert.calledOnce(mockContext1.close);
+				assert.notCalled(mockContext2.close);
+
+				resolvePa11y2({
+					pageUrl: 'concurrent-url-2',
+					issues: []
+				});
+				await concurrentPromise;
+
+				assert.calledOnce(mockContext1.close);
+				assert.calledOnce(mockContext2.close);
+			});
+
+			it('does not mutate shared options across executions', async () => {
+				await new Promise(process.nextTick);
+
+				const config1 = pa11y.firstCall.args[1];
+				const config2 = pa11y.secondCall.args[1];
+
+				config1.browser = 'mutated';
+				config1.customProperty = 'isolated-1';
+				assert.strictEqual(config2.browser, mockContext2);
+				assert.isUndefined(config2.customProperty);
+				assert.isUndefined(concurrentOptions.customProperty);
+
+				resolvePa11y1({
+					pageUrl: 'concurrent-url-1',
+					issues: []
+				});
+				resolvePa11y2({
+					pageUrl: 'concurrent-url-2',
+					issues: []
+				});
+				await concurrentPromise;
+			});
+		});
 	});
 
 	describe('reporters', () => {
