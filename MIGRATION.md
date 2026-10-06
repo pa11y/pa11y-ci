@@ -2,6 +2,14 @@
 
 Major versions of Pa11y CI can bring API or compatibility changes. This is a guide to help you make the switch when that happens.
 
+## Migrating from 4.0 to 5.0
+
+Pa11y CI 5 requires a stable/LTS (even-numbered) Node.js version of `22.13.0` or above.
+
+We've also upgraded to Puppeteer `25` (from `24`), Axe `4.13` (from `4.11`), and to more recent major versions of several other dependencies - see [Pa11y CI's changelog](CHANGELOG.md) for the list. Those changes should not affect most users of Pa11y.
+
+Note that `puppeteer@25` resolves an issue with installing browsers, but requires platform-specific tools to unzip the browser files. This should not be an issue for most users. If issues are encountered, see the [system requirements](https://github.com/puppeteer/puppeteer/blob/main/docs/guides/system-requirements.md) for details.
+
 ## Migrating from 3.0 to 4.0
 
 Pa11y CI v4 requires a stable (even-numbered) Node.js version of 20 or above.
