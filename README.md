@@ -309,7 +309,7 @@ You can use multiple reporters by setting them on the `defaults.reporters` array
 
 ### Reporter options
 
-Reporters can be configured, when supported, by settings the reporter as an array with its options as the second item:
+Reporters can be configured, when supported, by setting the reporter as an array with its options as the second item:
 
 ```json
 {
