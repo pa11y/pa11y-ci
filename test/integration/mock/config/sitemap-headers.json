@@ -1,0 +1,7 @@
+{
+	"defaults": {
+		"headers": {
+			"x-test-secret": "let-me-in"
+		}
+	}
+}

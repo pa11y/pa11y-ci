@@ -107,3 +107,40 @@ describe('pa11y-ci (with a sitemap being sitemapindex)', () => {
 	});
 
 });
+
+describe('pa11y-ci (with a sitemap that requires headers)', () => {
+
+	before(() => {
+		return global.cliCall([
+			'--sitemap',
+			'http://localhost:8090/sitemap-protected.xml',
+			'--config',
+			'sitemap-headers'
+		]);
+	});
+
+	it('sends the configured headers when fetching the sitemap', () => {
+		assert.include(global.lastResult.output, 'http://localhost:8090/passing-1');
+		assert.include(global.lastResult.output, 'http://localhost:8090/failing-1');
+	});
+
+});
+
+describe('pa11y-ci (with a sitemap that requires headers, none configured)', () => {
+
+	before(() => {
+		return global.cliCall([
+			'--sitemap',
+			'http://localhost:8090/sitemap-protected.xml',
+			'--config',
+			'empty'
+		]);
+	});
+
+	it('finds no URLs, which is what #254 reported', () => {
+		// The 403 body is not XML, so it parses as an empty sitemap and the
+		// run silently passes with nothing tested.
+		assert.include(global.lastResult.output, 'Running Pa11y on 0 URLs');
+	});
+
+});
