@@ -1,5 +1,13 @@
 # Changelog
 
+## 5.0.0 (2026-10-05)
+
+* Bump dependencies to address security alerts, including pa11y v10 by @josebolos in https://github.com/pa11y/pa11y-ci/pull/364
+* Remove dependency on kleur and replace with native util.StyleText by @josebolos in https://github.com/pa11y/pa11y-ci/pull/363
+* Upgrade actions to v7 and split tests so make consistent with pa11y by @josebolos in https://github.com/pa11y/pa11y-ci/pull/365
+
+**Full changelog**: https://github.com/pa11y/pa11y-ci/compare/4.1.1...5.0.0
+
 ## 4.1.1 (2026-05-11)
 
 Pa11y CI 4.1.1 updates the `lodash` dependency  to `~4.18.1` to resolve [GHSA-f23m-r3pf-42r](https://osv.dev/vulnerability/GHSA-f23m-r3pf-42rh) / [CVE-2026-2950](https://nvd.nist.gov/vuln/detail/CVE-2026-2950).

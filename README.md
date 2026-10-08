@@ -9,15 +9,35 @@ Pa11y CI is an accessibility test runner built using [Pa11y], designed to run in
 
 Use this tool to test against a list of URLs or a sitemap, and report on issues it finds.
 
+Automated accessibility checks complement manual testing and testing with assistive technologies. Passing these checks does not guarantee that your site is accessible or complies with accessibility standards.
+
+On the command line:
+
+```sh
+pa11y-ci https://example.com https://example.com/about
+```
+
+Or test all URLs in a sitemap:
+
+```sh
+pa11y-ci --sitemap https://example.com/sitemap.xml
+```
+
+In JavaScript:
+
+```js
+const pa11yCi = require('pa11y-ci');
+
+pa11yCi(['https://example.com', 'https://example.com/about'], {}).then((results) => {
+    // Use the results
+});
+```
+
 ## Requirements
 
-This command line tool requires a stable (even-numbered) [Node.js] version of 20 or above.
+Pa11y CI requires a supported LTS version of [Node.js]. See [Support and migration](#support-and-migration) for the Node.js versions supported by each major release.
 
-### Pa11y CI 3 and Ubuntu
-
-To use version 3 of Pa11y CI with a version of Ubuntu above `20.04`, a path for the Chrome executable [must be defined in your Pa11y CI config][ubuntu-fix], as `defaults.chromeLaunchConfig.executablePath`. Version 4 of Pa11y CI, which uses Pa11y 9 along with a more recent version of Puppeteer, resolves this issue.
-
-## Usage
+## Command-line interface
 
 Pa11y CI is provided as a command line tool, `pa11y-ci`. To install it globally with npm:
 
@@ -44,9 +64,53 @@ Options:
   -h, --help                       display help for command
 ```
 
-### Configuration
+### URLs and local files
 
-Pa11y CI checks the current working directory for a JSON config file named `.pa11yci`. An example:
+Test one or more URLs by passing them as command-line arguments:
+
+```sh
+pa11y-ci https://example.com https://example.com/about
+```
+
+You can also test local HTML files using relative paths, absolute paths, or [glob] patterns. Quote glob patterns so Pa11y CI can expand them:
+
+```sh
+pa11y-ci ./index.html "./pages/**/*.html"
+```
+
+Command-line arguments are tested together with any URLs listed in your [configuration](#configuration).
+
+### JSON output
+
+Use `--json` (or `-j`) to print the full report as JSON to standard output instead of the usual console output:
+
+```sh
+pa11y-ci https://example.com --json > results.json
+```
+
+To write JSON to a file while keeping the console output, use the [JSON reporter](#reporter-options) instead.
+
+### Exit codes and thresholds
+
+The command-line tool uses the following exit codes:
+
+* `0`: All pages passed, or the total number of reported issues is below the command-line threshold.
+* `1`: Pa11y CI failed due to a technical fault, such as an invalid configuration or a sitemap that could not be loaded.
+* `2`: At least one page failed and the total number of reported issues reached or exceeded the command-line threshold.
+
+The command-line threshold defaults to `0`, so any accessibility errors or failed page tests cause an exit code of `2`. By default, only accessibility errors are reported; use the Pa11y options `includeWarnings` and `includeNotices` in your configuration to include warnings and notices too.
+
+Use `--threshold` (or `-T`) to set a threshold for the whole run. For example, fail when there are five or more reported issues:
+
+```sh
+pa11y-ci https://example.com https://example.com/about --threshold 5
+```
+
+You can also set `threshold` in your configuration's `defaults` or individual URL options. These thresholds apply per page: a page passes when its issue count is at or below its threshold, and its issues do not count towards the command-line threshold.
+
+## Configuration
+
+Pa11y CI looks in the current working directory for a configuration file. It uses the first of these that exists: `.pa11yci` (JSON), `.pa11yci.cjs`, `.pa11yci.js`, or `.pa11yci.json`. An example:
 
 ```json
 {
@@ -57,7 +121,7 @@ Pa11y CI checks the current working directory for a JSON config file named `.pa1
 }
 ```
 
-Pa11y CI will visit each URL in the `urls` array, together with any path provided as a CLI argument. A path can be relative, absolute, or a [glob] pattern.
+Pa11y CI will visit each URL in the `urls` array, together with any path provided as a CLI argument. Entries in `urls` can be URLs or local file paths, either relative or absolute. [Glob] patterns are only expanded when passed as command-line arguments.
 
 Specify a different configuration file, JSON or JavaScript, using the command-line parameter `--config`:
 
@@ -65,14 +129,23 @@ Specify a different configuration file, JSON or JavaScript, using the command-li
 pa11y-ci --config path/to/config.json
 ```
 
-#### Default configuration
+Most [Pa11y options][pa11y configurations] configure individual page tests. Set them in `defaults` to reuse them across pages, or in a URL object to override them for that page. Some Pa11y CI options control the whole run and must be set in `defaults`.
 
-You can specify a default set of [pa11y configurations] that should be used for each test run. Attach this to a `defaults` property in your config; for example:
+| Scope | Options | Where to set them |
+| :--- | :--- | :--- |
+| Per page | For example `timeout`, `viewport`, `runners`, `actions`, `headers`, `ignore`, `includeWarnings`, `includeNotices`, `screenCapture`, `threshold`. See [Pa11y's options][pa11y configurations] for the full list | In `defaults`, with optional overrides in URL objects |
+| Whole run | `concurrency`, `reporters`, `chromeLaunchConfig`, `useIncognitoBrowserContext` | In `defaults`; URL objects cannot override them |
+| Whole-run CLI threshold | `--threshold` / `-T` | On the command line |
+
+Pa11y CI launches one shared browser, so `chromeLaunchConfig` cannot vary by page. See [Exit codes and thresholds](#exit-codes-and-thresholds) for the distinction between per-page and command-line thresholds.
+
+### Default configuration
+
+You can specify a default set of [pa11y configurations] that should be used for each page test. Attach this to a `defaults` property in your config; for example:
 
 ```json
 {
     "defaults": {
-        "timeout": 1000,
         "viewport": {
             "width": 320,
             "height": 480
@@ -87,37 +160,33 @@ You can specify a default set of [pa11y configurations] that should be used for 
 
 Pa11y CI supports two additional options here:
 
-* `concurrency`: The number of tests that should be run in parallel. Defaults to `1`.
-* `useIncognitoBrowserContext`: Run test with an isolated incognito browser context; stops cookies being shared and modified between tests. Defaults to `true`.
+* `concurrency`: The maximum number of page tests to run in parallel. Defaults to `1`.
+* `useIncognitoBrowserContext`: Gives each URL a fresh, isolated incognito browser context, which is closed once that URL has been tested. Cookies and local storage are not shared between URLs, so a login performed while testing one URL does not carry over to another. When set to `false`, all URLs share the browser's default context, including its cookies and storage. Defaults to `true`.
 
-#### URL configuration
+### URL configuration overrides
 
-A URL can be a `string`, or an `object`; in its object form, part or all of the default [pa11y configuration][pa11y configurations] can be overridden per URL. For example, this allows the timeout to be increased for a slow-loading page, or to take a screenshot for a page of particular interest:
+A URL can be a `string`, or an `object`. A URL object can override per-page options from `defaults`. Whole-run settings, such as `concurrency` and `reporters`, cannot be overridden per URL. For example, this allows the timeout to be increased for a slow-loading page, or to take a screenshot for a page of particular interest:
 
 ```json
 {
-    "defaults": {
-        "timeout": 1000
-    },
     "urls": [
         "https://pa11y.org/",
         {
             "url": "https://pa11y.org/contributing",
-            "timeout": 50000,
+            "timeout": 60000,
             "screenCapture": "myDir/my-screen-capture.png"
         }
     ]
 }
 ```
 
-#### Using a JavaScript configuration file
+### JavaScript configuration file
 
 If a JavaScript configuration file is used, it should be a CommonJS module that exports a configuration object. This can be used to dynamically update configuration parameters, for example taking data from environment variables as shown in the example below.
 
 ```js
 module.exports = {
     defaults: {
-        timeout: 1000,
         headers: {
             token: process.env.TOKEN
         }
@@ -128,7 +197,32 @@ module.exports = {
 };
 ```
 
-### Sitemaps
+### Runner selection and actions
+
+Use the `runners` array to choose which accessibility test runners to use: `htmlcs` (HTML_CodeSniffer, the default), `axe` (axe-core), or both. Set it in `defaults` for all URLs, or in an individual URL's configuration to override it. See [Pa11y's runner documentation][pa11y runners] for details.
+
+Use the `actions` array to interact with a page before testing it, for example to click a button, fill in a form, or wait for an element to become visible. Actions run in order and can also be set in `defaults` or per URL:
+
+```json
+{
+    "defaults": {
+        "runners": ["axe", "htmlcs"]
+    },
+    "urls": [
+        {
+            "url": "https://example.com/",
+            "actions": [
+                "click element #menu-toggle",
+                "wait for element #menu to be visible"
+            ]
+        }
+    ]
+}
+```
+
+See [Pa11y's actions documentation][pa11y actions] for the available actions and their syntax.
+
+## Sitemaps
 
 Provide a `--sitemap` argument to retrieve a sitemap and then test each URL within:
 
@@ -138,22 +232,21 @@ pa11y-ci --sitemap https://pa11y.org/sitemap.xml
 
 Pa11y will be run against the text content of each `<loc/>` in the sitemap's XML.
 
-> [!NOTE]
-> Providing a sitemap will cause the `urls` property in your JSON config to be ignored.
+If the sitemap is a sitemap index (a `<sitemapindex>` listing other sitemaps), Pa11y CI fetches each listed sitemap and tests the URLs found in all of them.
 
 Any `headers` set in `defaults` are sent with the sitemap request as well as with
 the page loads, so a sitemap behind the same authentication can still be read.
 
-#### Transforming URLs retrieved from a sitemap before testing
+### Transforming URLs in a sitemap before testing
 
 Pa11y CI can replace a string within each URL found in a sitemap, before beginning to test.  This can be useful when your sitemap contains production URLs, but you'd actually like to test
-those pages in another environment. Use the flags `--sitemap-find` and `sitemap-replace`:
+those pages in another environment. Use the flags `--sitemap-find` and `--sitemap-replace`:
 
 ```sh
-pa11y-ci --sitemap https://pa11y.org/sitemap.xml --sitemap-find pa11y.org --sitemap-replace localhost
+pa11y-ci --sitemap https://pa11y.org/sitemap.xml --sitemap-find "pa11y\.org" --sitemap-replace localhost
 ```
 
-#### Excluding URLs
+### Excluding URLs
 
 Exclude URLs from the test run with the flag `--sitemap-exclude`:
 
@@ -172,8 +265,7 @@ Additionally, you can selectively add urls back to the test run after excluding 
 pa11y-ci --sitemap https://pa11y.org/sitemap.xml --sitemap-exclude "path|example" https://pa11y.org/example/2
 ```
 
-> [!NOTE]
-> The `--sitemap-exclude` flag cannot be chained as only the last arguement will be accepted.
+> **Note:** The `--sitemap-exclude` flag cannot be chained as only the last argument will be accepted.
 
 ## Reporters
 
@@ -186,14 +278,14 @@ Custom reporters are also supported.
 
 Choose a specific reporter with the flag `--reporter`. The value of this flag can also be:
 
-* a path to a locally installed npm package (ie: `pa11y-reporter-html`)
+* the name of an installed npm package that implements the Pa11y CI reporter interface (for example `pa11y-ci-reporter-myreporter`)
 * a path to a local node module; either an absolute path, or one relative to the current working directory (for example `./reporters/my-reporter.js`)
 
-Example:
+For example, if a third-party package named `pa11y-ci-reporter-myreporter` were available:
 
 ```sh
-npm install pa11y-reporter-html --save
-pa11y-ci https://pa11y.org/ --reporter=pa11y-reporter-html 
+npm install pa11y-ci-reporter-myreporter
+pa11y-ci https://pa11y.org/ --reporter=pa11y-ci-reporter-myreporter
 ```
 
 ### Use multiple reporters
@@ -205,48 +297,52 @@ You can use multiple reporters by setting them on the `defaults.reporters` array
     "defaults": {
         "reporters": [
             "cli", // <-- this is the default reporter
-            "pa11y-reporter-html",
+            "pa11y-ci-reporter-myreporter",
             "./my-local-reporter.js"
         ]
     },
     "urls": [
         "https://pa11y.org/",
-        {
-            "url": "https://pa11y.org/contributing",
-            "timeout": 50000,
-            "screenCapture": "myDir/my-screen-capture.png"
-        }
+        "https://pa11y.org/contributing"
     ]
 }
 ```
 
-> [!NOTE]
-> If the `--reporter` flag is provided on the command line, all appearances of `reporters` in the config file will be overridden.
+> **Note:** If the `--reporter` flag is provided on the command line, all appearances of `reporters` in the config file will be overridden. The flag accepts a single reporter and cannot pass [reporter options](#reporter-options); use `defaults.reporters` in your configuration for that.
 
 ### Reporter options
 
-Reporters can be configured, when supported, by settings the reporter as an array with its options as the second item:
+Reporters can be configured, when supported, by setting the reporter as an array with its options as the second item:
 
 ```json
 {
     "defaults": {
         "reporters": [
-            "pa11y-reporter-html",
+            "pa11y-ci-reporter-myreporter",
             ["./my-local-reporter.js", { "option1": true }] // <-- note that this is an array
         ]
     },
     "urls": [
         "https://pa11y.org/",
-        {
-            "url": "https://pa11y.org/contributing",
-            "timeout": 50000,
-            "screenCapture": "myDir/my-screen-capture.png"
-        }
+        "https://pa11y.org/contributing"
     ]
 }
 ```
 
-The included CLI reporter does not support any options.
+The included CLI reporter accepts a `wrapWidth` option: the number of characters at which to wrap issue details. By default it uses the width of the terminal.
+
+```json
+{
+    "defaults": {
+        "reporters": [
+            ["cli", { "wrapWidth": 100 }]
+        ]
+    },
+    "urls": [
+        "https://pa11y.org/"
+    ]
+}
+```
 
 The included JSON reporter outputs the results to the console by default.  It can also accept a `fileName` with a relative or absolute file name where the JSON results will be written. Relative file name will be resolved from the current working directory.
 
@@ -263,142 +359,99 @@ The included JSON reporter outputs the results to the console by default.  It ca
 }
 ```
 
-### Write a custom reporter
+### Writing a custom reporter
 
-Pa11y CI reporters use an interface similar to [pa11y reporters] and support the following optional methods:
+Use a CommonJS module that exports either an object containing reporter methods, or a function that receives `(options, config)` and returns that object. The function form lets your reporter accept [reporter options](#reporter-options); `config` is the merged `defaults` configuration.
 
-* `beforeAll(urls)`: called at the beginning of the process. `urls` is the URLs array defined in your config
-* `afterAll(report)` called at the very end of the process with the following arguments:
-  * `report`: pa11y-ci report object
-  * `config`: pa11y-ci configuration object
-* `begin(url)`: called before processing each URL. `url` is the URL being processed
-* `results(results, config)` called after pa11y test run with the following arguments:
-  * `results`: pa11y results object [URL configuration object](#url-configuration)
-  * `config`: the current [URL configuration object](#url-configuration)
-* `error(error, url, config)`: called when a test run fails with the following arguments:
-  * `error`: pa11y error message
-  * `url`: the URL being processed
-  * `config`: the current [URL configuration object](#url-configuration)
+All methods are optional and may return a Promise. When several reporters are configured, each method is called on all of them in parallel, and Pa11y CI waits for all of them to finish before continuing:
 
-Here is an example of a custom reporter writing pa11y-ci report and errors to files:
+| Method | When called |
+| :--- | :--- |
+| `beforeAll(urls)` | Before testing begins, with the full array of URLs or URL configuration objects. |
+| `begin(url)` | Before testing each page. |
+| `results(results, config)` | After a successful page test, with the [Pa11y results object](https://github.com/pa11y/pa11y#javascript-interface) and that page's configuration. |
+| `error(error, url, config)` | When a page test fails, with the error object, URL, and that page's configuration. |
+| `afterAll(report, config)` | After all tests finish, with the [combined report](#javascript-interface) and the merged `defaults` configuration. |
 
-```js
-const fs = require('fs');
-const { createHash } = require('crypto');
-
-// create a unique filename from URL
-function fileName(url: any, prefix = '') {
-    const hash = createHash('md5').update(url).digest('hex');
-    return `${prefix}${hash}.json`;
-}
-
-exports.afterAll = function (report) {
-    return fs.promises.writeFile('report.json', JSON.stringify(report), 'utf8');
-}
-
-// write error details to an individual log for each URL
-exports.error = function (error, url) {
-    const data = JSON.stringify({url, error});
-    return fs.promises.writeFile(fileName(url, 'error-'), data, 'utf8');
-}
-```
-
-#### Configurable reporters
-
-A configurable reporter is a special kind of pa11y-ci reporter exporting a single factory function as its default export.
-
-When initialized, the function receives the user configured options (if any) and pa11y-ci configuration object as argument.
-
-For example, here is a reporter writing all results to a single configurable file:
+For example, this configurable reporter writes a plain-text summary of the run to a file:
 
 ```js
 // ./my-reporter.js
+const fs = require('node:fs');
 
-const fs = require('fs');
-
-module.exports = function (options) {
-    // initialize an empty report data
-    const customReport = {
-        results: {},
-        errors: [],
-        violations: 0,
-    }
-
-    const fileName = options.fileName
-
+module.exports = function (options = {}) {
     return {
-        // add results to the report
-        results(results) {
-            customReport.results[results.pageUrl] = results;
-            customReport.violations += results.issues.length;
-        },
-
-        // add errors too
-        error(error, url) {
-            customReport.errors.push({ error, url });
-        },
-
-        // write everything to a file
-        afterAll() {
-            const data = JSON.stringify(customReport);
-            return fs.promises.writeFile(fileName, data, 'utf8');
+        afterAll(report) {
+            const lines = [`${report.passes}/${report.total} URLs passed`];
+            for (const [url, issues] of Object.entries(report.results)) {
+                if (issues.length) {
+                    lines.push(`FAIL ${url} (${issues.length})`);
+                }
+            }
+            return fs.promises.writeFile(
+                options.fileName || './summary.txt',
+                lines.join('\n'),
+                'utf8'
+            );
         }
-    }
+    };
 };
 ```
 
+Select it and set its output filename in your configuration:
+
 ```json
-// configuration file
 {
     "defaults": {
         "reporters": [
-            ["./my-reporter.js", { "fileName": "./my-report.json" }]
+            ["./my-reporter.js", { "fileName": "./summary.txt" }]
         ]
     },
-    "urls": [
-        ...
-    ]
+    "urls": ["https://example.com"]
 }
 ```
 
-### Docker
+## JavaScript interface
 
-If you want to run `pa11y-ci` in a Docker container then you can use the [`buildkite/puppeteer`](https://github.com/buildkite/docker-puppeteer) image as this installs Chrome and all the required libs to run headless chrome on Linux.
+Install Pa11y CI as a dependency:
 
-You will need a `config.json` that sets the `--no-sandbox` Chromium launch arguments:
-
-```json
-{
-    "defaults": {
-        "chromeLaunchConfig": {
-            "args": [
-                "--no-sandbox"
-            ]
-        }
-    },
-    "urls": [
-        "https://pa11y.org/",
-        "https://pa11y.org/contributing"
-    ]
-}
+```sh
+npm install pa11y-ci
 ```
 
-And then a Dockerfile that installs `pa11y-ci` and adds the `config.json`
+Call `pa11yCi(urls, options)` with an array of URLs and an options object (use `{}` for the defaults). It returns a Promise that resolves to a report:
 
-```Dockerfile
-FROM buildkite/puppeteer:v1.15.0
+```js
+const pa11yCi = require('pa11y-ci');
 
-RUN npm install --global --unsafe-perm pa11y-ci
-ADD config.json /usr/config.json
-
-ENTRYPOINT ["pa11y-ci", "-c", "/usr/config.json"]
+pa11yCi(['https://example.com', 'https://example.com/about'], {
+    concurrency: 2,
+    log: console,
+    runners: ['axe']
+}).then((report) => {
+    console.log(`${report.passes} of ${report.total} pages passed`);
+    console.log(report.results);
+});
 ```
+
+The options object accepts the same settings as the configuration file's `defaults` property. Array entries can also be objects with a `url` and per-page options, as shown in [URL configuration overrides](#url-configuration-overrides). The JavaScript interface does not automatically load a configuration file.
+
+The default `cli` reporter writes its output through the `log` option, which has `info` and `error` methods. Without `log`, the JavaScript interface prints nothing; pass `log: console` to see the usual output.
+
+The report contains:
+
+* `total`: The number of pages tested.
+* `passes`: The number of pages that passed, including those within their per-page threshold.
+* `errors`: The total number of accessibility issues on pages that exceeded their per-page threshold.
+* `results`: An object mapping page URLs to arrays of accessibility issues or errors from failed tests. Passing pages have empty arrays. For pages that were tested, the key is the final URL of the page, which may differ from the URL you provided (for example after a redirect, or `file://…` for local files). For tests that failed to run, the key is the URL you provided. If the same URL is listed twice, it appears once in `results` but is counted twice in `total`.
+
+## Common questions and troubleshooting
+
+See [Pa11y's Troubleshooting guide](https://github.com/pa11y/pa11y/blob/main/TROUBLESHOOTING.md) to get the answers to common questions about Pa11y, along with some ideas to help you troubleshoot problems when using Pa11y CI.
 
 ## Tutorials and articles
 
-Here are some useful articles written by Pa11y users and contributors:
-
-* [Automated accessibility testing with Travis and Pa11y CI](https://andrewmee.com/posts/automated-accessibility-testing-node-travis-ci-pa11y/)
+You can find some useful tutorials and articles in the [Tutorials section](https://pa11y.org/tutorials/) of [pa11y.org](https://pa11y.org/).
 
 ## Contributing
 
@@ -417,37 +470,37 @@ You can also run verifications and tests individually:
 
 ```sh
 npm run test-unit           # Run only the unit tests
-npm run coverage            # Run the unit tests, reporting coverage
+npm run test-coverage       # Run the unit tests, reporting coverage
 npm run test-integration    # Run only the integration tests
 ```
 
 ## Support and migration
 
-> [!NOTE]
-> We maintain a [migration guide](MIGRATION.md) to help you migrate between major versions.
+We maintain a [migration guide](MIGRATION.md) to help you migrate between major versions.
 
 When we release a new major version we will continue to support the previous major version for 6 months. This support will be limited to fixes for critical bugs and security issues. If you're opening an issue related to this project, please mention the specific version that the issue affects.
 
 The following table lists the major versions available and, for each previous major version, its end-of-support date, and its final minor version released.
 
-| Major version | Final minor release | Node.js LTS support | Support end date         |
-| :------------ | :------------------ | :------------------ | :----------------------- |
-| `4`           |                     | `20`, `22`, `24`    | ✅ Current major version |
-| `3`           | `3.1.0`             | `>= 12` ([Ubuntu caveat](#pa11y-ci-3-and-ubuntu))| May 2024 |
-| `2`           | `2.4.2`             | `>= 8`              | 2022-05-26               |
-| `1`           | `1.3`               | `>= 4`              | 2018-04-18               |
+| Major version | Final minor release | Node.js LTS support  | Support end date         |
+| :------------ | :------------------ | :------------------- | :----------------------- |
+| `5`           | _(still supported)_ | `22.13+`, `24`, `26` | ✅ Current major version  |
+| `4`           | _(still supported)_ | `20`, `22`, `24`     | 2027-04-05               |
+| `3`           | `3.1.0`             | `>= 12`              | May 2024 |
+| `2`           | `2.4.2`             | `>= 8`               | 2022-05-26               |
+| `1`           | `1.3`               | `>= 4`               | 2018-04-18               |
 
 ## Licence
 
 Licensed under the [Lesser General Public License (LGPL-3.0-only)](LICENSE).  
-Copyright &copy; 2016-2025, Team Pa11y and contributors
+Copyright &copy; 2016-2026, Team Pa11y and contributors
 
 [glob]: https://github.com/isaacs/node-glob#glob
 [node.js]: https://nodejs.org/
 [pa11y]: https://github.com/pa11y/pa11y
 [pa11y configurations]: https://github.com/pa11y/pa11y#configuration
-[pa11y reporters]: https://github.com/pa11y/pa11y#reporters
-[ubuntu-fix]: https://github.com/pa11y/pa11y-ci/issues/198#issuecomment-1418343240
+[pa11y actions]: https://github.com/pa11y/pa11y#actions
+[pa11y runners]: https://github.com/pa11y/pa11y#runners
 
 [info-license]: LICENSE
 [info-node]: package.json
