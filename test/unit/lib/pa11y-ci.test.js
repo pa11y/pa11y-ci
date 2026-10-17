@@ -192,6 +192,11 @@ describe('lib/pa11y-ci', () => {
 					assert.strictEqual(report.passes, 1);
 				});
 
+				it('counts failed executions separately from accessibility errors', () => {
+					assert.strictEqual(report.errors, 1);
+					assert.strictEqual(report.failures, 1);
+				});
+
 				it('has a `results` property set to an object where keys are URLs and values are their results', () => {
 					assert.isObject(report.results);
 
@@ -253,11 +258,84 @@ describe('lib/pa11y-ci', () => {
 					assert.notCalled(log.error);
 				});
 
+				it('reports zero failed executions', async () => {
+					const report = await returnedPromise;
+					assert.strictEqual(report.errors, 0);
+					assert.strictEqual(report.failures, 0);
+				});
+
 			});
 
 		});
 
 
+	});
+
+	describe('execution failures', () => {
+		let userOptions;
+
+		beforeEach(() => {
+			pa11y.reset();
+			userOptions = {concurrency: 1,
+				log};
+		});
+
+		it('reports zero failed executions when pages only have accessibility errors', async () => {
+			pa11y.withArgs('foo-url').resolves({
+				pageUrl: 'foo-url',
+				issues: [{type: 'error',
+					message: 'Accessibility error'}]
+			});
+
+			const report = await pa11yCi(['foo-url'], userOptions);
+
+			assert.strictEqual(report.errors, 1);
+			assert.strictEqual(report.failures, 0);
+		});
+
+		it('counts every failed execution and still completes the other pages and reporters', async () => {
+			const firstError = new Error('First execution failed');
+			const secondError = new Error('Second execution failed');
+			const reporter = require('../mock/reporter.mock')();
+			reporter.error = sinon.stub();
+			quibble('execution-reporter', reporter);
+			userOptions.reporters = ['execution-reporter'];
+			pa11y.withArgs('foo-url').rejects(firstError);
+			pa11y.withArgs('bar-url').rejects(secondError);
+			pa11y.withArgs('baz-url').resolves({pageUrl: 'baz-url',
+				issues: []});
+
+			const report = await pa11yCi(['foo-url', 'bar-url', 'baz-url'], userOptions);
+
+			assert.strictEqual(report.total, 3);
+			assert.strictEqual(report.passes, 1);
+			assert.strictEqual(report.errors, 0);
+			assert.strictEqual(report.results['foo-url'][0], firstError);
+			assert.strictEqual(report.results['bar-url'][0], secondError);
+			assert.deepEqual(report.results['baz-url'], []);
+			assert.calledTwice(reporter.error);
+			assert.calledWith(reporter.error, firstError, 'foo-url', sinon.match.object);
+			assert.calledWith(reporter.error, secondError, 'bar-url', sinon.match.object);
+			assert.calledOnce(reporter.results);
+			assert.calledWith(reporter.afterAll, report, sinon.match.object);
+			assert.strictEqual(report.failures, 2);
+		});
+
+		it('retains a failed execution when a later attempt at the same URL passes', async () => {
+			const repeatedUrl = pa11y.withArgs('foo-url');
+			repeatedUrl.onFirstCall().rejects(new Error('First attempt failed'));
+			repeatedUrl.onSecondCall().resolves({pageUrl: 'foo-url',
+				issues: []});
+
+			const report = await pa11yCi(['foo-url', 'foo-url'], userOptions);
+
+			assert.calledTwice(repeatedUrl);
+			assert.strictEqual(report.total, 2);
+			assert.strictEqual(report.passes, 1);
+			assert.strictEqual(report.errors, 0);
+			assert.deepEqual(report.results['foo-url'], []);
+			assert.strictEqual(report.failures, 1);
+		});
 	});
 
 	describe('when URLs include additional configurations', () => {
