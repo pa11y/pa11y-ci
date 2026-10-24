@@ -494,6 +494,55 @@ describe('lib/pa11y-ci', () => {
 
 	});
 
+	describe('reporter failures', () => {
+		['beforeAll', 'begin', 'results', 'error', 'afterAll'].forEach(method => {
+			[false, true].forEach(asynchronous => {
+				it(`continues after a ${asynchronous ? 'rejected' : 'thrown'} ${method} hook`, async () => {
+					const broken = require('../mock/reporter.mock')();
+					broken.error = sinon.stub();
+					const healthy = require('../mock/reporter.mock')();
+					healthy.error = sinon.stub();
+					const failure = new Error('Reporter failure');
+					if (asynchronous) {
+						broken[method].rejects(failure);
+					} else {
+						broken[method].throws(failure);
+					}
+					quibble('broken-reporter', broken);
+					quibble('healthy-reporter', healthy);
+					pa11y.withArgs('passing-url').resolves({pageUrl: 'passing-url',
+						issues: []});
+					const pageError = new Error('Page failed');
+					pa11y.withArgs('error-url').rejects(pageError);
+					const report = await pa11yCi(['passing-url', 'error-url'], {
+						log,
+						reporters: ['broken-reporter', 'healthy-reporter']
+					});
+					assert.called(healthy[method]);
+					assert.calledOnce(healthy.afterAll);
+					assert.calledWith(log.error, `Reporter ${method} failed: Reporter failure`);
+					assert.strictEqual(report.passes, 1);
+					assert.deepEqual(report.results['passing-url'], []);
+					assert.deepEqual(report.results['error-url'], [pageError]);
+					assert.calledOnce(puppeteer.mockBrowser.close);
+				});
+			});
+		});
+	});
+
+	it('logs non-Error reporter rejections and preserves the result', async () => {
+		const reporter = require('../mock/reporter.mock')();
+		// eslint-disable-next-line prefer-promise-reject-errors -- Third-party reporters can reject any value.
+		reporter.results.callsFake(() => Promise.reject('reporter failure'));
+		quibble('rejecting-reporter', reporter);
+		pa11y.resolves({pageUrl: 'foo-url',
+			issues: []});
+		const report = await pa11yCi(['foo-url'], {log,
+			reporters: ['rejecting-reporter']});
+		assert.calledWith(log.error, 'Reporter results failed: reporter failure');
+		assert.strictEqual(report.passes, 1);
+	});
+
 	describe('multiple reporters', () => {
 		let userUrls;
 		let userOptions;
