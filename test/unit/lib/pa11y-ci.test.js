@@ -413,6 +413,17 @@ describe('lib/pa11y-ci', () => {
 		});
 	});
 
+	describe('debug logging', () => {
+		it('passes the configured logger to Pa11y when debug is enabled', async () => {
+			pa11y.resolves({pageUrl: 'foo-url',
+				issues: []});
+			await pa11yCi(['foo-url'], {log,
+				debug: true});
+			assert.strictEqual(pa11y.firstCall.args[1].log.debug, log.debug);
+			assert.doesNotInclude(pa11y.firstCall.args[1], 'debug');
+		});
+	});
+
 	describe('reporters', () => {
 		let pa11yResults;
 		let returnedPromise;
