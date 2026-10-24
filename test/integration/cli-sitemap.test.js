@@ -40,6 +40,7 @@ describe('pa11y-ci (with a sitemap that can\'t be loaded)', () => {
 	it('outputs an error message', () => {
 		assert.include(global.lastResult.output, './foo/sitemap.xml');
 		assert.include(global.lastResult.output, 'could not be loaded');
+		assert.include(global.lastResult.stderr, 'Only absolute URLs are supported');
 	});
 
 });

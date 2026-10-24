@@ -245,9 +245,9 @@ function loadSitemapIntoConfig(program, initialConfig) {
 			})
 			.catch(error => {
 				if (error.stack && error.stack.includes('node-fetch')) {
-					throw new Error(`The sitemap "${sitemapUrl}" could not be loaded`);
+					throw new Error(`The sitemap "${sitemapUrl}" could not be loaded: ${error.message}`, {cause: error});
 				}
-				throw new Error(`The sitemap "${sitemapUrl}" could not be parsed`);
+				throw new Error(`The sitemap "${sitemapUrl}" could not be parsed: ${error.message}`, {cause: error});
 			});
 	}
 
