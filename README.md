@@ -234,6 +234,9 @@ Pa11y will be run against the text content of each `<loc/>` in the sitemap's XML
 
 If the sitemap is a sitemap index (a `<sitemapindex>` listing other sitemaps), Pa11y CI fetches each listed sitemap and tests the URLs found in all of them.
 
+Any `headers` set in `defaults` are sent with the sitemap request as well as with
+the page loads, so a sitemap behind the same authentication can still be read.
+
 ### Transforming URLs in a sitemap before testing
 
 Pa11y CI can replace a string within each URL found in a sitemap, before beginning to test.  This can be useful when your sitemap contains production URLs, but you'd actually like to test

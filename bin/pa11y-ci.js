@@ -213,10 +213,13 @@ function loadSitemapIntoConfig(program, initialConfig) {
 			new RegExp(program.sitemapExclude, 'gi') :
 			null
 	);
+	// Headers in the config are sent to Chrome for the page loads, so a
+	// sitemap behind the same auth needs them too
+	const sitemapHeaders = initialConfig.defaults.headers;
 
 	function getUrlsFromSitemap(sitemapUrl, config) {
 		return Promise.resolve()
-			.then(() => fetch(sitemapUrl))
+			.then(() => fetch(sitemapUrl, {headers: sitemapHeaders}))
 			.then(response => response.text())
 			.then(body => {
 				const $ = cheerio.load(body, {xmlMode: true});
