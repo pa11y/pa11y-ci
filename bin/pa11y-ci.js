@@ -55,6 +55,7 @@ commander
 		'--reporter <reporter>',
 		'the reporter to use. Can be a npm module or a path to a local file.'
 	)
+	.option('--debug', 'output debug messages from Pa11y')
 	.allowExcessArguments()
 	.parse(process.argv);
 
@@ -82,6 +83,9 @@ Promise.resolve()
 		// Override config reporters with CLI argument
 		if (options.reporter) {
 			config.defaults.reporters = [options.reporter];
+		}
+		if (options.debug) {
+			config.defaults.debug = true;
 		}
 		// Actually run Pa11y CI
 		return pa11yCi(urls.concat(config.urls || []), config.defaults);

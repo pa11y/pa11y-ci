@@ -60,6 +60,7 @@ Options:
   -j, --json                       Output results as JSON
   -T, --threshold <number>         permit this number of errors, warnings, or notices, otherwise fail with exit code 2
                                    (default: "0")
+  --debug                         output debug messages from Pa11y
   --reporter <reporter>            the reporter to use. Can be a npm module or a path to a local file.
   -h, --help                       display help for command
 ```
@@ -79,6 +80,8 @@ pa11y-ci ./index.html "./pages/**/*.html"
 ```
 
 Command-line arguments are tested together with any URLs listed in your [configuration](#configuration).
+
+Use `--debug` to include Pa11y debugging messages when troubleshooting page loads or actions.
 
 ### JSON output
 
