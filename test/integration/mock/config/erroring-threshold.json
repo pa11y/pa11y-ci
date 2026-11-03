@@ -1,0 +1,8 @@
+{
+	"urls": [
+		{
+			"url": "./foo/erroring.html",
+			"threshold": 1
+		}
+	]
+}

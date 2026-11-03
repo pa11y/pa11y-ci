@@ -9,9 +9,15 @@ describe('pa11y-ci (with the `--json` flag set)', () => {
 	before(() => {
 		return global.cliCall([
 			'--json',
+			'--threshold',
+			'100',
 			'--config',
 			'mixed'
 		]);
+	});
+
+	it('exits with 2 when execution fails even with accessibility errors below the CLI threshold', () => {
+		assert.strictEqual(global.lastResult.code, 2);
 	});
 
 	it('outputs the results as JSON', () => {
@@ -21,6 +27,7 @@ describe('pa11y-ci (with the `--json` flag set)', () => {
 			total: 3,
 			errors: 1,
 			passes: 1,
+			failures: 1,
 			results: {
 				'./foo/erroring.html': [
 					{
@@ -44,4 +51,19 @@ describe('pa11y-ci (with the `--json` flag set)', () => {
 		});
 	});
 
+});
+
+describe('pa11y-ci (with JSON output for a passing URL)', () => {
+	before(() => {
+		return global.cliCall(['--json', '--config', 'passing-single', '--threshold', '100']);
+	});
+
+	it('exits with 0 and reports zero failed executions', () => {
+		const report = JSON.parse(global.lastResult.stdout);
+		assert.strictEqual(global.lastResult.code, 0);
+		assert.strictEqual(report.total, 1);
+		assert.strictEqual(report.passes, 1);
+		assert.strictEqual(report.errors, 0);
+		assert.strictEqual(report.failures, 0);
+	});
 });

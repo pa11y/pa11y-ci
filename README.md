@@ -94,9 +94,11 @@ To write JSON to a file while keeping the console output, use the [JSON reporter
 
 The command-line tool uses the following exit codes:
 
-* `0`: All pages passed, or the total number of reported issues is below the command-line threshold.
+* `0`: All page tests ran, and either all pages passed or the total number of reported issues is below the command-line threshold.
 * `1`: Pa11y CI failed due to a technical fault, such as an invalid configuration or a sitemap that could not be loaded.
-* `2`: At least one page failed and the total number of reported issues reached or exceeded the command-line threshold.
+* `2`: A page test failed to run, or at least one page failed and the total number of reported issues reached or exceeded the command-line threshold.
+
+If a page test fails to run, for example because of a timeout, navigation error, or browser crash, the exit code is always `2`, regardless of the command-line or per-page threshold.
 
 The command-line threshold defaults to `0`, so any accessibility errors or failed page tests cause an exit code of `2`. By default, only accessibility errors are reported; use the Pa11y options `includeWarnings` and `includeNotices` in your configuration to include warnings and notices too.
 
@@ -440,6 +442,7 @@ The report contains:
 * `total`: The number of pages tested.
 * `passes`: The number of pages that passed, including those within their per-page threshold.
 * `errors`: The total number of accessibility issues on pages that exceeded their per-page threshold.
+* `failures`: The number of page tests that failed to run, or `0` if all tests ran. Each failed attempt counts, including repeated attempts at the same URL. These failures do not count towards `errors`.
 * `results`: An object mapping page URLs to arrays of accessibility issues or errors from failed tests. Passing pages have empty arrays. For pages that were tested, the key is the final URL of the page, which may differ from the URL you provided (for example after a redirect, or `file://…` for local files). For tests that failed to run, the key is the URL you provided. If the same URL is listed twice, it appears once in `results` but is counted twice in `total`.
 
 ## Common questions and troubleshooting
