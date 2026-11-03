@@ -45,6 +45,15 @@ Pa11y CI is provided as a command line tool, `pa11y-ci`. To install it globally 
 npm install -g pa11y-ci
 ```
 
+With npm 12, allow Puppeteer's install script so it can download Chrome:
+
+```sh
+npm install --global pa11y-ci --allow-scripts=puppeteer
+```
+
+See [npm 12 browser setup](#missing-chrome-after-installation-with-npm-12) for recovery,
+project and CI configuration, and browser alternatives.
+
 ```console
 $ pa11y-ci --help
 
@@ -446,6 +455,83 @@ The report contains:
 
 See [Pa11y's Troubleshooting guide](https://github.com/pa11y/pa11y/blob/main/TROUBLESHOOTING.md) to get the answers to common questions about Pa11y, along with some ideas to help you troubleshoot problems when using Pa11y CI.
 
+### Missing Chrome after installation with npm 12
+
+npm 12 blocks dependency install scripts by default. Pa11y CI can install successfully while
+Puppeteer's browser download is skipped, then fail at runtime with `Could not find Chrome`.
+The following routes address that skipped download; other launch failures may have different causes.
+
+Use a Node.js version supported by both Pa11y CI and your npm release. For the script-based
+downloads below, npm's `ignore-scripts` setting must be false.
+
+#### Recover a global installation
+
+The npm 12 command in [Command-line interface](#command-line-interface) permits Puppeteer's script
+for that invocation. If Pa11y CI is already installed globally but its browser download was skipped,
+run:
+
+```sh
+npm rebuild --global puppeteer --allow-scripts=puppeteer
+```
+
+#### Project installation and CI
+
+From the root of the project that depends on Pa11y CI, install it, save approval for Puppeteer's
+script, then run the skipped script:
+
+```sh
+npm install --save-dev pa11y-ci
+npm approve-scripts puppeteer
+npm rebuild puppeteer
+```
+
+[`npm approve-scripts`][npm-approve-scripts] saves version-specific approval in the root
+`package.json` under `allowScripts`; it does not run the script. Commit the resulting `package.json`
+and `package-lock.json`. A fresh, noninteractive CI installation can then use:
+
+```sh
+npm ci
+```
+
+Repeat approval if an update changes Puppeteer's version. Use saved project approval rather than
+adding the global installation's `--allow-scripts` flag to `npm ci`; npm 12 rejects that override
+for project installations. See [npm's script approval configuration][npm-allow-scripts] for details.
+
+#### Install the browser separately
+
+If you provision the browser separately, run this from a project where Pa11y CI is installed:
+
+```sh
+npm explore pa11y-ci -- npm exec --no -- puppeteer browsers install
+```
+
+This runs from the installed Pa11y CI package's context to select its Puppeteer dependency. The
+`--no` option prevents npm from downloading a missing CLI. Use the same operating-system user and
+browser cache when downloading the browser and running Pa11y CI. If you set `PUPPETEER_CACHE_DIR`,
+use the same value for both steps. See [Puppeteer's configuration guide][puppeteer-configuration].
+
+#### Use an existing browser
+
+You can instead select an existing browser compatible with Pa11y CI's installed Puppeteer version.
+Save a `.pa11yci.json` file in the directory where you run Pa11y CI, replacing the browser path and
+URL with values for your environment:
+
+```json
+{
+  "defaults": {
+    "chromeLaunchConfig": {
+      "executablePath": "/absolute/path/to/chrome"
+    }
+  },
+  "urls": ["http://localhost:3000/"]
+}
+```
+
+For the CLI, browser options belong under `defaults` and apply to the whole run. See
+[Configuration](#configuration) for file discovery and `--config`. The
+[JavaScript interface](#javascript-interface) accepts `chromeLaunchConfig` directly in its options
+object and does not load the CLI configuration file automatically.
+
 ## Tutorials and articles
 
 You can find some useful tutorials and articles in the [Tutorials section](https://pa11y.org/tutorials/) of [pa11y.org](https://pa11y.org/).
@@ -498,6 +584,9 @@ Copyright &copy; 2016-2026, Team Pa11y and contributors
 [pa11y configurations]: https://github.com/pa11y/pa11y#configuration
 [pa11y actions]: https://github.com/pa11y/pa11y#actions
 [pa11y runners]: https://github.com/pa11y/pa11y#runners
+[npm-approve-scripts]: https://docs.npmjs.com/cli/v12/commands/npm-approve-scripts/
+[npm-allow-scripts]: https://docs.npmjs.com/cli/v12/using-npm/config/#allow-scripts
+[puppeteer-configuration]: https://pptr.dev/guides/configuration
 
 [info-license]: LICENSE
 [info-node]: package.json
