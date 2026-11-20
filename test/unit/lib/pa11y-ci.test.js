@@ -413,6 +413,53 @@ describe('lib/pa11y-ci', () => {
 		});
 	});
 
+	describe('when the browser context cannot be created (issue #282)', () => {
+		let contextError;
+		let mockBrowser;
+		let originalCreateBrowserContext;
+		let report;
+
+		beforeEach(async () => {
+			log.error = sinon.spy();
+			log.info = sinon.spy();
+			contextError = new Error('Protocol error: Connection closed');
+
+			mockBrowser = await puppeteer.launch();
+			originalCreateBrowserContext = mockBrowser.createBrowserContext;
+			mockBrowser.createBrowserContext = sinon.stub().rejects(contextError);
+
+			pa11y.reset();
+			report = await pa11yCi(['qux-url-1'], {
+				concurrency: 4,
+				log,
+				useIncognitoBrowserContext: true
+			});
+		});
+
+		afterEach(() => {
+			mockBrowser.createBrowserContext = originalCreateBrowserContext;
+		});
+
+		it('does not run pa11y on the URL', () => {
+			assert.notCalled(pa11y);
+		});
+
+		it('reports the context error as the result for the URL', () => {
+			assert.isArray(report.results['qux-url-1']);
+			assert.lengthEquals(report.results['qux-url-1'], 1);
+			assert.strictEqual(report.results['qux-url-1'][0], contextError);
+		});
+
+		it('counts the URL as neither passed nor silently dropped', () => {
+			assert.strictEqual(report.total, 1);
+			assert.strictEqual(report.passes, 0);
+		});
+
+		it('logs that the URL failed to run', () => {
+			assert.calledWithMatch(log.error, /qux-url-1.*failed to run/i);
+		});
+	});
+
 	describe('reporters', () => {
 		let pa11yResults;
 		let returnedPromise;
