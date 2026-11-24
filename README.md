@@ -80,6 +80,49 @@ pa11y-ci ./index.html "./pages/**/*.html"
 
 Command-line arguments are tested together with any URLs listed in your [configuration](#configuration).
 
+### Example output
+
+The default reporter lists each tested page, then prints the issues that need attention.
+For example, run the included [sample page][sample-page] from the repository root:
+
+```sh
+pa11y-ci docs/examples/missing-language.html
+```
+
+This page has a title and heading but no language attribute on its `html` element.
+The output looks like this (the absolute file path is shortened here; wrapping varies
+with the terminal width):
+
+```text
+Running Pa11y on 1 URLs:
+ > file:///.../docs/examples/missing-language.html - 1 errors
+
+Errors in file:///.../docs/examples/missing-language.html:
+
+ • The html element should have a lang or xml:lang attribute which describes
+   the language of the document.
+
+   (html)
+
+   <html><head> <meta charset="utf-8"> ...</html>
+
+✘ 0/1 URLs passed
+```
+
+The page line gives the issue count. Each issue includes its message, a CSS selector
+(`html` here), and a source excerpt to help locate it. The final line counts pages
+that passed, rather than individual issues. With the default thresholds, this run
+exits with code `2`.
+
+In the sample page, change `<html>` to `<html lang="en">` and rerun the same command.
+The reporter then shows `0 errors` and `✔ 1/1 URLs passed`, and the command exits
+with code `0`. For other pages, choose the language that matches the content.
+
+The CLI reporter writes successful results to standard output and issue details to
+standard error. For a machine-readable report, use [JSON output](#json-output).
+See [Exit codes and thresholds](#exit-codes-and-thresholds) for how thresholds affect
+the page counts and exit status.
+
 ### JSON output
 
 Use `--json` (or `-j`) to print the full report as JSON to standard output instead of the usual console output:
@@ -493,6 +536,7 @@ Licensed under the [Lesser General Public License (LGPL-3.0-only)](LICENSE).
 Copyright &copy; 2016-2026, Team Pa11y and contributors
 
 [glob]: https://github.com/isaacs/node-glob#glob
+[sample-page]: docs/examples/missing-language.html
 [node.js]: https://nodejs.org/
 [pa11y]: https://github.com/pa11y/pa11y
 [pa11y configurations]: https://github.com/pa11y/pa11y#configuration
