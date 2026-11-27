@@ -100,7 +100,7 @@ Promise.resolve()
 		}
 		// Decide on an exit code based on whether
 		// errors are below threshold or everything passes
-		if (report.errors >= parseInt(options.threshold, 10) && report.passes < report.total) {
+		if (report.errors > parseInt(options.threshold, 10) && report.passes < report.total) {
 			process.exit(2);
 		} else {
 			process.exit(0);
