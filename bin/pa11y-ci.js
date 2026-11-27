@@ -44,6 +44,10 @@ commander
 		'a pattern to find in sitemaps and exclude any url that matches'
 	)
 	.option(
+		'-i, --sitemap-only-include <pattern>',
+		'a pattern to find in sitemaps and only include any url that matches'
+	)
+	.option(
 		'-j, --json',
 		'Output results as JSON'
 	)
@@ -213,7 +217,11 @@ function loadSitemapIntoConfig(program, initialConfig) {
 			new RegExp(program.sitemapExclude, 'gi') :
 			null
 	);
-
+	const sitemapOnlyInclude = (
+		program.sitemapOnlyInclude ?
+			new RegExp(program.sitemapOnlyInclude, 'gi') :
+			null
+	);
 	function getUrlsFromSitemap(sitemapUrl, config) {
 		return Promise.resolve()
 			.then(() => fetch(sitemapUrl))
@@ -232,7 +240,8 @@ function loadSitemapIntoConfig(program, initialConfig) {
 
 				$('url > loc').toArray().forEach(element => {
 					let url = $(element).text();
-					if (sitemapExclude && url.match(sitemapExclude)) {
+					if ((sitemapExclude && url.match(sitemapExclude)) ||
+						(sitemapOnlyInclude && !url.match(sitemapOnlyInclude))) {
 						return;
 					}
 					if (sitemapFind) {
